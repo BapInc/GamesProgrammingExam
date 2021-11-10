@@ -17,8 +17,8 @@ file(GLOB Bird
         )
 
 # Compile cpp files (from Snake variable)
-add_executable(Exercise8-Bird ${Bird})
-target_link_libraries(Exercise8-Bird ${all_libs})
+add_executable(GamesProgrammingExam ${Bird})
+target_link_libraries(GamesProgrammingExam ${all_libs})
 
 # copy files to dest
 file(COPY background.png background2.png bird.json bird.png DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
@@ -32,5 +32,5 @@ IF (WIN32)
     file(COPY ${DLLFileList} DESTINATION .)
 
     # Set working directory to ${CMAKE_CURRENT_BINARY_DIR}/Debug
-    set_target_properties(Exercise8-Bird PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Debug)
+    set_target_properties(GamesProgrammingExam PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Debug)
 ENDIF(WIN32)

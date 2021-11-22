@@ -4,7 +4,7 @@
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 
 
-PlayState::PlayState()
+PlayState::PlayState() :debugDraw(physicsScale)
 {
 }
 

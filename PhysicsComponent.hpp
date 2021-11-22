@@ -6,7 +6,8 @@
 #include "Box2D/Dynamics/b2Body.h"
 #include "Component.hpp"
 
-class PhysicsComponent : public Component {
+class PhysicsComponent : public Component
+{
 public:
 	explicit PhysicsComponent(GameObject* gameObject);
 	virtual ~PhysicsComponent();
@@ -33,7 +34,7 @@ private:
 	b2BodyType rbType;
 	std::vector<PhysicsComponent*> collidingBodies;
 	b2World* world = nullptr;
-	friend class BirdGame;
+	friend class PlayState;
 
 
 };

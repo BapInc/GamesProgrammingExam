@@ -47,7 +47,8 @@ const glm::vec2& DungeonGame::getWindowSize()
 	return windowSize;
 }
 
-void DungeonGame::onKey(SDL_Event& event) {
+void DungeonGame::onKey(SDL_Event& event)
+{
 	// TODO: Loop over objects that needs onKey to be called
 }
 

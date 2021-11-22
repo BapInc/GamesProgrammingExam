@@ -1,6 +1,7 @@
-#include "DungeonGame.hpp"
+#include "DungeonGame.h"
 
-int main() {
-    new DungeonGame();
-    return 0;
+int main()
+{
+	new DungeonGame();
+	return 0;
 }

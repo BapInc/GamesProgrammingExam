@@ -27,6 +27,7 @@ public:
 	void generateNewDungeon();
 
 	void handleContact(b2Contact* contact, bool begin);
+	std::shared_ptr<GameObject> PlayState::createGameObject();
 private:
 
 	const float physicsScale = 100;
@@ -45,7 +46,6 @@ private:
 	void updatePhysics();
 	void registerPhysicsComponent(PhysicsComponent* r);
 	void deregisterPhysicsComponent(PhysicsComponent* r);
-	std::shared_ptr<GameObject> PlayState::createGameObject();
 };
 
 #endif;

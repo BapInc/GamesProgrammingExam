@@ -9,57 +9,57 @@
 
 class PhysicsComponent;
 
-enum class GameState{
-    Ready,
-    Running,
-    GameOver
+enum class GameState {
+	Ready,
+	Running,
+	GameOver
 };
 
 class BirdGame : public b2ContactListener {
 public:
-    BirdGame();
+	BirdGame();
 
-    std::shared_ptr<GameObject> createGameObject();
-    static const glm::vec2 windowSize;
+	std::shared_ptr<GameObject> createGameObject();
+	static const glm::vec2 windowSize;
 
-    void BeginContact(b2Contact *contact) override;
+	void BeginContact(b2Contact* contact) override;
 
-    void EndContact(b2Contact *contact) override;
+	void EndContact(b2Contact* contact) override;
 
-    static BirdGame* instance;
+	static BirdGame* instance;
 
-    void setGameState(GameState newState);
+	void setGameState(GameState newState);
 private:
-    sre::SDLRenderer r;
+	sre::SDLRenderer r;
 
-    void init();
-    void initPhysics();
+	void init();
+	void initPhysics();
 
-    void update(float time);
+	void update(float time);
 
-    void render();
+	void render();
 
-    void onKey(SDL_Event &event);
+	void onKey(SDL_Event& event);
 
-    void handleContact(b2Contact *contact, bool begin);
+	void handleContact(b2Contact* contact, bool begin);
 
-    std::shared_ptr<SideScrollingCamera> camera;
-    std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
+	std::shared_ptr<SideScrollingCamera> camera;
+	std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
 
-    std::vector<std::shared_ptr<GameObject>> sceneObjects;
-    BackgroundComponent background1Component;
-    BackgroundComponent background2Component;
+	std::vector<std::shared_ptr<GameObject>> sceneObjects;
+	BackgroundComponent background1Component;
+	BackgroundComponent background2Component;
 
-    void updatePhysics();
-    b2World * world = nullptr;
-    const float physicsScale = 100;
-    void registerPhysicsComponent(PhysicsComponent *r);
-    void deregisterPhysicsComponent(PhysicsComponent *r);
-    std::map<b2Fixture*,PhysicsComponent *> physicsComponentLookup;
-    Box2DDebugDraw debugDraw;
-    bool doDebugDraw = false;
-    GameState gameState = GameState::Ready;
-    friend class PhysicsComponent;
+	void updatePhysics();
+	b2World* world = nullptr;
+	const float physicsScale = 100;
+	void registerPhysicsComponent(PhysicsComponent* r);
+	void deregisterPhysicsComponent(PhysicsComponent* r);
+	std::map<b2Fixture*, PhysicsComponent*> physicsComponentLookup;
+	Box2DDebugDraw debugDraw;
+	bool doDebugDraw = false;
+	GameState gameState = GameState::Ready;
+	friend class PhysicsComponent;
 };
 
 

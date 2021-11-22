@@ -139,8 +139,6 @@ void BirdGame::init()
 		wallPc->initBox(b2_kinematicBody, s / physicsScale, pos / physicsScale, 1);
 
 	}
-
-
 }
 
 void BirdGame::update(float time)
@@ -259,6 +257,7 @@ std::shared_ptr<GameObject> BirdGame::createGameObject()
 
 void BirdGame::updatePhysics()
 {
+	//TODO: Change this from being 60
 	const float32 timeStep = 1.0f / 60.0f;
 	const int positionIterations = 2;
 	const int velocityIterations = 6;

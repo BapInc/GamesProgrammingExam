@@ -2,10 +2,12 @@
 #define PLAYSTATE_H
 
 #include "GameState.h"
-#include "Box2D/Dynamics/b2World.h"
-#include "PhysicsComponent.hpp"
 #include "Box2DDebugDraw.hpp"
+#include "sre/SpriteAtlas.hpp"
+#include "PhysicsComponent.hpp"
+#include "Box2D/Dynamics/b2World.h"
 #include "TopDownCameraComponent.h"
+#include "SpriteManager.hpp"
 
 class PhysicsComponent;
 

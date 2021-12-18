@@ -27,9 +27,8 @@ DungeonGame::DungeonGame()
 		render();
 	};
 
-
-	// start game loop
-	renderer.startEventLoop(); // Maybe the game won't work unless we register update and render here  
+	// start game loope
+	renderer.startEventLoop(); // Maybe th game won't work unless we register update and render here  
 }
 
 DungeonGame* DungeonGame::getInstance()
@@ -64,4 +63,5 @@ void DungeonGame::update(float time)
 
 void DungeonGame::render()
 {
+	currentState->render();
 }

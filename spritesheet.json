@@ -2653,8 +2653,8 @@
 	"version": "1.0",
 	"image": "spritesheet.png",
 	"format": "RGBA8888",
-	"size": {"w":64,"h":2010},
+	"size": {"w":64,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:622f87860cddb4e2884510b9b6fc5cce:fe81320a72a10381154d285cd16e2a62:729adc6043343cfda41c447ce8f464d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:ac445f5b71098851bce944201c2f6f36:fe81320a72a10381154d285cd16e2a62:729adc6043343cfda41c447ce8f464d6$"
 }
 }

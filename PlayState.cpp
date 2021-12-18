@@ -1,8 +1,9 @@
 #include "PlayState.h"
 #include "DungeonGame.h"
-
+#include "SpriteComponent.hpp"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 
+using namespace sre;
 
 PlayState::PlayState() :debugDraw(physicsScale)
 {
@@ -20,14 +21,46 @@ void PlayState::start()
 	#ifdef _DEBUG
 		std::cout << "Camera instantiated" << std::endl;
 	#endif
+	auto obj = createGameObject();
+	obj->name = "Demon";
+	auto spC = obj->addComponent<SpriteComponent>();
+	auto sprit = SpriteManager::getInstance()->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
+	sprit->setScale({2,2});
+	spC->setSprite(*sprit);
+	obj->setPosition({-100,150});
+	camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 }
 
 void PlayState::update()
 {
+
 }
 
 void PlayState::render()
 {
+	auto rp = RenderPass::create()
+		.withCamera(camera->getCamera())
+		.build();
+
+	auto pos = camera->getGameObject()->getPosition();
+
+	auto spriteBatchBuilder = SpriteBatch::create();
+	for (auto& go : sceneObjects)
+	{
+		go->renderSprite(spriteBatchBuilder);
+	}
+
+
+	auto sb = spriteBatchBuilder.build();
+	rp.draw(sb);
+
+
+	if (doDebugDraw)
+	{
+		world->DrawDebugData();
+		rp.drawLines(debugDraw.getLines());
+		debugDraw.clear();
+	}
 }
 
 void PlayState::initPhysics()

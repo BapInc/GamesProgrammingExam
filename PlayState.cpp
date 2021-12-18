@@ -18,7 +18,7 @@ void PlayState::start()
 	camera = camObj->addComponent<TopDownCameraComponent>();
 	camObj->setPosition(DungeonGame::getInstance()->getWindowSize() * 0.5f);
 	#ifdef _DEBUG
-		printf("Camera instantiated");
+		std::cout << "Camera instantiated" << std::endl;
 	#endif
 }
 
@@ -96,7 +96,7 @@ void PlayState::handleContact(b2Contact* contact, bool begin)
 std::shared_ptr<GameObject> PlayState::createGameObject()
 {
 	auto obj = std::shared_ptr<GameObject>(new GameObject());
-	sceneObjects.push_back(obj);
+	sceneObjects.push_back(obj); 
 	return obj;
 }
 

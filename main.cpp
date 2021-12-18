@@ -3,7 +3,7 @@
 int main()
 {
 	#ifdef _DEBUG
-		printf("Starting dungeon game");
+		std::cout << "Starting Dungeon Game" << std::endl;
 	#endif
 	new DungeonGame();
 	return 0;

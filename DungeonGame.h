@@ -9,7 +9,7 @@ class DungeonGame
 {
 public:
 	DungeonGame();
-	static std::shared_ptr<DungeonGame> getInstance();
+	static DungeonGame* getInstance();
 
 	void generateDungeon();
 	const glm::vec2& getWindowSize();

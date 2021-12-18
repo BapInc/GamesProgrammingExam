@@ -6,10 +6,10 @@ DungeonGame::DungeonGame()
 {
 	instance = this;
 	#ifdef _DEBUG
-		printf("Game instantiated");
+		std::cout << "Game instantiated" << std::endl;
 	#endif 
 	
-	renderer.setWindowSize(DungeonGame::windowSize);
+	renderer.setWindowSize(windowSize);
 	renderer.init().withSdlInitFlags(SDL_INIT_EVERYTHING)
 		.withSdlWindowFlags(SDL_WINDOW_OPENGL);
 
@@ -32,11 +32,11 @@ DungeonGame::DungeonGame()
 	renderer.startEventLoop(); // Maybe the game won't work unless we register update and render here  
 }
 
-std::shared_ptr<DungeonGame> DungeonGame::getInstance()
+DungeonGame* DungeonGame::getInstance()
 {
 	if(!instance)
 		instance = new DungeonGame();
-	return std::shared_ptr<DungeonGame>(instance);
+	return instance;
 }
 
 void DungeonGame::init()

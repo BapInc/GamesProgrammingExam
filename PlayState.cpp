@@ -16,7 +16,10 @@ void PlayState::start()
 	auto camObj = createGameObject();
 	camObj->name = "Camera";
 	camera = camObj->addComponent<TopDownCameraComponent>();
-	camObj->setPosition(DungeonGame::instance()->getWindowSize() * 0.5f);
+	camObj->setPosition(DungeonGame::getInstance()->getWindowSize() * 0.5f);
+	#ifdef _DEBUG
+		printf("Camera instantiated");
+	#endif
 }
 
 void PlayState::update()

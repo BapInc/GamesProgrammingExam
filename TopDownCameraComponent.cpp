@@ -3,7 +3,7 @@
 
 TopDownCameraComponent::TopDownCameraComponent(GameObject* gameObject) : Component(gameObject)
 {
-	camera.setOrthographicProjection(DungeonGame::instance()->getWindowSize().y / 2, -1, 1);
+	camera.setOrthographicProjection(DungeonGame::getInstance()->getWindowSize().y / 2, -1, 1);
 }
 
 //TODO: This should have a is dirty flag to only update if needed

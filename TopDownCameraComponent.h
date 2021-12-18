@@ -8,7 +8,7 @@
 class TopDownCameraComponent : public Component
 {
 public:
-	TopDownCameraComponent(GameObject* gameObject);
+	explicit TopDownCameraComponent(GameObject* gameObject);
 
 	void update(float deltaTime) override;
 

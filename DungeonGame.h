@@ -9,12 +9,13 @@ class DungeonGame
 {
 public:
 	DungeonGame();
-	static DungeonGame* instance();
+	static std::shared_ptr<DungeonGame> getInstance();
 
 	void generateDungeon();
 	const glm::vec2& getWindowSize();
 
 private:
+	static DungeonGame* instance;
 
 	sre::SDLRenderer renderer; //TODO: Should renderer be here or in Playstate?
 	const glm::vec2 windowSize = glm::vec2(400, 600);
@@ -24,7 +25,7 @@ private:
 	void update(float time);
 	void render();
 
-	GameState* currentState;
+	std::shared_ptr<GameState> currentState;
 
 	std::shared_ptr<TopDownCameraComponent> camera;
 };

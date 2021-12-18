@@ -10,20 +10,20 @@ IF (WIN32)
 ENDIF(WIN32)
 
 # Add hpp and cpp files to Snake variable
-file(GLOB Bird
+file(GLOB Dungeon
         "*.hpp"
         "*.h"
         "*.cpp"
         )
 
 # Compile cpp files (from Snake variable)
-add_executable(GamesProgrammingExam ${Bird})
+add_executable(GamesProgrammingExam ${Dungeon})
 target_link_libraries(GamesProgrammingExam ${all_libs})
 
 # copy files to dest
-file(COPY background.png background2.png bird.json bird.png DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
-file(COPY background.png background2.png bird.json bird.png DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
-file(COPY background.png background2.png bird.json bird.png DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY spritesheet.png spritesheet.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
+file(COPY spritesheet.png spritesheet.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
+file(COPY spritesheet.png spritesheet.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 IF (WIN32)
     # Copy dll files to ${CMAKE_CURRENT_BINARY_DIR}/Debug

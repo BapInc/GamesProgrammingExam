@@ -1,16 +1,20 @@
 #include "DungeonGame.h"
 #include "PlayState.h"
 
-
+DungeonGame* DungeonGame::instance = nullptr;
 DungeonGame::DungeonGame()
 {
-	static DungeonGame* game = new DungeonGame;
-
-	renderer.setWindowSize(windowSize);
+	instance = this;
+	#ifdef _DEBUG
+		printf("Game instantiated");
+	#endif 
+	
+	renderer.setWindowSize(DungeonGame::windowSize);
 	renderer.init().withSdlInitFlags(SDL_INIT_EVERYTHING)
 		.withSdlWindowFlags(SDL_WINDOW_OPENGL);
 
 	init();
+	currentState->start();
 
 	// setup callback functions
 	renderer.keyEvent = [&](SDL_Event& e) {
@@ -23,19 +27,21 @@ DungeonGame::DungeonGame()
 		render();
 	};
 
+
 	// start game loop
 	renderer.startEventLoop(); // Maybe the game won't work unless we register update and render here  
 }
 
-DungeonGame* DungeonGame::instance()
+std::shared_ptr<DungeonGame> DungeonGame::getInstance()
 {
-	static DungeonGame* game = new DungeonGame;
-	return game;
+	if(!instance)
+		instance = new DungeonGame();
+	return std::shared_ptr<DungeonGame>(instance);
 }
 
 void DungeonGame::init()
 {
-	currentState = new PlayState();
+	currentState = std::make_shared<PlayState>();
 }
 
 void DungeonGame::generateDungeon()

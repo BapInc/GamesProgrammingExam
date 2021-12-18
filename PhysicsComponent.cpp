@@ -3,17 +3,17 @@
 #include <Box2D/Box2D.h>
 #include <iostream>
 #include "PhysicsComponent.hpp"
-#include "BirdGame.hpp"
+#include "DungeonGame.h"
 
 PhysicsComponent::PhysicsComponent(GameObject *gameObject)
         : Component(gameObject)
 {
-    world = BirdGame::instance->world;
+    //world = DungeonGame::getInstance()->world;
 }
 
 
 PhysicsComponent::~PhysicsComponent() {
-    BirdGame::instance->deregisterPhysicsComponent(this);
+    //BirdGame::instance->deregisterPhysicsComponent(this);
 
     delete polygon;
     delete circle;
@@ -66,7 +66,7 @@ void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 cente
     fxD.density = density;
     fixture = body->CreateFixture(&fxD);
 
-    BirdGame::instance->registerPhysicsComponent(this);
+    //BirdGame::instance->registerPhysicsComponent(this);
 }
 
 void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center, float density) {
@@ -85,7 +85,7 @@ void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center
     fxD.density = density;
     fixture = body->CreateFixture(&fxD);
 
-    BirdGame::instance->registerPhysicsComponent(this);
+    //BirdGame::instance->registerPhysicsComponent(this);
 }
 
 bool PhysicsComponent::isSensor() {

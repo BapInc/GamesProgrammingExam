@@ -69,4 +69,5 @@ void DungeonGame::update(float time)
 
 void DungeonGame::render()
 {
+	currentState->render();
 }

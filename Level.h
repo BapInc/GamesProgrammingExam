@@ -11,11 +11,11 @@
 
 class PhysicsComponent;
 
-class PlayState : public GameState, public b2ContactListener
+class Level : public GameState, public b2ContactListener
 {
 public:
 
-	PlayState();
+	Level();
 
 	void start() override;
 	void update() override;
@@ -29,7 +29,7 @@ public:
 	void generateNewDungeon();
 
 	void handleContact(b2Contact* contact, bool begin);
-	std::shared_ptr<GameObject> PlayState::createGameObject();
+	std::shared_ptr<GameObject> Level::createGameObject();
 private:
 
 	const float physicsScale = 100;

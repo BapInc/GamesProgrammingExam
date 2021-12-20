@@ -1,15 +1,15 @@
-#include "PlayState.h"
+#include "Level.h"
 #include "DungeonGame.h"
 #include "SpriteComponent.hpp"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 
 using namespace sre;
 
-PlayState::PlayState() :debugDraw(physicsScale)
+Level::Level(): debugDraw(physicsScale)
 {
 }
 
-void PlayState::start()
+void Level::start()
 {
 	//camera.reset();
 	//sceneObjects.clear();
@@ -31,12 +31,12 @@ void PlayState::start()
 	camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 }
 
-void PlayState::update()
+void Level::update()
 {
 
 }
 
-void PlayState::render()
+void Level::render()
 {
 	auto rp = RenderPass::create()
 		.withCamera(camera->getCamera())
@@ -63,7 +63,7 @@ void PlayState::render()
 	}
 }
 
-void PlayState::initPhysics()
+void Level::initPhysics()
 {
 	delete world;
 	world = new b2World(b2Vec2(0, 0));
@@ -75,23 +75,23 @@ void PlayState::initPhysics()
 	}
 }
 
-void PlayState::BeginContact(b2Contact* contact)
+void Level::BeginContact(b2Contact* contact)
 {
 	b2ContactListener::BeginContact(contact);
 	handleContact(contact, true);
 }
 
-void PlayState::EndContact(b2Contact* contact)
+void Level::EndContact(b2Contact* contact)
 {
 	b2ContactListener::EndContact(contact);
 	handleContact(contact, false);
 }
 
-void PlayState::generateNewDungeon()
+void Level::generateNewDungeon()
 {
 }
 
-void PlayState::handleContact(b2Contact* contact, bool begin)
+void Level::handleContact(b2Contact* contact, bool begin)
 {
 	auto fixA = contact->GetFixtureA();
 	auto fixB = contact->GetFixtureB();
@@ -126,7 +126,7 @@ void PlayState::handleContact(b2Contact* contact, bool begin)
 	}
 }
 
-std::shared_ptr<GameObject> PlayState::createGameObject()
+std::shared_ptr<GameObject> Level::createGameObject()
 {
 	auto obj = std::shared_ptr<GameObject>(new GameObject());
 	sceneObjects.push_back(obj); 

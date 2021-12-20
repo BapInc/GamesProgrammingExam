@@ -1,5 +1,5 @@
 #include "DungeonGame.h"
-#include "PlayState.h"
+#include "Level.h"
 
 DungeonGame* DungeonGame::instance = nullptr;
 DungeonGame::DungeonGame()
@@ -40,7 +40,7 @@ DungeonGame* DungeonGame::getInstance()
 
 void DungeonGame::init()
 {
-	currentState = std::make_shared<PlayState>();
+	currentState = std::make_shared<Level>();
 }
 
 void DungeonGame::generateDungeon()

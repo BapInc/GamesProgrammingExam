@@ -2,13 +2,14 @@
 #include "DungeonGame.h"
 #include "SpriteComponent.hpp"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
+#include "TileMap.hpp"
 
 using namespace sre;
 
 PlayState::PlayState() :debugDraw(physicsScale)
 {
 }
-
+std::vector<std::vector<std::shared_ptr<Tile>>> tiles;
 void PlayState::start()
 {
 	//camera.reset();
@@ -18,17 +19,20 @@ void PlayState::start()
 	camObj->name = "Camera";
 	camera = camObj->addComponent<TopDownCameraComponent>();
 	camObj->setPosition(DungeonGame::getInstance()->getWindowSize() * 0.5f);
-	#ifdef _DEBUG
-		std::cout << "Camera instantiated" << std::endl;
-	#endif
+#ifdef _DEBUG
+	std::cout << "Camera instantiated" << std::endl;
+#endif
 	auto obj = createGameObject();
-	obj->name = "Demon";
+	obj->name = "Tile";
 	auto spC = obj->addComponent<SpriteComponent>();
-	auto sprit = SpriteManager::getInstance()->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
-	sprit->setScale({2,2});
+	auto sprit = SpriteManager::getInstance()->getSprite("big_demon_idle_anim_f0.png"); // spriteAtlas->get("floor_1.png");
 	spC->setSprite(*sprit);
-	obj->setPosition({-100,150});
-	camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
+	obj->setPosition({ -100,150 });
+
+	auto tilemap = new TileMap(50, 50, glm::vec2{ 0,0 } - DungeonGame::getInstance()->getWindowSize() * 0.4f);
+	auto x = tilemap->getTiles();
+	tiles = x;
+	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 }
 
 void PlayState::update()
@@ -43,8 +47,16 @@ void PlayState::render()
 		.build();
 
 	auto pos = camera->getGameObject()->getPosition();
-
 	auto spriteBatchBuilder = SpriteBatch::create();
+	for (auto& sprite : tiles)
+	{
+		for (auto& sprite2 : sprite)
+		{
+
+			spriteBatchBuilder.addSprite(sprite2->getSprite());
+
+		}
+	}
 	for (auto& go : sceneObjects)
 	{
 		go->renderSprite(spriteBatchBuilder);
@@ -129,7 +141,7 @@ void PlayState::handleContact(b2Contact* contact, bool begin)
 std::shared_ptr<GameObject> PlayState::createGameObject()
 {
 	auto obj = std::shared_ptr<GameObject>(new GameObject());
-	sceneObjects.push_back(obj); 
+	sceneObjects.push_back(obj);
 	return obj;
 }
 

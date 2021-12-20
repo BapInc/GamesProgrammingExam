@@ -29,6 +29,9 @@ void PlayState::start()
 	spC->setSprite(*sprit);
 	obj->setPosition({-100,150});
 	camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
+	auto player = createGameObject();
+	player->name = "Player";
+	auto playerSprite = player->addComponent<SpriteComponent>();		
 }
 
 void PlayState::update()

@@ -1,5 +1,6 @@
 #include "DungeonGame.h"
 #include "PlayState.h"
+#include "Debug.h"
 
 DungeonGame* DungeonGame::instance = nullptr;
 DungeonGame::DungeonGame()
@@ -16,6 +17,11 @@ DungeonGame::DungeonGame()
 	init();
 	currentState->start();
 
+	Debug::Log("Normal Debug");
+	Debug::Log("Alert, you love cat girls", ALERT);
+	Debug::Log("Gotta drink less cherry wine", WARNING);
+	Debug::Log("Easy Debug lass", SUCCESS );
+
 	// setup callback functions
 	renderer.keyEvent = [&](SDL_Event& e) {
 		onKey(e);
@@ -26,7 +32,6 @@ DungeonGame::DungeonGame()
 	renderer.frameRender = [&]() {
 		render();
 	};
-
 
 	// start game loop
 	renderer.startEventLoop(); // Maybe the game won't work unless we register update and render here  

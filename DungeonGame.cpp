@@ -13,6 +13,7 @@ DungeonGame::DungeonGame()
 	renderer.setWindowSize(windowSize);
 	renderer.init().withSdlInitFlags(SDL_INIT_EVERYTHING)
 		.withSdlWindowFlags(SDL_WINDOW_OPENGL);
+	//TODO: Load spritesheet
 
 	init();
 	currentState->start();

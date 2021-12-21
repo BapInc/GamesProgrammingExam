@@ -1,18 +1,19 @@
 #include "DungeonGame.h"
-#include "PlayState.h"
-#include "Debug.h"
+#include "../GameStates/LevelState.h"
+#include "../Utility/Debug.h"
 
 DungeonGame* DungeonGame::instance = nullptr;
 DungeonGame::DungeonGame()
 {
 	instance = this;
-	#ifdef _DEBUG
-		std::cout << "Game instantiated" << std::endl;
-	#endif 
-	
+#ifdef _DEBUG
+	std::cout << "Game instantiated" << std::endl;
+#endif 
+
 	renderer.setWindowSize(windowSize);
 	renderer.init().withSdlInitFlags(SDL_INIT_EVERYTHING)
 		.withSdlWindowFlags(SDL_WINDOW_OPENGL);
+	//TODO: Load spritesheet
 
 	init();
 	currentState->start();
@@ -20,7 +21,7 @@ DungeonGame::DungeonGame()
 	Debug::Log("Normal Debug");
 	Debug::Log("Alert, you love cat girls", ALERT);
 	Debug::Log("Gotta drink less cherry wine", WARNING);
-	Debug::Log("Easy Debug lass", SUCCESS );
+	Debug::Log("Easy Debug lass", SUCCESS);
 
 	// setup callback functions
 	renderer.keyEvent = [&](SDL_Event& e) {
@@ -39,14 +40,14 @@ DungeonGame::DungeonGame()
 
 DungeonGame* DungeonGame::getInstance()
 {
-	if(!instance)
+	if (!instance)
 		instance = new DungeonGame();
 	return instance;
 }
 
 void DungeonGame::init()
 {
-	currentState = std::make_shared<PlayState>();
+	currentState = std::make_shared<LevelState>();
 }
 
 void DungeonGame::generateDungeon()

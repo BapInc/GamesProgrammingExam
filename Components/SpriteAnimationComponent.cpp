@@ -2,8 +2,8 @@
 // Created by Morten Nobel-Jørgensen on 10/10/2017.
 //
 
-#include "SpriteAnimationComponent.hpp"
-#include "GameObject.hpp"
+#include "SpriteAnimationComponent.h"
+#include "../Game/GameObject.h"
 #include <memory>
 
 SpriteAnimationComponent::SpriteAnimationComponent(GameObject* gameObject) : Component(gameObject) {}

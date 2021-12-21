@@ -1,5 +1,5 @@
 #include "TopDownCameraComponent.h"
-#include "DungeonGame.h"
+#include "../Game/DungeonGame.h"
 
 TopDownCameraComponent::TopDownCameraComponent(GameObject* gameObject) : Component(gameObject)
 {
@@ -9,7 +9,8 @@ TopDownCameraComponent::TopDownCameraComponent(GameObject* gameObject) : Compone
 //TODO: This should have a is dirty flag to only update if needed
 void TopDownCameraComponent::update(float deltaTime)
 {
-	if (followObject != nullptr) {
+	if (followObject != nullptr)
+	{
 		glm::vec2 position = followObject->getPosition();
 
 		position.x += offset.x;

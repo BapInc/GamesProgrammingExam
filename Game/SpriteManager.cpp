@@ -1,4 +1,4 @@
-#include "SpriteManager.hpp"
+#include "SpriteManager.h"
 
 using namespace sre;
 SpriteManager* SpriteManager::instance = nullptr;
@@ -12,7 +12,7 @@ SpriteManager::SpriteManager()
 
 std::shared_ptr<sre::Sprite> SpriteManager::getSprite(std::string spriteName)
 {
-	if(spriteMap.find(spriteName) == spriteMap.end())
+	if (spriteMap.find(spriteName) == spriteMap.end())
 	{
 		spriteMap[spriteName] = spriteAtlas->get(spriteName);
 	}
@@ -22,7 +22,7 @@ std::shared_ptr<sre::Sprite> SpriteManager::getSprite(std::string spriteName)
 
 SpriteManager* SpriteManager::getInstance()
 {
-	if(!instance)
+	if (!instance)
 		instance = new SpriteManager();
 	return instance;
 }

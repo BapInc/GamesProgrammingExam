@@ -34,7 +34,7 @@ private:
 	b2BodyType rbType;
 	std::vector<PhysicsComponent*> collidingBodies;
 	b2World* world = nullptr;
-	friend class Level;
+	friend class LevelState;
 
 
 };

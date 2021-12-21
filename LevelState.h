@@ -1,5 +1,5 @@
-#ifndef PLAYSTATE_H
-#define PLAYSTATE_H
+#ifndef LEVELSTATE_H
+#define LEVELSTATE_H
 
 #include "GameState.h"
 #include "Box2DDebugDraw.hpp"
@@ -11,11 +11,11 @@
 
 class PhysicsComponent;
 
-class Level : public GameState, public b2ContactListener
+class LevelState : public GameState, public b2ContactListener
 {
 public:
 
-	Level();
+	LevelState();
 
 	void start() override;
 	void update() override;
@@ -29,7 +29,7 @@ public:
 	void generateNewDungeon();
 
 	void handleContact(b2Contact* contact, bool begin);
-	std::shared_ptr<GameObject> Level::createGameObject();
+	std::shared_ptr<GameObject> LevelState::createGameObject();
 private:
 
 	const float physicsScale = 100;

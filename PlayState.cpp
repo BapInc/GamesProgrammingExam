@@ -21,7 +21,7 @@ void PlayState::start()
 	#ifdef _DEBUG
 		std::cout << "Camera instantiated" << std::endl;
 	#endif
-	auto obj = createGameObject();
+	/*auto obj = createGameObject();
 	obj->name = "Demon";
 	auto spC = obj->addComponent<SpriteComponent>();
 	auto sprit = SpriteManager::getInstance()->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
@@ -29,9 +29,14 @@ void PlayState::start()
 	spC->setSprite(*sprit);
 	obj->setPosition({-100,150});
 	camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
-	auto player = createGameObject();
+	*/auto player = createGameObject();
 	player->name = "Player";
-	auto playerSprite = player->addComponent<SpriteComponent>();		
+	auto playerSprite = player->addComponent<SpriteComponent>();
+	auto pSprite = SpriteManager::getInstance()->getSprite("elf_f_idle_anim_f0.png");
+	pSprite->setScale({ 2,2 });
+	playerSprite->setSprite(*pSprite);
+	player->setPosition({ -100,150 });
+	camera->setFollowObject(player, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 }
 
 void PlayState::update()

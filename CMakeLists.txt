@@ -9,21 +9,33 @@ IF (WIN32)
     ENDIF(NOT DEFINED DLLFileList)
 ENDIF(WIN32)
 
-# Add hpp and cpp files to Snake variable
+# Add hpp and cpp files to Dungeon variable
 file(GLOB Dungeon
         "*.hpp"
         "*.h"
         "*.cpp"
         )
 
-# Compile cpp files (from Snake variable)
-add_executable(GamesProgrammingExam ${Dungeon})
+# Add AI files to variables   
+file(GLOB AI_SOURCE
+    "AI/*.cpp"
+)
+file(GLOB AI_HEADERS
+    "AI/*.hpp"
+    "AI/*.h"
+)
+# Compe cpp files (from Snake variable)
+add_executable(GamesProgrammingExam ${Dungeon} ${AI_HEADERS} ${AI_SOURCE})
 target_link_libraries(GamesProgrammingExam ${all_libs})
 
 # copy files to dest
 file(COPY spritesheet.png spritesheet.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
 file(COPY spritesheet.png spritesheet.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
 file(COPY spritesheet.png spritesheet.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+# Create sub-folders in visual studio
+source_group("Header Files\\AI" FILES ${AI_HEADERS})
+source_group("Source Files\\AI" FILES ${AI_SOURCE})
 
 IF (WIN32)
     # Copy dll files to ${CMAKE_CURRENT_BINARY_DIR}/Debug
@@ -33,4 +45,5 @@ IF (WIN32)
 
     # Set working directory to ${CMAKE_CURRENT_BINARY_DIR}/Debug
     set_target_properties(GamesProgrammingExam PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Debug)
+
 ENDIF(WIN32)

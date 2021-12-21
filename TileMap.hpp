@@ -2,9 +2,9 @@
 #define TILEMAP_H
 
 #include <vector>
-#include "Tile.h"
 #include <map>
 #include <string>
+#include "Tile.h"
 
 class TileMap
 {

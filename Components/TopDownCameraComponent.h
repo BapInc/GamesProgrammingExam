@@ -1,7 +1,7 @@
 #ifndef TOPDOWNCAMERACOMPONENT_H
 #define TOPDOWNCAMERACOMPONENT_H
 
-#include "Component.hpp"
+#include "Component.h"
 #include "sre/Camera.hpp"
 #include "glm/glm.hpp"
 

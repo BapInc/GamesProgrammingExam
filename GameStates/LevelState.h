@@ -1,21 +1,21 @@
-#ifndef PLAYSTATE_H
-#define PLAYSTATE_H
+#ifndef LEVELSTATE_H
+#define LEVELSTATE_H
 
 #include "GameState.h"
-#include "Box2DDebugDraw.hpp"
+#include "../Utility/Box2DDebugDraw.h"
 #include "sre/SpriteAtlas.hpp"
-#include "PhysicsComponent.hpp"
+#include "../Components/PhysicsComponent.h"
 #include "Box2D/Dynamics/b2World.h"
-#include "TopDownCameraComponent.h"
-#include "SpriteManager.hpp"
+#include "../Components/TopDownCameraComponent.h"
+#include "../Game/SpriteManager.h"
 
 class PhysicsComponent;
 
-class PlayState : public GameState, public b2ContactListener
+class LevelState : public GameState, public b2ContactListener
 {
 public:
 
-	PlayState();
+	LevelState();
 
 	void start() override;
 	void update() override;
@@ -29,7 +29,7 @@ public:
 	void generateNewDungeon();
 
 	void handleContact(b2Contact* contact, bool begin);
-	std::shared_ptr<GameObject> PlayState::createGameObject();
+	std::shared_ptr<GameObject> LevelState::createGameObject();
 private:
 
 	const float physicsScale = 100;

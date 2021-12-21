@@ -1,5 +1,5 @@
 #include "TopDownCameraComponent.h"
-#include "DungeonGame.h"
+#include "../Game/DungeonGame.h"
 
 TopDownCameraComponent::TopDownCameraComponent(GameObject* gameObject) : Component(gameObject)
 {

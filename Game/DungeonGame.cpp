@@ -1,6 +1,6 @@
 #include "DungeonGame.h"
-#include "Level.h"
-#include "Debug.h"
+#include "../GameStates/LevelState.h"
+#include "../Utility/Debug.h"
 
 DungeonGame* DungeonGame::instance = nullptr;
 DungeonGame::DungeonGame()

@@ -2,12 +2,12 @@
 #define LEVELSTATE_H
 
 #include "GameState.h"
-#include "Box2DDebugDraw.hpp"
+#include "../Utility/Box2DDebugDraw.h"
 #include "sre/SpriteAtlas.hpp"
-#include "PhysicsComponent.hpp"
+#include "../Components/PhysicsComponent.h"
 #include "Box2D/Dynamics/b2World.h"
-#include "TopDownCameraComponent.h"
-#include "SpriteManager.hpp"
+#include "../Components/TopDownCameraComponent.h"
+#include "../Game/SpriteManager.h"
 
 class PhysicsComponent;
 

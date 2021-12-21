@@ -2,8 +2,8 @@
 #define DUNGEONGAME
 
 #include "sre/SDLRenderer.hpp"
-#include "GameState.h"
-#include "TopDownCameraComponent.h"
+#include "../GameStates/GameState.h"
+#include "../Components/TopDownCameraComponent.h"
 
 class DungeonGame
 {
@@ -18,7 +18,7 @@ private:
 	static DungeonGame* instance;
 
 	sre::SDLRenderer renderer; //TODO: Should renderer be here or in Playstate?
-	const glm::vec2 windowSize = glm::vec2(1920/2, 1080/2);
+	const glm::vec2 windowSize = glm::vec2(1920 / 2, 1080 / 2);
 
 	void init();
 	void onKey(SDL_Event& event);

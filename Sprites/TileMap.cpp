@@ -1,5 +1,5 @@
-#include "TileMap.hpp"
-#include "SpriteManager.hpp"
+#include "TileMap.h"
+#include "../Game/SpriteManager.h"
 #include <iostream>
 
 TileMap::TileMap()

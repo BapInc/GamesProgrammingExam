@@ -2,15 +2,15 @@
 #define SPRITEMANAGER_H
 
 #include <map>
-#include "GameState.h"
-#include "Box2DDebugDraw.hpp"
+#include "../GameStates/GameState.h"
+#include "../Utility/Box2DDebugDraw.h"
 #include "sre/SpriteAtlas.hpp"
-#include "PhysicsComponent.hpp"
+#include "../Components/PhysicsComponent.h"
 #include "Box2D/Dynamics/b2World.h"
-#include "TopDownCameraComponent.h"
+#include "../Components/TopDownCameraComponent.h"
 
 
-class SpriteManager 
+class SpriteManager
 {
 public:
 	SpriteManager();
@@ -24,7 +24,6 @@ private:
 
 	std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
 
-	std::vector<std::shared_ptr<GameObject>> sceneObjects;
 };
 
 #endif;

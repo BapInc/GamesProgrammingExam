@@ -1,6 +1,6 @@
-#include "Level.h"
-#include "DungeonGame.h"
-#include "SpriteComponent.hpp"
+#include "LevelState.h"
+#include "../Game/DungeonGame.h"
+#include "../Components/SpriteComponent.h"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 
 using namespace sre;

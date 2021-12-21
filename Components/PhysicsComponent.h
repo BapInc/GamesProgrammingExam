@@ -4,7 +4,7 @@
 #include "Box2D/Collision/Shapes/b2PolygonShape.h"
 #include "Box2D/Collision/Shapes/b2CircleShape.h"
 #include "Box2D/Dynamics/b2Body.h"
-#include "Component.hpp"
+#include "Component.h"
 
 class PhysicsComponent : public Component
 {

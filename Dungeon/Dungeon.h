@@ -2,6 +2,8 @@
 #define DUNGEOn
 
 #include <vector>
+#include "../Game/GameObject.h"
+#include <sre/Sprite.hpp>
 
 class Dungeon
 {
@@ -13,7 +15,10 @@ protected:
 	void calculateAmountOfRooms();
 	virtual void generateRooms() {};
 	
-	std::vector<std::vector<int>> dungeonMap;
+	//TODO: Should this be with sharedpointers instead of normal pointers?
+	std::vector<std::vector<GameObject *>> dungeonMap;
+
+	std::vector<sre::Sprite* > floorSprites;
 
 protected:
 

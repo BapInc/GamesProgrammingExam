@@ -11,6 +11,8 @@ LevelState::LevelState() : debugDraw(physicsScale)
 
 void LevelState::start()
 {
+	dungeon = new NormalDungeon(*this);
+	dungeon->generateDungeon();
 	//camera.reset();
 	//sceneObjects.clear();
 	//camera.reset();
@@ -129,6 +131,13 @@ void LevelState::handleContact(b2Contact* contact, bool begin)
 std::shared_ptr<GameObject> LevelState::createGameObject()
 {
 	auto obj = std::shared_ptr<GameObject>(new GameObject());
+	sceneObjects.push_back(obj);
+	return obj;
+}
+
+std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object)
+{
+	auto obj = std::shared_ptr<GameObject>(object);
 	sceneObjects.push_back(obj);
 	return obj;
 }

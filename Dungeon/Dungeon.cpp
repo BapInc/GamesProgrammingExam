@@ -1,5 +1,6 @@
 #include "Dungeon.h"
-#include "Debug.h"
+#include "../Utility/Debug.h"
+#include <iostream>
 
 void Dungeon::generateDungeon()
 {
@@ -10,21 +11,13 @@ void Dungeon::generateDungeon()
 
 void Dungeon::setMapValues()
 {
-	std::vector<int> emptyVector;
-	dungeonMap.push_back(emptyVector);
-	dungeonMap.push_back(emptyVector);
-
 	for (size_t i = 0; i < mapWidth; i++)
-	{
-		for (size_t j = 0; j < mapHeight; j++)
-		{
-			dungeonMap[i][j] = 0;
-		}
-	}
+		dungeonMap.push_back(std::vector<GameObject *>(mapHeight));	
 }
 
 void Dungeon::calculateAmountOfRooms()
 {
-	amountOfRooms = rand() % maxAmountOfRooms + minAmountOfRooms;
+	srand(time(NULL));
+	amountOfRooms = rand() % (maxAmountOfRooms - minAmountOfRooms + 1) + minAmountOfRooms;
 	Debug::Log("Amount of rooms " + std::to_string(amountOfRooms));
 }

@@ -8,6 +8,7 @@
 #include "Box2D/Dynamics/b2World.h"
 #include "../Components/TopDownCameraComponent.h"
 #include "../Game/SpriteManager.h"
+#include "../Dungeon/NormalDungeon.h"
 
 class PhysicsComponent;
 
@@ -30,6 +31,7 @@ public:
 
 	void handleContact(b2Contact* contact, bool begin);
 	std::shared_ptr<GameObject> LevelState::createGameObject();
+	std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object);
 private:
 
 	const float physicsScale = 100;
@@ -44,6 +46,7 @@ private:
 
 	Box2DDebugDraw debugDraw;
 	bool doDebugDraw = false;
+	Dungeon* dungeon;
 
 	void updatePhysics();
 	void registerPhysicsComponent(PhysicsComponent* r);

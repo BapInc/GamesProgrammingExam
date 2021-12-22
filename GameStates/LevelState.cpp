@@ -29,6 +29,16 @@ void LevelState::start()
 	spC->setSprite(*sprit);
 	obj->setPosition({ -100,150 });
 	camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
+
+	//Player
+	auto player = createGameObject();
+	player->name = "Player";
+	auto playerSprite = player->addComponent<SpriteComponent>();
+	auto pSprite = SpriteManager::getInstance()->getSprite("lizard_f_idle_anim_f0.png");
+	pSprite->setScale({ 2,2 });
+	playerSprite->setSprite(*pSprite);
+	player->setPosition({ -150, 150 });
+
 }
 
 void LevelState::update()

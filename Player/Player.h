@@ -1,5 +1,5 @@
 #pragma once
-#include "Component.hpp"
+#include "../Components/Component.h"
 
 class Player : public Component 
 {

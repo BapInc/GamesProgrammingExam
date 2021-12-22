@@ -65,11 +65,11 @@ void NormalDungeon::generateRooms()
 				obj->name = "floorTile";
 				auto spC = obj->addComponent<SpriteComponent>();
 				auto sprit = SpriteManager::getInstance()->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
-				sprit->setScale({ 2,2 });
+				//sprit->setScale({ 2,2 });
 				spC->setSprite(*sprit);
 
 				dungeonMap[randX + i][randY + j] = obj;
-				dungeonMap[randX + i][randY + j]->setPosition(glm::vec2((randX + i) , (randY + j)));
+				dungeonMap[randX + i][randY + j]->setPosition(glm::vec2((randX + i) * sprit->getSpriteSize().x, (randY + j) * sprit->getSpriteSize().y));
 				levelState->createGameObject(dungeonMap[randX + i][randY + j]);
 			}
 		}

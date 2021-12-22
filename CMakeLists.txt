@@ -7,6 +7,9 @@ IF (WIN32)
     IF (NOT DEFINED DLLFileList)
         message( FATAL_ERROR "The SimpleRenderEngineProject has been updated. Clone the project (https://github.com/mortennobel/SimpleRenderEngineProject) again the project again and start over." )
     ENDIF(NOT DEFINED DLLFileList)
+    file(GLOB_RECURSE FMOD_DLLS 
+        "ThirdParty/*/lib/x86/*.dll"
+    )
 ENDIF(WIN32)
 
 # Add hpp and cpp files to Dungeon variable
@@ -16,7 +19,7 @@ file(GLOB Dungeon
         "*.cpp"
         )
 
-# Add AI files to variables   
+# Add AI files to variables  
 file(GLOB AI_HEADERS
     "AI/*.hpp"
     "AI/*.h"
@@ -60,6 +63,15 @@ file(GLOB GAMESTATES_HEADERS
 
 file(GLOB GAMESTATES_SOURCE
     "GameStates/*.cpp"
+)
+
+file(GLOB MANAGERS_HEADERS
+    "Managers/*.hpp"
+    "Managers/*.h"
+)
+
+file(GLOB MANAGERS_SOURCE
+    "Managers/*.cpp"
 )
 
 file(GLOB MISC_HEADERS
@@ -109,16 +121,25 @@ ${DUNGEON_HEADERS} ${DUNGEON_SOURCE}
 ${GAME_HEADERS} ${GAME_SOURCE} 
 ${GAMESTATES_HEADERS} ${GAMESTATES_SOURCE} 
 ${MISC_HEADERS} ${MISC_SOURCE} 
+${MANAGERS_HEADERS} ${MANAGERS_SOURCE} 
 ${PLAYER_HEADERS} ${PLAYER_SOURCE} 
 ${SPRITES_HEADERS} ${SPRITES_SOURCE} 
 ${UTILTY_HEADERS} ${UTILITY_SOURCE} 
 )
+
+SET(FMOD_BANK "ThirdParty/fsbank/inc/")
+SET(FMOD_STUDIO "ThirdParty/studio/inc/")
+SET(FMOD_CORE "ThirdParty/core/inc/")
 target_link_libraries(GamesProgrammingExam ${all_libs})
+include_directories(${FMOD_BANK} ${FMOD_STUDIO} ${FMOD_CORE})
 
 # copy files to dest
 file(COPY spritesheet.png spritesheet.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
 file(COPY spritesheet.png spritesheet.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
 file(COPY spritesheet.png spritesheet.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${FMOD_DLLS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
+file(COPY ${FMOD_DLLS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
+file(COPY ${FMOD_DLLS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # Create sub-folders in visual studio
 source_group("Header Files\\AI" FILES ${AI_HEADERS})
@@ -131,6 +152,8 @@ source_group("Header Files\\Game" FILES ${GAME_HEADERS})
 source_group("Source Files\\Game" FILES ${GAME_SOURCE})
 source_group("Header Files\\GameStates" FILES ${GAMESTATES_HEADERS})
 source_group("Source Files\\GameStates" FILES ${GAMESTATES_SOURCE})
+source_group("Header Files\\Managers" FILES ${MANAGERS_HEADERS})
+source_group("Source Files\\Managers" FILES ${MANAGERS_SOURCE})
 source_group("Header Files\\Misc" FILES ${MISC_HEADERS})
 source_group("Source Files\\Misc" FILES ${MISC_SOURCE})
 source_group("Header Files\\Player" FILES ${PLAYER_HEADERS})

@@ -45,7 +45,6 @@ void LevelState::start()
 	playerGO->setPosition({ -200,200 });
 
 	camera->setFollowObject(playerGO, { +150, DungeonGame::getInstance()->getWindowSize().y / 2 });
-
 }
 
 void LevelState::update(float deltaTime)

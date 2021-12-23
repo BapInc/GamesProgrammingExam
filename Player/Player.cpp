@@ -3,6 +3,7 @@
 #include <iostream>
 #include "../Game/GameObject.h"
 #include "../Components/SpriteComponent.h"
+#include "../Commands/MoveCommand.h"
 
 Player::Player(GameObject* gameObject) : Component(gameObject), velocity(0)
 {
@@ -18,6 +19,7 @@ bool Player::onKey(SDL_Event& event) {
     switch (event.key.keysym.sym) {
     case SDLK_w:
         velocity.y = event.type == SDL_KEYDOWN ? 1 : 0;
+        MoveCommand();
         break;
     case SDLK_s:
         velocity.y = event.type == SDL_KEYDOWN ? -1 : 0;

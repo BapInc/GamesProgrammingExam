@@ -5,8 +5,8 @@
 
 NormalDungeon::NormalDungeon(LevelState& levelState)
 {
-	minAmountOfRooms = 1;
-	maxAmountOfRooms = 1;
+	minAmountOfRooms = 3;
+	maxAmountOfRooms = 5;
 
 	minRoomWidth = 3;
 	minRoomHeight = 3;
@@ -28,7 +28,7 @@ void NormalDungeon::generateRooms()
 	int maxTiles = (mapHeight * maxRoomHeight) / 50; //50 being the percentage of how much the rooms can fill (Not counting walls nor corridors) 
 
 
-
+	int numberOfTiles = 0;
 
 	do
 	{
@@ -65,15 +65,16 @@ void NormalDungeon::generateRooms()
 				obj->name = "floorTile";
 				auto spC = obj->addComponent<SpriteComponent>();
 				auto sprit = SpriteManager::getInstance()->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
-				//sprit->setScale({ 2,2 });
+				sprit->setScale({ 2,2 });
 				spC->setSprite(*sprit);
 
 				dungeonMap[randX + i][randY + j] = obj;
-				dungeonMap[randX + i][randY + j]->setPosition(glm::vec2((randX + i) * sprit->getSpriteSize().x, (randY + j) * sprit->getSpriteSize().y));
+				dungeonMap[randX + i][randY + j]->setPosition(glm::vec2((randX + i) * (sprit->getSpriteSize().x * 2) , (randY + j) * (sprit->getSpriteSize().y * 2) ));
 				levelState->createGameObject(dungeonMap[randX + i][randY + j]);
 			}
 		}
 
+		numberOfTiles += width * height;
 		//If room is generated succesfully
 		temp += 1;
 

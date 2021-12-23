@@ -23,14 +23,8 @@ void LevelState::start()
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif
-	auto obj = createGameObject();
-	obj->name = "Demon";
-	auto spC = obj->addComponent<SpriteComponent>();
-	auto sprit = SpriteManager::getInstance()->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
-	sprit->setScale({ 2,2 });
-	spC->setSprite(*sprit);
-	obj->setPosition({ -100,150 });
-	camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
+
+	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 }
 
 void LevelState::update()

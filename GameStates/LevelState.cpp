@@ -20,6 +20,7 @@ void LevelState::start()
 	camObj->name = "Camera";
 	camera = camObj->addComponent<TopDownCameraComponent>();
 	camObj->setPosition(DungeonGame::getInstance()->getWindowSize() * 0.5f);
+
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif

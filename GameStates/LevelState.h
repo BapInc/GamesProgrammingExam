@@ -8,6 +8,7 @@
 #include "Box2D/Dynamics/b2World.h"
 #include "../Components/TopDownCameraComponent.h"
 #include "../Game/SpriteManager.h"
+#include "sre/SDLRenderer.hpp"
 
 class PhysicsComponent;
 
@@ -41,6 +42,8 @@ private:
 	std::map<b2Fixture*, PhysicsComponent*> physicsComponents;
 
 	std::shared_ptr<TopDownCameraComponent> camera;
+
+	sre::SDLRenderer renderer;
 
 	Box2DDebugDraw debugDraw;
 	bool doDebugDraw = false;

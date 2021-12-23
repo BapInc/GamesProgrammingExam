@@ -1,7 +1,9 @@
 #include "LevelState.h"
 #include "../Game/DungeonGame.h"
+#include "../Player/Player.h"
 #include "../Components/SpriteComponent.h"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
+
 
 using namespace sre;
 
@@ -31,13 +33,10 @@ void LevelState::start()
 	camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 
 	//Player
-	auto player = createGameObject();
-	player->name = "Player";
-	auto playerSprite = player->addComponent<SpriteComponent>();
-	auto pSprite = SpriteManager::getInstance()->getSprite("lizard_f_idle_anim_f0.png");
-	pSprite->setScale({ 2,2 });
-	playerSprite->setSprite(*pSprite);
-	player->setPosition({ -150, 150 });
+	auto playerGO = createGameObject();
+	playerGO->name = "Player";
+	auto player = playerGO->addComponent<Player>();
+	playerGO->setPosition({ -200,200 });
 
 }
 

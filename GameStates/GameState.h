@@ -9,11 +9,10 @@ class GameState
 public:
 	GameState();
 
-	virtual void update() = 0;
+	virtual void update(float time) = 0;
 	virtual void render() = 0;
 	virtual void start() = 0;
-
-private:
+	virtual void onKey() = 0;
 
 };
 

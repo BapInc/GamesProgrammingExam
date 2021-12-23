@@ -19,8 +19,9 @@ public:
 	LevelState();
 
 	void start() override;
-	void update() override;
+	void update(float time) override;
 	void render() override;
+	void onKey() override;
 
 	void initPhysics();
 

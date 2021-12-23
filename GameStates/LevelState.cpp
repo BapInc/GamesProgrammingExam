@@ -27,9 +27,12 @@ void LevelState::start()
 	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 }
 
-void LevelState::update()
+void LevelState::update(float deltaTime)
 {
-
+	for (auto& obj : sceneObjects)
+	{
+		obj->update(deltaTime);
+	}
 }
 
 void LevelState::render()
@@ -57,6 +60,10 @@ void LevelState::render()
 		rp.drawLines(debugDraw.getLines());
 		debugDraw.clear();
 	}
+}
+
+void LevelState::onKey()
+{
 }
 
 void LevelState::initPhysics()

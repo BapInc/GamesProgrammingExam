@@ -6,12 +6,15 @@
 
 using namespace std;
 
-Player::Player(GameObject *gameObject) : Component(gameObject), velocity(0) {
 
-    auto playerSprite = gameObject->addComponent<SpriteComponent>();
-    auto pSprite = SpriteManager::getInstance()->getSprite("lizard_f_idle_anim_f0.png");
-    pSprite->setScale({ 2,2 });
-    playerSprite->setSprite(*pSprite);
+Player::Player(GameObject* gameObject) : Component(gameObject)
+{
+    this->gameObject = gameObject;
+}
+
+void Player::setLevel(LevelState& level)
+{
+    this->level = std::make_unique<LevelState>(level);
 }
 
 bool Player::onKey(SDL_Event& event) {

@@ -45,8 +45,6 @@ private:
 
 	std::shared_ptr<TopDownCameraComponent> camera;
 
-	sre::SDLRenderer renderer;
-
 	Box2DDebugDraw debugDraw;
 	bool doDebugDraw = false;
 	Dungeon* dungeon;

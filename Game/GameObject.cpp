@@ -42,6 +42,11 @@ void GameObject::setRotation(float rotation)
 	GameObject::rotation = rotation;
 }
 
+std::string GameObject::getTag() const
+{
+	return tag;
+}
+
 void GameObject::renderSprite(sre::SpriteBatch::SpriteBatchBuilder& spriteBatchBuilder)
 {
 	for (auto& comp : components)

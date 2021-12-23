@@ -33,9 +33,12 @@ public:
 
 	void setRotation(float rotation);
 
+	std::string getTag() const;
+
 	const std::vector<std::shared_ptr<Component>>& getComponents();
 
 	std::string name = "_";
+	std::string tag = "";
 	bool shouldDestroy = false;
 private:
 	GameObject() = default;

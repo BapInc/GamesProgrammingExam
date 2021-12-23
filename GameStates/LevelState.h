@@ -9,8 +9,11 @@
 #include "../Components/TopDownCameraComponent.h"
 #include "../Game/SpriteManager.h"
 #include "../Dungeon/NormalDungeon.h"
+#include "../Player/Player.h"
+
 
 class PhysicsComponent;
+class Player;
 
 class LevelState : public GameState, public b2ContactListener
 {
@@ -21,7 +24,7 @@ public:
 	void start() override;
 	void update(float time) override;
 	void render() override;
-	void onKey() override;
+	void onKey(SDL_Event& event) override;
 
 	void initPhysics();
 
@@ -44,10 +47,12 @@ private:
 	std::map<b2Fixture*, PhysicsComponent*> physicsComponents;
 
 	std::shared_ptr<TopDownCameraComponent> camera;
+	std::shared_ptr<Player> player;
 
 	Box2DDebugDraw debugDraw;
 	bool doDebugDraw = false;
 	Dungeon* dungeon;
+
 
 	void updatePhysics();
 	void registerPhysicsComponent(PhysicsComponent* r);

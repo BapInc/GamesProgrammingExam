@@ -4,10 +4,7 @@
 #include "../Game/GameObject.h"
 #include "../Components/SpriteComponent.h"
 
-using namespace std;
-
-
-Player::Player(GameObject* gameObject) : Component(gameObject)
+Player::Player(GameObject* gameObject) : Component(gameObject), velocity(0)
 {
     this->gameObject = gameObject;
 }
@@ -20,19 +17,15 @@ void Player::setLevel(LevelState& level)
 bool Player::onKey(SDL_Event& event) {
     switch (event.key.keysym.sym) {
     case SDLK_w:
-        cout << "Hello World!";
         velocity.y = event.type == SDL_KEYDOWN ? 1 : 0;
         break;
     case SDLK_s:
-        cout << "Hello World!";
         velocity.y = event.type == SDL_KEYDOWN ? -1 : 0;
         break;
     case SDLK_a:
-        cout << "Hello World!";
         velocity.x = event.type == SDL_KEYDOWN ? -1 : 0;
         break;
     case SDLK_d:
-        cout << "Hello World!";
         velocity.x = event.type == SDL_KEYDOWN ? 1 : 0;
         break;
     }

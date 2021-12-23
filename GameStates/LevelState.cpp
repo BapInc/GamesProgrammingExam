@@ -1,6 +1,5 @@
 #include "LevelState.h"
 #include "../Game/DungeonGame.h"
-#include "../Player/Player.h"
 #include "../Components/SpriteComponent.h"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 
@@ -37,7 +36,7 @@ void LevelState::start()
 	//Player
 	auto playerGO = createGameObject();
 	playerGO->name = "Player";
-	auto player = playerGO->addComponent<Player>();
+	player = playerGO->addComponent<Player>();
 	player->setLevel(*this);
 	auto playerSprite = playerGO->addComponent<SpriteComponent>();
 	auto pSprite = SpriteManager::getInstance()->getSprite("lizard_f_idle_anim_f0.png");
@@ -45,7 +44,7 @@ void LevelState::start()
 	playerSprite->setSprite(*pSprite);
 	playerGO->setPosition({ -200,200 });
 
-	/*camera->setFollowObject(playerGO, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });*/
+	camera->setFollowObject(playerGO, { +150, DungeonGame::getInstance()->getWindowSize().y / 2 });
 
 }
 
@@ -84,8 +83,10 @@ void LevelState::render()
 	}
 }
 
-void LevelState::onKey()
+void LevelState::onKey(SDL_Event& event)
 {
+	player->onKey(event);
+
 }
 
 void LevelState::initPhysics()

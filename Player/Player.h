@@ -3,6 +3,7 @@
 #include "../Game/SpriteManager.h"
 #include "../GameStates/LevelState.h"
 #include "../Game/GameObject.h"
+
 class Player : public Component 
 {
 

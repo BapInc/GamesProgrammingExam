@@ -13,6 +13,7 @@ class GameObject
 public:
 
 	~GameObject();
+	GameObject() = default;
 
 	template <class T>                                                  // Add component of a given type to a gameObject. example:
 	std::shared_ptr<T> addComponent();                   // std::shared_ptr<SpriteComponent> spriteComponent = gameObject->addComponent<SpriteComponent>();
@@ -38,7 +39,6 @@ public:
 	std::string name = "_";
 	bool shouldDestroy = false;
 private:
-	GameObject() = default;
 	std::vector<std::shared_ptr<Component>> components;
 
 	glm::vec2 position;

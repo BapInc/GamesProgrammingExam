@@ -11,6 +11,9 @@ LevelState::LevelState() : debugDraw(physicsScale)
 
 void LevelState::start()
 {
+	loadSpriteSheet("spritesheet.json", "spritesheet.png");
+	dungeon = new NormalDungeon(*this);
+	dungeon->generateDungeon();
 	//camera.reset();
 	//sceneObjects.clear();
 	//camera.reset();
@@ -18,22 +21,20 @@ void LevelState::start()
 	camObj->name = "Camera";
 	camera = camObj->addComponent<TopDownCameraComponent>();
 	camObj->setPosition(DungeonGame::getInstance()->getWindowSize() * 0.5f);
+
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif
-	auto obj = createGameObject();
-	obj->name = "Demon";
-	auto spC = obj->addComponent<SpriteComponent>();
-	auto sprit = SpriteManager::getInstance()->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
-	sprit->setScale({ 2,2 });
-	spC->setSprite(*sprit);
-	obj->setPosition({ -100,150 });
-	camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
+
+	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 }
 
-void LevelState::update()
+void LevelState::update(float deltaTime)
 {
-
+	for (auto& obj : sceneObjects)
+	{
+		obj->update(deltaTime);
+	}
 }
 
 void LevelState::render()
@@ -61,6 +62,10 @@ void LevelState::render()
 		rp.drawLines(debugDraw.getLines());
 		debugDraw.clear();
 	}
+}
+
+void LevelState::onKey()
+{
 }
 
 void LevelState::initPhysics()
@@ -129,6 +134,13 @@ void LevelState::handleContact(b2Contact* contact, bool begin)
 std::shared_ptr<GameObject> LevelState::createGameObject()
 {
 	auto obj = std::shared_ptr<GameObject>(new GameObject());
+	sceneObjects.push_back(obj);
+	return obj;
+}
+
+std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object)
+{
+	auto obj = std::shared_ptr<GameObject>(object);
 	sceneObjects.push_back(obj);
 	return obj;
 }

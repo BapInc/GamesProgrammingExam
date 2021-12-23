@@ -1,5 +1,5 @@
 #include "MenuState.h"
 
-void MenuState::update()
+void MenuState::update(float deltaTime)
 {
 }

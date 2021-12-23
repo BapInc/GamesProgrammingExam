@@ -11,6 +11,7 @@ LevelState::LevelState() : debugDraw(physicsScale)
 
 void LevelState::start()
 {
+	loadSpriteSheet("spritesheet.json", "spritesheet.png");
 	dungeon = new NormalDungeon(*this);
 	dungeon->generateDungeon();
 	//camera.reset();

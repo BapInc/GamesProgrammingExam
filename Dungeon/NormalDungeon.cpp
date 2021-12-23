@@ -1,7 +1,6 @@
 #include "NormalDungeon.h"
 #include "../Utility/Debug.h"
 #include "../Components/SpriteComponent.h"
-#include "../Game/SpriteManager.h"
 
 NormalDungeon::NormalDungeon(LevelState& levelState)
 {
@@ -64,12 +63,12 @@ void NormalDungeon::generateRooms()
 				auto obj = new GameObject();
 				obj->name = "floorTile";
 				auto spC = obj->addComponent<SpriteComponent>();
-				auto sprit = SpriteManager::getInstance()->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
-				sprit->setScale({ 2,2 });
-				spC->setSprite(*sprit);
+				auto sprit = levelState->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
+				sprit.setScale({ 2,2 });
+				spC->setSprite(sprit);
 
 				dungeonMap[randX + i][randY + j] = obj;
-				dungeonMap[randX + i][randY + j]->setPosition(glm::vec2((randX + i) * (sprit->getSpriteSize().x * 2) , (randY + j) * (sprit->getSpriteSize().y * 2) ));
+				dungeonMap[randX + i][randY + j]->setPosition(glm::vec2((randX + i) * (sprit.getSpriteSize().x * 2), (randY + j) * (sprit.getSpriteSize().y * 2)));
 				levelState->createGameObject(dungeonMap[randX + i][randY + j]);
 			}
 		}

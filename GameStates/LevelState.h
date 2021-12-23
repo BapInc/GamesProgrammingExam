@@ -7,7 +7,6 @@
 #include "../Components/PhysicsComponent.h"
 #include "Box2D/Dynamics/b2World.h"
 #include "../Components/TopDownCameraComponent.h"
-#include "../Game/SpriteManager.h"
 #include "../Dungeon/NormalDungeon.h"
 
 class PhysicsComponent;

@@ -62,10 +62,12 @@ const glm::vec2& DungeonGame::getWindowSize()
 void DungeonGame::onKey(SDL_Event& event)
 {
 	// TODO: Loop over objects that needs onKey to be called
+	currentState->onKey();
 }
 
 void DungeonGame::update(float time)
 {
+	currentState->update(time);
 }
 
 void DungeonGame::render()

@@ -4,15 +4,15 @@
 class MoveCommand
 {
 public:
-	MoveCommand(int& xposition, int& yposition);
-	MoveCommand(int& xposition, int& yposition);
+	//MoveCommand(float& xposition, float& yposition);
+	MoveCommand(float& xposition, float& yposition);
 	~MoveCommand();
 
 	virtual void Execute();
 
 private:
-	int x;
-	int y;
+	float x;
+	float y;
 	bool isEnemy;
 };
 

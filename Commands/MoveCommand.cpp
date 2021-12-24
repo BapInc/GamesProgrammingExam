@@ -3,16 +3,16 @@
 #include <string>
 
 
-MoveCommand::MoveCommand(int& xposition, int& yposition)
+/*MoveCommand::MoveCommand(float& xposition, float& yposition)
 {
 	isEnemy = true;
 	x = xposition;
 	y = yposition;
-}
+}*/
 
-MoveCommand::MoveCommand(int& xposition, int& yposition)
+MoveCommand::MoveCommand(float& xposition, float& yposition)
 {
-	isEnemy = false;
+	//isEnemy = false;
 	x = xposition;
 	y = yposition;
 }

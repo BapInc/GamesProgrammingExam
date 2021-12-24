@@ -20,5 +20,4 @@ public:
 
 private:
 	glm::vec2 velocity;
-
 };

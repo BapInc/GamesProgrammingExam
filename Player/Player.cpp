@@ -16,10 +16,12 @@ void Player::setLevel(LevelState& level)
 }
 
 bool Player::onKey(SDL_Event& event) {
+    auto moveCommand = new MoveCommand((float)gameObject->getPosition().x, (float)gameObject->getPosition().y);
     switch (event.key.keysym.sym) {
     case SDLK_w:
         velocity.y = event.type == SDL_KEYDOWN ? 1 : 0;
-        MoveCommand();
+        moveCommand = new MoveCommand((float)gameObject->getPosition().x, (float)gameObject->getPosition().y);
+        moveCommand->Execute();
         break;
     case SDLK_s:
         velocity.y = event.type == SDL_KEYDOWN ? -1 : 0;
@@ -39,4 +41,7 @@ void Player::update(float deltaTime) {
     auto newPos = gameObject->getPosition() + velocity * speed * deltaTime;
 
     gameObject->setPosition(newPos);
+
+    /*auto moveCommand = new MoveCommand(newPos.x, newPos.y);
+    moveCommand->Execute();*/
 }

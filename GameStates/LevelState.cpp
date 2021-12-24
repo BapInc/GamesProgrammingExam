@@ -23,6 +23,9 @@ void LevelState::start()
 	camObj->name = "Camera";
 	camera = camObj->addComponent<TopDownCameraComponent>();
 	camObj->setPosition(DungeonGame::getInstance()->getWindowSize() * 0.5f);
+	// ======== EXAMPLE =================
+	// || Add Component and play audio ||
+	// ======== EXAMPLE =================
 	auto camAudio = camObj->addComponent<AudioComponent>();
 	camAudio->addSound("music", "event:/music/music_main_menu00");
 	camAudio->playSound("music");

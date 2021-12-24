@@ -1,7 +1,9 @@
 #include "LevelState.h"
 #include "../Game/DungeonGame.h"
 #include "../Components/SpriteComponent.h"
+#include "../Components/AudioComponent.h"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
+#include "../Utility/Debug.h"
 
 using namespace sre;
 
@@ -21,7 +23,9 @@ void LevelState::start()
 	camObj->name = "Camera";
 	camera = camObj->addComponent<TopDownCameraComponent>();
 	camObj->setPosition(DungeonGame::getInstance()->getWindowSize() * 0.5f);
-
+	auto camAudio = camObj->addComponent<AudioComponent>();
+	camAudio->addSound("music", "event:/music/music_main_menu00");
+	camAudio->playSound("music");
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif

@@ -8,25 +8,31 @@
 #include <math.h>
 #include <iostream>
 #include <string>
+#include "fmod_errors.h"
+#include "../Utility/Debug.h"
 
+
+// TODO: Add sounds to vector
 class AudioManager
 {
 public:
 	AudioManager();
-	FMOD::Studio::System* mpStudioSystem;
-	FMOD::System* mpSystem;
 
-	int mnNextChannelId;
+	void update();
 
-	typedef std::map<std::string, FMOD::Sound*> SoundMap;
-	typedef std::map<int, FMOD::Channel*> ChannelMap;
-	typedef std::map<std::string, FMOD::Studio::EventInstance*> EventMap;
-	typedef std::map<std::string, FMOD::Studio::Bank*> BankMap;
+	void loadBank(std::string path);
+	FMOD::Studio::EventInstance* getEventInstance(std::string path);
+	void playOneShot(std::string path);
 
-	BankMap mBanks;
-	EventMap mEvents;
-	SoundMap mSounds;
-	ChannelMap mChannels;
+
+
+
+private:
+	FMOD::Studio::System* fmodSystem;
+	FMOD::Studio::Bank* fmodBank;
+	Logs getFMODResultStatus(FMOD_RESULT result);
+
+
 };
 
 #endif

@@ -12,6 +12,16 @@ IF (WIN32)
     )
 ENDIF(WIN32)
 
+# Load FMOD lib files
+file(GLOB_RECURSE FMOD_LIBS 
+"ThirdParty/*/lib/x86/*.lib"
+)
+
+#FMOD banks
+file(GLOB_RECURSE FMOD_BANKS 
+"FMOD/DungeonGame/Build/Desktop/*.bank"
+)
+
 # Add hpp and cpp files to Dungeon variable
 file(GLOB Dungeon
         "*.hpp"
@@ -130,7 +140,7 @@ ${UTILTY_HEADERS} ${UTILITY_SOURCE}
 SET(FMOD_BANK "ThirdParty/fsbank/inc/")
 SET(FMOD_STUDIO "ThirdParty/studio/inc/")
 SET(FMOD_CORE "ThirdParty/core/inc/")
-target_link_libraries(GamesProgrammingExam ${all_libs})
+target_link_libraries(GamesProgrammingExam ${all_libs} ${FMOD_LIBS})
 include_directories(${FMOD_BANK} ${FMOD_STUDIO} ${FMOD_CORE})
 
 # copy files to dest
@@ -140,7 +150,9 @@ file(COPY spritesheet.png spritesheet.json DESTINATION ${CMAKE_CURRENT_BINARY_DI
 file(COPY ${FMOD_DLLS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
 file(COPY ${FMOD_DLLS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
 file(COPY ${FMOD_DLLS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-
+file(COPY ${FMOD_BANKS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug/FMOD_Banks)
+file(COPY ${FMOD_BANKS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release/FMOD_Banks)
+file(COPY ${FMOD_BANKS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/FMOD_Banks)
 # Create sub-folders in visual studio
 source_group("Header Files\\AI" FILES ${AI_HEADERS})
 source_group("Source Files\\AI" FILES ${AI_SOURCE})

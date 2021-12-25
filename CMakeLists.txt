@@ -122,6 +122,14 @@ file(GLOB UTILITY_SOURCE
 
 
 
+file(GLOB RAPID_JSON
+    "rapidjson/*.hpp"
+    "rapidjson/*.h"
+)
+
+
+
+
 # Compe cpp files (from Snake variable)
 add_executable(GamesProgrammingExam 
 ${Dungeon} 
@@ -132,9 +140,10 @@ ${GAME_HEADERS} ${GAME_SOURCE}
 ${GAMESTATES_HEADERS} ${GAMESTATES_SOURCE} 
 ${MISC_HEADERS} ${MISC_SOURCE} 
 ${MANAGERS_HEADERS} ${MANAGERS_SOURCE} 
-${PLAYER_HEADERS} ${PLAYER_SOURCE} 
+${PLAYER_HEADERS} ${PLAYER_SOURCE}
+${RAPID_JSON} 
 ${SPRITES_HEADERS} ${SPRITES_SOURCE} 
-${UTILTY_HEADERS} ${UTILITY_SOURCE} 
+${UTILTY_HEADERS} ${UTILITY_SOURCE}
 )
 
 SET(FMOD_BANK "ThirdParty/fsbank/inc/")
@@ -174,6 +183,7 @@ source_group("Header Files\\Sprites" FILES ${SPRITES_HEADERS})
 source_group("Source Files\\Sprites" FILES ${SPRITES_SOURCE})
 source_group("Header Files\\Utility" FILES ${UTILTY_HEADERS})
 source_group("Source Files\\Utility" FILES ${UTILITY_SOURCE})
+source_group("Header Files\\rapidjson" FILES ${RAPID_JSON})
 
 IF (WIN32)
     # Copy dll files to ${CMAKE_CURRENT_BINARY_DIR}/Debug

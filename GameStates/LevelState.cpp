@@ -3,6 +3,7 @@
 #include "../Components/SpriteComponent.h"
 #include "../Components/AudioComponent.h"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
+#include "../Game/ResourceLoader.h"
 #include "../Utility/Debug.h"
 
 using namespace sre;
@@ -13,6 +14,7 @@ LevelState::LevelState() : debugDraw(physicsScale)
 
 void LevelState::start()
 {
+	initPhysics();
 	loadSpriteSheet("spritesheet.json", "spritesheet.png");
 	dungeon = new NormalDungeon(*this);
 	dungeon->generateDungeon();
@@ -29,6 +31,8 @@ void LevelState::start()
 	auto camAudio = camObj->addComponent<AudioComponent>();
 	camAudio->addSound("music", "event:/music/music_main_menu00");
 	camAudio->playSound("music");
+
+	ResourceLoader::loadGameObjectsFromFile("./GameObjects.json", this);
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif

@@ -153,9 +153,9 @@ target_link_libraries(GamesProgrammingExam ${all_libs} ${FMOD_LIBS})
 include_directories(${FMOD_BANK} ${FMOD_STUDIO} ${FMOD_CORE})
 
 # copy files to dest
-file(COPY spritesheet.png spritesheet.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
-file(COPY spritesheet.png spritesheet.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
-file(COPY spritesheet.png spritesheet.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY spritesheet.png spritesheet.json GameObjects.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
+file(COPY spritesheet.png spritesheet.json GameObjects.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
+file(COPY spritesheet.png spritesheet.json GameObjects.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY ${FMOD_DLLS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
 file(COPY ${FMOD_DLLS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
 file(COPY ${FMOD_DLLS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

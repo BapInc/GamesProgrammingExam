@@ -3,6 +3,7 @@
 //
 
 #include "Component.h"
+#include "../Utility/Debug.h"
 
 Component::Component(GameObject* gameObject)
 	:gameObject(gameObject)
@@ -38,4 +39,9 @@ void Component::onCollisionEnd(PhysicsComponent* comp)
 GameObject* Component::getGameObject()
 {
 	return gameObject;
+}
+
+void Component::setValuesFromJSON(rapidjson::GenericMember<rapidjson::UTF8<char>, rapidjson::MemoryPoolAllocator<rapidjson::CrtAllocator>>* jsonObject)
+{
+	Debug::Log("setValuesFromJson should not call base function", Logs::WARNING);
 }

@@ -134,10 +134,10 @@ void PhysicsComponent::setValuesFromJSON(GenericMember<UTF8<char>, MemoryPoolAll
 		}
 		glm::vec2 size = { 0,0 };
 		size.x = jsonObject->value["size"].GetObject()["x"].GetFloat();
-		size.x = jsonObject->value["size"].GetObject()["y"].GetFloat();
+		size.y = jsonObject->value["size"].GetObject()["y"].GetFloat();
 		glm::vec2 center = { 0,0 };
 		center.x = jsonObject->value["center"].GetObject()["x"].GetFloat();
-		center.x = jsonObject->value["center"].GetObject()["y"].GetFloat();
+		center.y = jsonObject->value["center"].GetObject()["y"].GetFloat();
 
 		float density = jsonObject->value["density"].GetFloat();
 		initBox(type, size, center, density);

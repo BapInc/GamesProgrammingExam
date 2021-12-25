@@ -1,0 +1,9 @@
+
+**/.cache/
+**/.user/
+**/.unsaved/
+**/Cache/Editor/FMODStudioCache.asset
+**/Cache/Editor/FMODStudioCache.asset.meta
+
+# Log files can be ignored.
+**/fmod_editor.log

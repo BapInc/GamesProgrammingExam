@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{b14ea8a9-1879-463f-9be1-d5e983bf67ae}">
+		<property name="assetPath">
+			<value>smellthela_.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>192.10448979591837</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{f7a302b6-96be-4639-b314-31ce9cf6fa16}</destination>
+		</relationship>
+	</object>
+</objects>

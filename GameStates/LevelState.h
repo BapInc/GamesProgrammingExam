@@ -32,11 +32,12 @@ public:
 	void handleContact(b2Contact* contact, bool begin);
 	std::shared_ptr<GameObject> LevelState::createGameObject();
 	std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object);
-	b2World* world = nullptr;
+	b2World* getPhysicsWorld();
 private:
 
 	const float physicsScale = 100;
 
+	b2World* world = nullptr;
 	std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
 
 	std::vector<std::shared_ptr<GameObject>> sceneObjects;

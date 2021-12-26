@@ -62,8 +62,7 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 		{
 			Debug::Log("Adding physics component");
 			auto physicsComponent = gameObject->addComponent<PhysicsComponent>();
-			state->world;
-			physicsComponent->setValuesFromJSON(&component.value, state->world);
+			physicsComponent->setValuesFromJSON(&component.value, state->getPhysicsWorld());
 
 		}
 		else if (componentName == "SpriteAnimationComponent")

@@ -166,3 +166,8 @@ std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object)
 	return obj;
 }
 
+b2World* LevelState::getPhysicsWorld()
+{
+	return world;
+}
+

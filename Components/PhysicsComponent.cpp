@@ -8,6 +8,7 @@
 PhysicsComponent::PhysicsComponent(GameObject* gameObject)
 	: Component(gameObject)
 {
+	this->gameObject = gameObject;
 	//world = DungeonGame::getInstance()->world;
 }
 

@@ -17,7 +17,7 @@ void LevelState::start()
 	auto camObj = createGameObject();
 	camObj->name = "Camera";
 	camera = camObj->addComponent<TopDownCameraComponent>();
-	camObj->setPosition(DungeonGame::getInstance()->getWindowSize() * 0.5f);
+	camObj->getTransform()->SetPos(DungeonGame::getInstance()->getWindowSize() * 0.5f);
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif
@@ -27,7 +27,7 @@ void LevelState::start()
 	auto sprit = SpriteManager::getInstance()->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
 	sprit->setScale({ 2,2 });
 	spC->setSprite(*sprit);
-	obj->setPosition({ -100,150 });
+	obj->getTransform()->SetPos(glm::vec3(-100,0, 150));
 	camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 }
 
@@ -42,7 +42,7 @@ void LevelState::render()
 		.withCamera(camera->getCamera())
 		.build();
 
-	auto pos = camera->getGameObject()->getPosition();
+	auto pos = camera->getGameObject()->getTransform()->getPos();
 
 	auto spriteBatchBuilder = SpriteBatch::create();
 	for (auto& go : sceneObjects)

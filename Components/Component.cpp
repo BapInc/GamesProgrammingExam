@@ -19,11 +19,6 @@ void Component::update(float deltaTime)
 
 }
 
-GameObject* Component::getGameObject()
-{
-	return gameObject;
-}
-
 bool Component::onKey(SDL_Event& event)
 {
 	return false;
@@ -37,4 +32,10 @@ void Component::onCollisionStart(PhysicsComponent* comp)
 void Component::onCollisionEnd(PhysicsComponent* comp)
 {
 
+}
+
+
+GameObject* Component::getGameObject()
+{
+	return gameObject;
 }

@@ -1,51 +1,54 @@
+#ifndef GAMEOBJECT_H
+#define GAMEOBJECT_H
+
 #include <memory>
 #include <vector>
 #include "glm/glm.hpp"
 #include "sre/SpriteBatch.hpp"
-#pragma once
+#include "../Components/Transform.h"
 
 // Forward declaration
 class Component;
+class Transform;
 
 // GameObject are empty container objects, which contains Components
 class GameObject
 {
+
 public:
 
 	~GameObject();
+	GameObject();
 
-	template <class T>                                                  // Add component of a given type to a gameObject. example:
-	std::shared_ptr<T> addComponent();                   // std::shared_ptr<SpriteComponent> spriteComponent = gameObject->addComponent<SpriteComponent>();
+public:
 
-	template <class T>                                   //  Get component of a given type to a gameObject. If not found return empty shared_ptr (==nullptr). example:
-	std::shared_ptr<T> getComponent();                   // std::shared_ptr<SpriteComponent> spriteComponent = gameObject->getComponent<SpriteComponent>();
+	template <class T>
+	std::shared_ptr<T> addComponent();
+
+	template <class T>
+	std::shared_ptr<T> getComponent();
 
 	bool removeComponent(std::shared_ptr<Component> component);
+
+public:
 
 	void renderSprite(sre::SpriteBatch::SpriteBatchBuilder& spriteBatchBuilder);
 	void update(float deltaTime);
 
-	const glm::vec2& getPosition() const;
-
-	void setPosition(const glm::vec2& position);
-
-	float getRotation() const;
-
-	void setRotation(float rotation);
-
 	std::string getTag() const;
-
 	const std::vector<std::shared_ptr<Component>>& getComponents();
+	Transform* getTransform();
 
-	std::string name = "_";
-	std::string tag = "";
-	bool shouldDestroy = false;
 private:
-	GameObject() = default;
-	std::vector<std::shared_ptr<Component>> components;
 
-	glm::vec2 position;
-	float rotation;
+	bool shouldDestroy = false;
+
+	Transform* transform;
+
+	std::string tag = "";
+	std::string name = "_";
+
+	std::vector<std::shared_ptr<Component>> components;
 
 	friend class LevelState;
 };
@@ -80,3 +83,5 @@ inline std::shared_ptr<T> GameObject::getComponent()
 	}
 	return std::shared_ptr<T>();
 }
+
+#endif

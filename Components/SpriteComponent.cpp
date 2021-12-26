@@ -5,12 +5,15 @@
 #include "SpriteComponent.h"
 #include "../Game/GameObject.h"
 
-SpriteComponent::SpriteComponent(GameObject* gameObject) : Component(gameObject) {}
+SpriteComponent::SpriteComponent(GameObject* gameObject) : Component(gameObject)
+{
+	this->gameObject = gameObject;
+}
 
 void SpriteComponent::renderSprite(sre::SpriteBatch::SpriteBatchBuilder& spriteBatchBuilder)
 {
-	sprite.setPosition(gameObject->getPosition());
-	sprite.setRotation(gameObject->getRotation());
+	sprite.setPosition(gameObject->getTransform()->getPos());
+	sprite.setRotation(gameObject->getTransform()->getAngle());
 	spriteBatchBuilder.addSprite(sprite);
 }
 

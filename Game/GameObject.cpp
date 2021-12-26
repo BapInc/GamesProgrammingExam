@@ -10,6 +10,13 @@ GameObject::~GameObject()
 	{
 		c->gameObject = nullptr;
 	}
+	delete(transform);
+	transform = nullptr;
+}
+
+GameObject::GameObject()
+{
+	transform = new Transform(this);
 }
 
 bool GameObject::removeComponent(std::shared_ptr<Component> component)
@@ -20,26 +27,6 @@ bool GameObject::removeComponent(std::shared_ptr<Component> component)
 		components.erase(comp);
 	}
 	return false;
-}
-
-const glm::vec2& GameObject::getPosition() const
-{
-	return position;
-}
-
-void GameObject::setPosition(const glm::vec2& position)
-{
-	GameObject::position = position;
-}
-
-float GameObject::getRotation() const
-{
-	return rotation;
-}
-
-void GameObject::setRotation(float rotation)
-{
-	GameObject::rotation = rotation;
 }
 
 std::string GameObject::getTag() const
@@ -66,4 +53,9 @@ void GameObject::update(float deltaTime)
 const std::vector<std::shared_ptr<Component>>& GameObject::getComponents()
 {
 	return components;
+}
+
+Transform* GameObject::getTransform()
+{
+	return transform;
 }

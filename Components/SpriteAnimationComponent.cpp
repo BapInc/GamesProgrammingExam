@@ -6,7 +6,10 @@
 #include "../Game/GameObject.h"
 #include <memory>
 
-SpriteAnimationComponent::SpriteAnimationComponent(GameObject* gameObject) : Component(gameObject) {}
+SpriteAnimationComponent::SpriteAnimationComponent(GameObject* gameObject) : Component(gameObject) 
+{
+	this->gameObject = gameObject;
+}
 
 void SpriteAnimationComponent::update(float deltaTime)
 {

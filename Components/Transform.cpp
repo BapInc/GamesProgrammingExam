@@ -1,23 +1,28 @@
 #include "Transform.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-Transform::Transform(GameObject& object)
+Transform::Transform(GameObject* gameObject) : Component(gameObject)
 {
-	gameObject = object;
+	this->gameObject = gameObject;
+	mat = glm::mat4(1.0f);
 }
 
 void Transform::Translate(glm::vec3& pos)
 {
-	mat = glm::translate(mat, pos);
-
-	//Add to Local Pos
 	position += pos;
+	mat = glm::translate(glm::mat4(1.0f), position);
+}
+
+void Transform::Translate(glm::vec2& pos)
+{
+	position += glm::vec3(pos.x, pos.y, 0);
+	mat = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, position.z));
 }
 
 void Transform::Rotate(float& angle, glm::vec3& axis)
 {
 	mat = glm::rotate(mat, glm::radians(angle), axis);
-
+	this->angle = angle;
 	//Check which axis and add to rotation vector
 	if (axis == glm::vec3(1.0f, 0.0f, 0.0f))
 	{
@@ -52,6 +57,23 @@ void Transform::Scale(glm::vec3& scale)
 	{
 		this->scale.z = scale.z;
 	}
+}
+
+void Transform::SetPos(glm::vec2 pos)
+{
+	position = glm::vec3(position.x, position.y, 0);
+	mat = glm::translate(glm::mat4(1.0f), position);
+}
+
+void Transform::SetPos(glm::vec3 pos)
+{
+	position = pos;
+	mat = glm::translate(glm::mat4(1.0f), position);
+}
+
+float Transform::getAngle() const
+{
+	return angle;
 }
 
 glm::vec3 Transform::getPos() const

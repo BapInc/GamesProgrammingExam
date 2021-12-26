@@ -26,6 +26,7 @@ private:
 	//TODO: Read these from a .json file
 
 	int minDistanceBetweenRooms;
+	int maxIterations; // NUmber of times it can iterate without creating a room, if higher then breaks out of the while loop
 
 	int minRoomWidth;
 	int maxRoomWidth;

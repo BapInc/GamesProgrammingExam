@@ -16,6 +16,8 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 	mapWidth = 30;
 	mapHeight = 30;
 
+	maxIterations = 100;
+
 	minDistanceBetweenRooms = 3;
 
 	this->levelState = &levelState;
@@ -31,6 +33,16 @@ void NormalDungeon::generateRooms()
 
 
 	int numberOfTiles = 0;
+	int itWithoutRoom = 0;
+
+	//TODO: Check if max possible tiles calculation is working currectly when walls are being generated
+	//Max Room tiles and counting walls (Not corridors)
+	int maxPossibleTiles = maxRoomHeight * maxRoomWidth * maxAmountOfRooms + ((maxRoomWidth * 2 ) + (maxRoomHeight * 2) + 4) * maxAmountOfRooms;
+	int mapTilesCount = mapWidth * mapHeight;
+	Debug::Log("MAX Tiles: " + std::to_string(maxPossibleTiles) + " | Map Tiles: " + std::to_string(mapTilesCount));
+
+	if (maxPossibleTiles >= mapTilesCount)
+		Debug::Log("ROOM TILES ARE BIGGER THAN MAP", ALERT);
 
 	do
 	{
@@ -73,7 +85,17 @@ void NormalDungeon::generateRooms()
 		}
 
 		if (breakout)
+		{
+			itWithoutRoom += 1;
+
+			if (itWithoutRoom > maxIterations)
+			{
+				Debug::Log("Map Size is too small, not all rooms generated", ALERT);
+				break;
+			}
+
 			continue;
+		}
 
 		//For Loops are done again, just so there's no need to create and destroy object in memory
 		for (size_t i = 0; i < width; i++)
@@ -92,12 +114,18 @@ void NormalDungeon::generateRooms()
 				dungeonMap[randX + i][randY + j] = obj;
 				dungeonMap[randX + i][randY + j]->getTransform()->SetPos(glm::vec2((randX + i) * (sprit.getSpriteSize().x * scaleMultiplier), (randY + j) * (sprit.getSpriteSize().y * scaleMultiplier)));
 				levelState->createGameObject(dungeonMap[randX + i][randY + j]);
+				itWithoutRoom = 0;
 			}
 		}
 
-		
-
 		numberOfTiles += width * height;
+
+		/*if (numberOfTiles > (mapWidth * mapHeight) * 0.3f);
+		{
+			Debug::Log("THIS SHIT BROKE", ALERT);
+			break;
+		}*/
+
 		//If room is generated succesfully
 		temp += 1;
 	} while (temp != amountOfRooms);

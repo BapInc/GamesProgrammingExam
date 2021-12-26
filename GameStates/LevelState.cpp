@@ -34,6 +34,8 @@ void LevelState::start()
 #endif
 
 	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
+
+	dungeon->drawAsciiDungeon();
 }
 
 void LevelState::update(float deltaTime)

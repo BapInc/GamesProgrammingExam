@@ -120,30 +120,10 @@ void NormalDungeon::generateRooms()
 
 		numberOfTiles += width * height;
 
-		/*if (numberOfTiles > (mapWidth * mapHeight) * 0.3f);
-		{
-			Debug::Log("THIS SHIT BROKE", ALERT);
-			break;
-		}*/
-
 		//If room is generated succesfully
 		temp += 1;
+
 	} while (temp != amountOfRooms);
-
-	for (size_t i = 0; i < mapHeight; i++)
-	{
-		for (size_t j = 0; j < mapWidth; j++)
-		{
-			auto temp = dungeonMap[j][i];
-			char tempChar = ' ';
-
-			if (temp != nullptr)
-				tempChar = '.';
-
-			std::cout << tempChar;
-		}
-		std::cout << std::endl;
-	}
 }
 
 

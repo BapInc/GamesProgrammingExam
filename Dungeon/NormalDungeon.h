@@ -15,7 +15,6 @@ protected:
 	void generateRandomRoom();
 	void generateRoomObject(RoomType type = RANDOMROOM, int customWidth = 0, int customHeight = 0);
 
-
 private:
 
 	//TODO: Maybe keep pointers to start/end and reward rooms

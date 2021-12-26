@@ -4,24 +4,29 @@
 Transform::Transform(GameObject* gameObject) : Component(gameObject)
 {
 	this->gameObject = gameObject;
-	mat = glm::mat4(1.0f);
+	//mat = glm::mat4(1.0f);
+	angle = 0;
+	SetIdentity();
 }
 
-void Transform::Translate(glm::vec3& pos)
+
+void Transform::SetIdentity()
 {
-	position += pos;
-	mat = glm::translate(glm::mat4(1.0f), position);
+	position = glm::vec3(0);
+	rotation = glm::vec3(0);
+	scale = glm::vec3(0);
+	angle = 0;
 }
 
 void Transform::Translate(glm::vec2& pos)
 {
-	position += glm::vec3(pos.x, pos.y, 0);
-	mat = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, position.z));
+	position += pos;
+	//mat = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, position.z));
 }
 
 void Transform::Rotate(float& angle, glm::vec3& axis)
 {
-	mat = glm::rotate(mat, glm::radians(angle), axis);
+	//mat = glm::rotate(mat, glm::radians(angle), axis);
 	this->angle = angle;
 	//Check which axis and add to rotation vector
 	if (axis == glm::vec3(1.0f, 0.0f, 0.0f))
@@ -40,7 +45,7 @@ void Transform::Rotate(float& angle, glm::vec3& axis)
 
 void Transform::Scale(glm::vec3& scale)
 {
-	mat = glm::scale(mat, scale);
+	//mat = glm::scale(mat, scale);
 
 	//Check if scaling is not just the uniform
 	if (scale.x != 1.0f)
@@ -61,22 +66,17 @@ void Transform::Scale(glm::vec3& scale)
 
 void Transform::SetPos(glm::vec2 pos)
 {
-	position = glm::vec3(position.x, position.y, 0);
-	mat = glm::translate(glm::mat4(1.0f), position);
+	position = pos;
+	//mat = glm::translate(glm::mat4(1.0f), position);
 }
 
-void Transform::SetPos(glm::vec3 pos)
-{
-	position = pos;
-	mat = glm::translate(glm::mat4(1.0f), position);
-}
 
 float Transform::getAngle() const
 {
 	return angle;
 }
 
-glm::vec3 Transform::getPos() const
+glm::vec2 Transform::getPos() const
 {
 	return position;
 }

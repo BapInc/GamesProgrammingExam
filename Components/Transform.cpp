@@ -24,23 +24,28 @@ void Transform::Translate(glm::vec2& pos)
 	//mat = glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, position.z));
 }
 
-void Transform::Rotate(float& angle, glm::vec3& axis)
+void Transform::Translate(float& x, float& y)
+{
+	Translate(glm::vec2(x, y));
+}
+
+void Transform::Rotate(float& angle)
 {
 	//mat = glm::rotate(mat, glm::radians(angle), axis);
 	this->angle = angle;
-	//Check which axis and add to rotation vector
-	if (axis == glm::vec3(1.0f, 0.0f, 0.0f))
-	{
-		rotation.x = angle;
-	}
-	else if (axis == glm::vec3(0.0f, 1.0f, 0.0f))
-	{
-		rotation.y = angle;
-	}
-	else if (axis == glm::vec3(0.0f, 0.0f, 1.0f))
-	{
-		rotation.z = angle;
-	}
+	////Check which axis and add to rotation vector
+	//if (axis == glm::vec3(1.0f, 0.0f, 0.0f))
+	//{
+	//	rotation.x = angle;
+	//}
+	//else if (axis == glm::vec3(0.0f, 1.0f, 0.0f))
+	//{
+	//	rotation.y = angle;
+	//}
+	//else if (axis == glm::vec3(0.0f, 0.0f, 1.0f))
+	//{
+	//	rotation.z = angle;
+	//}
 }
 
 void Transform::Scale(glm::vec3& scale)

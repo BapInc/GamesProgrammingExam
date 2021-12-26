@@ -13,7 +13,8 @@ public:
 	void SetIdentity();
 
 	void Translate(glm::vec2& pos);
-	void Rotate(float& angle, glm::vec3& axis);
+	void Translate(float& x, float& y);
+	void Rotate(float& angle);
 	void Scale(glm::vec3& scale);
 
 public:

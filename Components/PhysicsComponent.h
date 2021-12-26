@@ -27,7 +27,7 @@ public:
 
 	void setSensor(bool enabled);
 
-	void PhysicsComponent::setValuesFromJSON(GenericMember<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* jsonObject, b2World* world);
+	void setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, b2World* world);
 private:
 	b2PolygonShape* polygon = nullptr;
 	b2CircleShape* circle = nullptr;

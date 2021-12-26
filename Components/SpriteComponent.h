@@ -3,6 +3,8 @@
 
 #include "Component.h"
 #include "sre/Sprite.hpp"
+#include "../GameStates/GameState.h"
+using namespace rapidjson;
 
 class SpriteComponent : public Component
 {
@@ -13,6 +15,8 @@ public:
 
 	void setSprite(const sre::Sprite& sprite);
 	sre::Sprite getSprite();
+
+	void setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, GameState* state);
 private:
 	sre::Sprite sprite;
 };

@@ -111,14 +111,23 @@ void PhysicsComponent::setSensor(bool enabled)
 	fixture->SetSensor(enabled);
 }
 
-void PhysicsComponent::setValuesFromJSON(GenericMember<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* jsonObject, b2World* world)
+void PhysicsComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, b2World* world)
 {
-	std::string shape = jsonObject->value["shape"].GetString();
 	this->world = world;
+
+	glm::vec2 center = { 0,0 };
+	center.x = value->operator[]("center").GetObject()["x"].GetFloat();
+	center.y = value->operator[]("center").GetObject()["y"].GetFloat();
+
+	std::string shape = value->operator[]("shape").GetString();
+	std::string bodyType = value->operator[]("b2BodyType").GetString();
+
+
+	float density = value->operator[]("density").GetFloat();
+
 	if (shape == "box")
 	{
 		Debug::Log("Creating Box", Logs::WARNING);
-		std::string bodyType = jsonObject->value["b2BodyType"].GetString();
 		b2BodyType type;
 		if (bodyType == "b2_dynamicBody")
 		{
@@ -132,20 +141,31 @@ void PhysicsComponent::setValuesFromJSON(GenericMember<UTF8<char>, MemoryPoolAll
 		{
 			type = b2BodyType::b2_staticBody;
 		}
-		glm::vec2 size = { 0,0 };
-		size.x = jsonObject->value["size"].GetObject()["x"].GetFloat();
-		size.y = jsonObject->value["size"].GetObject()["y"].GetFloat();
-		glm::vec2 center = { 0,0 };
-		center.x = jsonObject->value["center"].GetObject()["x"].GetFloat();
-		center.y = jsonObject->value["center"].GetObject()["y"].GetFloat();
 
-		float density = jsonObject->value["density"].GetFloat();
+		glm::vec2 size = { 0,0 };
+		size.x = value->operator[]("size").GetObject()["x"].GetFloat();
+		size.y = value->operator[]("size").GetObject()["y"].GetFloat();
+
 		initBox(type, size, center, density);
 	}
 	else if (shape == "circle")
 	{
 		Debug::Log("Creating circle", Logs::WARNING);
-
+		b2BodyType type;
+		if (bodyType == "b2_dynamicBody")
+		{
+			type = b2BodyType::b2_dynamicBody;
+		}
+		else if (bodyType == "b2_kinematicBody")
+		{
+			type = b2BodyType::b2_kinematicBody;
+		}
+		else
+		{
+			type = b2BodyType::b2_staticBody;
+		}
+		float radius = value->operator[]("radius").GetFloat();
+		initCircle(type, radius, center, density);
 	}
-
 }
+

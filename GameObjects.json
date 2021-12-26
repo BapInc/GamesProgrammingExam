@@ -15,9 +15,16 @@
   {
     "name": "Player",
     "position": { "x": -150.0, "y": 300.0 },
+    "transform": {
+      "scale": {"x": 2, "y": 2,"z": 2},
+      "rotation": {"x": 0, "y": 0, "z": 0},
+      "position": {"x": 0, "y": 0}
+    },
     "components": {
       "SpriteComponent": {
-        "sprite": "big_demon_idle_anim_f0.png"
+        "sprite": "wizzard_f_idle_anim_f0.png",
+        "scale": {"x": 5, "y": 5}
+
       },
       "PhysicsComponent": {
         "shape": "box",
@@ -27,5 +34,23 @@
         "density": 1.0
       }
     }
+  },
+  {
+    "name": "projectile",
+    "position": { "x": -150.0, "y": 300.0 },
+    "components": {
+      "SpriteComponent": {
+        "sprite": "ui_heart_full.png",
+        "scale": {"x": 2, "y": 2}
+      },
+      "PhysicsComponent": {
+        "shape": "circle",
+        "b2BodyType": "b2_dynamicBody",
+        "radius": 1.0,
+        "center": { "x": 0.5, "y": 0.5 },
+        "density": 1.0
+      }
+    }
   }
+  
 ]

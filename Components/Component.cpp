@@ -41,7 +41,7 @@ GameObject* Component::getGameObject()
 	return gameObject;
 }
 
-void Component::setValuesFromJSON(rapidjson::GenericMember<rapidjson::UTF8<char>, rapidjson::MemoryPoolAllocator<rapidjson::CrtAllocator>>* jsonObject)
+void Component::setValuesFromJSON(rapidjson::GenericValue<rapidjson::UTF8<char>, rapidjson::MemoryPoolAllocator<rapidjson::CrtAllocator>>* jsonObject)
 {
 	Debug::Log("setValuesFromJson should not call base function", Logs::WARNING);
 }

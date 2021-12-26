@@ -5,7 +5,7 @@
 #include <glm/matrix.hpp>
 class Transform : public Component
 {
-public: 
+public:
 	explicit Transform(GameObject* object);
 
 public:
@@ -20,6 +20,8 @@ public:
 public:
 
 	void SetPos(glm::vec2 pos);
+	void SetRot(glm::vec3 rot);
+	void SetScale(glm::vec3 scale);
 
 public:
 
@@ -33,8 +35,8 @@ private:
 	float angle;
 
 	//glm::mat4 mat;
-	glm::vec3 scale;
-	glm::vec2 position;
-	glm::vec3 rotation;
+	glm::vec3 scale = { 1,1,1 };
+	glm::vec2 position = { 0,0 };
+	glm::vec3 rotation = { 0,0,0 };
 };
 #endif // !TRANSFORM_H

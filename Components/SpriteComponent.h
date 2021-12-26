@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SPRITECOMPONENT_H
+#define SPRITECOMPONENT_H
 
 #include "Component.h"
 #include "sre/Sprite.hpp"
@@ -16,3 +17,4 @@ private:
 	sre::Sprite sprite;
 };
 
+#endif

@@ -61,14 +61,15 @@ void NormalDungeon::generateRooms()
 			for (size_t j = 0; j < height; j++)
 			{
 				auto obj = new GameObject();
-				obj->name = "floorTile";
+				std::string name = "floorTile";
+				obj->setName(name);
 				auto spC = obj->addComponent<SpriteComponent>();
 				auto sprit = levelState->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
 				sprit.setScale({ 2,2 });
 				spC->setSprite(sprit);
 
 				dungeonMap[randX + i][randY + j] = obj;
-				dungeonMap[randX + i][randY + j]->setPosition(glm::vec2((randX + i) * (sprit.getSpriteSize().x * 2), (randY + j) * (sprit.getSpriteSize().y * 2)));
+				dungeonMap[randX + i][randY + j]->getTransform()->SetPos(glm::vec2((randX + i) * (sprit.getSpriteSize().x * 2), (randY + j) * (sprit.getSpriteSize().y * 2)));
 				levelState->createGameObject(dungeonMap[randX + i][randY + j]);
 			}
 		}

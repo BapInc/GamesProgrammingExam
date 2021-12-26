@@ -3,6 +3,7 @@
 
 TopDownCameraComponent::TopDownCameraComponent(GameObject* gameObject) : Component(gameObject)
 {
+	this->gameObject = gameObject;
 	camera.setOrthographicProjection(DungeonGame::getInstance()->getWindowSize().y / 2, -1, 1);
 }
 
@@ -11,12 +12,12 @@ void TopDownCameraComponent::update(float deltaTime)
 {
 	if (followObject != nullptr)
 	{
-		glm::vec2 position = followObject->getPosition();
+		glm::vec2 position = followObject->getTransform()->getPos();
 
 		position.x += offset.x;
 		position.y = offset.y;
 
-		gameObject->setPosition(position);
+		gameObject->getTransform()->Translate(position);
 		glm::vec3 eye(position, 0);
 		glm::vec3 at(position, -1);
 		glm::vec3 up(0, 1, 0);

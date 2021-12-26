@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef PHYSICSCOMPONENT_H
+#define PHYSICSCOMPONENT_H
 #include "Box2D/Common/b2Math.h"
 #include "Box2D/Collision/Shapes/b2PolygonShape.h"
 #include "Box2D/Collision/Shapes/b2CircleShape.h"
@@ -39,3 +39,4 @@ private:
 
 };
 
+#endif

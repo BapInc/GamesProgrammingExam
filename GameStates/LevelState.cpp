@@ -22,7 +22,7 @@ void LevelState::start()
 	auto camObj = createGameObject();
 	camObj->name = "Camera";
 	camera = camObj->addComponent<TopDownCameraComponent>();
-	camObj->setPosition(DungeonGame::getInstance()->getWindowSize() * 0.5f);
+	camObj->getTransform()->SetPos(DungeonGame::getInstance()->getWindowSize() * 0.5f);
 	// ======== EXAMPLE =================
 	// || Add Component and play audio ||
 	// ======== EXAMPLE =================
@@ -50,7 +50,7 @@ void LevelState::render()
 		.withCamera(camera->getCamera())
 		.build();
 
-	auto pos = camera->getGameObject()->getPosition();
+	auto pos = camera->getGameObject()->getTransform()->getPos();
 
 	auto spriteBatchBuilder = SpriteBatch::create();
 	for (auto& go : sceneObjects)

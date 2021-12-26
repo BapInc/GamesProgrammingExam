@@ -15,6 +15,12 @@ protected:
 	void calculateAmountOfRooms();
 	virtual void generateRooms() {};
 	
+public:
+
+public:
+
+	void drawAsciiDungeon();
+
 	//TODO: Should this be with sharedpointers instead of normal pointers?
 	std::vector<std::vector<GameObject *>> dungeonMap;
 

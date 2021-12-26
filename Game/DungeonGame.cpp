@@ -7,12 +7,8 @@ DungeonGame::DungeonGame()
 {
 	instance = this;
 #ifdef _DEBUG
-	std::cout << "Game instantiated" << std::endl;
+	Debug::Log("Game instantiated", SUCCESS);
 #endif 
-	Debug::Log("Normal Debug");
-	Debug::Log("Alert, you love cat girls", ALERT);
-	Debug::Log("Gotta drink less cherry wine", WARNING);
-	Debug::Log("Easy Debug lass", SUCCESS);
 	renderer.setWindowSize(windowSize);
 	renderer.init().withSdlInitFlags(SDL_INIT_EVERYTHING)
 		.withSdlWindowFlags(SDL_WINDOW_OPENGL);

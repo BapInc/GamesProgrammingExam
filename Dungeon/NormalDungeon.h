@@ -25,6 +25,8 @@ private:
 private:
 	//TODO: Read these from a .json file
 
+	int minDistanceBetweenRooms;
+
 	int minRoomWidth;
 	int maxRoomWidth;
 

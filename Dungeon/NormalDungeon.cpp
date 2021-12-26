@@ -1,6 +1,7 @@
 #include "NormalDungeon.h"
 #include "../Utility/Debug.h"
 #include "../Components/SpriteComponent.h"
+#include <iostream>
 
 NormalDungeon::NormalDungeon(LevelState& levelState)
 {
@@ -14,6 +15,8 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 
 	mapWidth = 30;
 	mapHeight = 30;
+
+	minDistanceBetweenRooms = 3;
 
 	this->levelState = &levelState;
 }
@@ -35,7 +38,7 @@ void NormalDungeon::generateRooms()
 		int randX = rand() % mapWidth;
 		int randY = rand() % mapHeight;
 
-		Debug::Log("MAP XPOS: " + std::to_string(randX) + "| Map YPOS: " + std::to_string(randY));
+		//Debug::Log("MAP XPOS: " + std::to_string(randX) + "| Map YPOS: " + std::to_string(randY));
 
 		//Check if empty, if not empty go back
 		int width = rand() % maxRoomWidth + minRoomWidth;
@@ -43,17 +46,34 @@ void NormalDungeon::generateRooms()
 
 		//If out of bounds reset || This can be replaced so randX and randY are smaller than mapWidth or height also needs a difference so it's not too close to borders for walls
 		if (randX + width > mapWidth || randY + height > mapHeight)
-			continue;
-
-		for (size_t i = 0; i < width; i++)
 		{
-			for (size_t j = 0; j < height; j++)
+			continue;
+		}
+
+		bool breakout = false;
+		for (int i = -minDistanceBetweenRooms; i < width + minDistanceBetweenRooms ; i++)
+		{
+			for (int j = -minDistanceBetweenRooms; j < height + minDistanceBetweenRooms ; j++)
 			{
+				if (   i + randX < 0 
+					|| j + randY < 0
+					|| i + randX >= mapWidth 
+					|| j + randY >= mapHeight)
+					continue;
 				//TODO: Tiles created for a specific room should get deleted if another tile is found
 				if (dungeonMap[randX + i][randY + j] != nullptr)
-					continue;
+				{
+					breakout = true;
+					break;
+				}
 			}
+
+			if (breakout)
+				break;
 		}
+
+		if (breakout)
+			continue;
 
 		//For Loops are done again, just so there's no need to create and destroy object in memory
 		for (size_t i = 0; i < width; i++)
@@ -65,29 +85,37 @@ void NormalDungeon::generateRooms()
 				obj->setName(name);
 				auto spC = obj->addComponent<SpriteComponent>();
 				auto sprit = levelState->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
-				sprit.setScale({ 2,2 });
+				float scaleMultiplier = 2.0f;
+				sprit.setScale({ scaleMultiplier,scaleMultiplier });
 				spC->setSprite(sprit);
 
 				dungeonMap[randX + i][randY + j] = obj;
-				dungeonMap[randX + i][randY + j]->getTransform()->SetPos(glm::vec2((randX + i) * (sprit.getSpriteSize().x * 2), (randY + j) * (sprit.getSpriteSize().y * 2)));
+				dungeonMap[randX + i][randY + j]->getTransform()->SetPos(glm::vec2((randX + i) * (sprit.getSpriteSize().x * scaleMultiplier), (randY + j) * (sprit.getSpriteSize().y * scaleMultiplier)));
 				levelState->createGameObject(dungeonMap[randX + i][randY + j]);
 			}
 		}
 
+		
+
 		numberOfTiles += width * height;
 		//If room is generated succesfully
 		temp += 1;
-
-		Debug::Log("ROOM CREATED");
-
-		//for (size_t i = 0; i < mapWidth; i++)
-		//{
-		//	for (size_t i = 0; i < mapHeight; i++)
-		//	{
-
-		//	}
-		//}
 	} while (temp != amountOfRooms);
+
+	for (size_t i = 0; i < mapHeight; i++)
+	{
+		for (size_t j = 0; j < mapWidth; j++)
+		{
+			auto temp = dungeonMap[j][i];
+			char tempChar = ' ';
+
+			if (temp != nullptr)
+				tempChar = '.';
+
+			std::cout << tempChar;
+		}
+		std::cout << std::endl;
+	}
 }
 
 

@@ -5,6 +5,7 @@
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "../Utility/Debug.h"
 
+
 using namespace sre;
 
 LevelState::LevelState() : debugDraw(physicsScale)
@@ -32,7 +33,26 @@ void LevelState::start()
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif
+	auto obj = createGameObject();
+	obj->name = "Demon";
+	auto spC = obj->addComponent<SpriteComponent>();
+	auto sprit = getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
+	sprit.setScale({ 2,2 });
+	spC->setSprite(sprit);
+	obj->transform->SetPos({ -100,150 });
 
+	//Player
+	auto playerGO = createGameObject();
+	playerGO->name = "Player";
+	player = playerGO->addComponent<Player>();
+	player->setLevel(*this);
+	auto playerSprite = playerGO->addComponent<SpriteComponent>();
+	auto pSprite = getSprite("lizard_f_idle_anim_f0.png");
+	pSprite.setScale({ 2,2 });
+	playerSprite->setSprite(pSprite);
+	playerGO->transform->SetPos({ -200,200 });
+
+	camera->setFollowObject(playerGO, { 0, 0 });
 	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 
 	dungeon->drawAsciiDungeon();
@@ -73,8 +93,10 @@ void LevelState::render()
 	}
 }
 
-void LevelState::onKey()
+void LevelState::onKey(SDL_Event& event)
 {
+	player->onKey(event);
+
 }
 
 void LevelState::initPhysics()

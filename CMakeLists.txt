@@ -120,6 +120,15 @@ file(GLOB UTILITY_SOURCE
     "Utility/*.cpp"
 )
 
+file(GLOB COMMANDS_HEADERS
+    "Commands/*.hpp"
+    "Commands/*.h"
+)
+
+file(GLOB COMMANDS_SOURCE
+    "Commands/*.cpp"
+)
+
 
 
 # Compe cpp files (from Snake variable)
@@ -135,6 +144,7 @@ ${MANAGERS_HEADERS} ${MANAGERS_SOURCE}
 ${PLAYER_HEADERS} ${PLAYER_SOURCE} 
 ${SPRITES_HEADERS} ${SPRITES_SOURCE} 
 ${UTILTY_HEADERS} ${UTILITY_SOURCE} 
+${COMMANDS_HEADERS} ${COMMANDS_SOURCE} 
 )
 
 SET(FMOD_BANK "ThirdParty/fsbank/inc/")
@@ -174,6 +184,8 @@ source_group("Header Files\\Sprites" FILES ${SPRITES_HEADERS})
 source_group("Source Files\\Sprites" FILES ${SPRITES_SOURCE})
 source_group("Header Files\\Utility" FILES ${UTILTY_HEADERS})
 source_group("Source Files\\Utility" FILES ${UTILITY_SOURCE})
+source_group("Header Files\\Commands" FILES ${COMMANDS_HEADERS})
+source_group("Source Files\\Commands" FILES ${COMMANDS_SOURCE})
 
 IF (WIN32)
     # Copy dll files to ${CMAKE_CURRENT_BINARY_DIR}/Debug

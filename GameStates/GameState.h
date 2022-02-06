@@ -14,7 +14,7 @@ public:
 	virtual void update(float time) = 0;
 	virtual void render() = 0;
 	virtual void start() = 0;
-	virtual void onKey() = 0;
+	virtual void onKey(SDL_Event& event) = 0;
 
 	void loadSpriteSheet(char* json, char* png);
 	sre::Sprite getSprite(char* spriteName);

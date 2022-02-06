@@ -2,6 +2,9 @@
 #include "../Utility/Debug.h"
 #include "../Components/SpriteComponent.h"
 #include <iostream>
+#include <cmath>
+
+typedef  std::pair<int, int> iPair;
 
 NormalDungeon::NormalDungeon(LevelState& levelState)
 {
@@ -12,6 +15,8 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 	minRoomHeight = 3;
 	maxRoomHeight = 5;
 	maxRoomWidth = 5;
+
+	roomVisibilityDistance = 15;
 
 	mapWidth = 30;
 	mapHeight = 30;
@@ -67,12 +72,14 @@ void NormalDungeon::generateRooms()
 		{
 			for (int j = -minDistanceBetweenRooms; j < height + minDistanceBetweenRooms ; j++)
 			{
+				//IF OUT OF BOUNDS CONTINUE
 				if (   i + randX < 0 
 					|| j + randY < 0
 					|| i + randX >= mapWidth 
 					|| j + randY >= mapHeight)
 					continue;
-				//TODO: Tiles created for a specific room should get deleted if another tile is found
+				
+				//If there's already a tile in the calculated area, reset while loop
 				if (dungeonMap[randX + i][randY + j] != nullptr)
 				{
 					breakout = true;
@@ -84,6 +91,7 @@ void NormalDungeon::generateRooms()
 				break;
 		}
 
+		//Reset While loop
 		if (breakout)
 		{
 			itWithoutRoom += 1;
@@ -98,6 +106,7 @@ void NormalDungeon::generateRooms()
 		}
 
 		//For Loops are done again, just so there's no need to create and destroy object in memory
+		//Loops width and height and adds floor tiles and its attributes
 		for (size_t i = 0; i < width; i++)
 		{
 			for (size_t j = 0; j < height; j++)
@@ -118,14 +127,75 @@ void NormalDungeon::generateRooms()
 			}
 		}
 
+		//If room is generated succesfully
+		auto room = std::shared_ptr<Room>(new Room(width, height,glm::vec2(randX, randY), RANDOMROOM));
+		rooms.push_back(room);
 		numberOfTiles += width * height;
 
-		//If room is generated succesfully
 		temp += 1;
 
-	} while (temp != amountOfRooms);
+	} while (rooms.size() != amountOfRooms);
 }
 
+void NormalDungeon::generateMST()
+{
+	//check 
+
+	//Calculate all room distances
+	calculateMSTCost();
+}
+
+void NormalDungeon::calculateMSTCost()
+{
+	//Create Vector organised with lowest to highest costs
+	//This needs to then know which rooms it is trying to acess, maybe use strings for this
+	float tempDistance;
+	int i, j = 0;
+
+	for (size_t i = 0; i < rooms.size(); i++)
+	{
+		for (size_t j = 0; j < rooms.size(); j++)
+		{
+			//skip if it's the same room
+			if (i == j)
+				continue;
+
+			tempDistance = CalculateDistance(rooms[i]->getCenterPos(), rooms[j]->getCenterPos());
+
+			if (tempDistance > roomVisibilityDistance)
+				continue;
+
+			rooms[i]->addRoomSeen(rooms[j], tempDistance);
+			//Add reference to Vector of rooms in each one and calculate distance between them
+			//if()
+
+			//rooms[i].ad
+
+			if (j == rooms.size() - 1)
+				rooms[i]->sortRoomsSeen();
+				//sort vector of rooms depending on distances
+		}
+	}
+}
+
+void NormalDungeon::connectMST()
+{
+	std::vector<std::string> cost;
+	int selectedRoom = 0;
+	while (roomsConnected.size() != rooms.size())
+	{
+		for (size_t i = 0; i < rooms[selectedRoom]->getRoomsSeen().size(); i++)
+		{
+			//Add all seen costs to list
+			//std::string temp = 
+			//cost.push_back()
+		}
+
+		//TODO: Chose the cheapest cost and do it, no need to check if there are equal costs.
+
+		//Generate corridor and connect rooms
+	}
+}
 
 void NormalDungeon::generateRandomRoom()
 {
@@ -134,35 +204,40 @@ void NormalDungeon::generateRandomRoom()
 }
 void NormalDungeon::generateRoomObject(RoomType type, int customWidth, int customHeight)
 {
-	Room* room;
-	switch (type)
-	{
-	case CUSTOMSIZE:
+	//Room* room;
+	//switch (type)
+	//{
+	//case CUSTOMSIZE:
 
-		room = new Room(customWidth, customHeight);
+	//	room = new Room(customWidth, customHeight);
 
-		break;
-	case RANDOMROOM:
+	//	break;
+	//case RANDOMROOM:
 
-		room = new Room(minRoomWidth, maxRoomWidth, minRoomHeight, maxRoomHeight);
+	//	room = new Room(minRoomWidth, maxRoomWidth, minRoomHeight, maxRoomHeight);
 
-		break;
-	case STARTROOM:
+	//	break;
+	//case STARTROOM:
 
-		room = new Room(startRoomWidth, startRoomHeight, STARTROOM);
+	//	room = new Room(startRoomWidth, startRoomHeight, STARTROOM);
 
-		break;
-	case BOSSROOM:
+	//	break;
+	//case BOSSROOM:
 
-		room = new Room(bossRoomWidth, bossRoomHeight, BOSSROOM);
+	//	room = new Room(bossRoomWidth, bossRoomHeight, BOSSROOM);
 
-		break;
-	case REWARDSROOM:
+	//	break;
+	//case REWARDSROOM:
 
-		//TODO: Improve rewards room customisation
-		room = new Room(customWidth, customHeight, REWARDSROOM);
-		break;
-	default:
-		break;
-	}
+	//	//TODO: Improve rewards room customisation
+	//	room = new Room(customWidth, customHeight, REWARDSROOM);
+	//	break;
+	//default:
+	//	break;
+	//}
+}
+
+float NormalDungeon::CalculateDistance(glm::vec2& v, glm::vec2& w)
+{
+	return abs(sqrt(pow(v.x - w.x, 2) + pow(v.y - w.y, 2)));	
 }

@@ -12,8 +12,12 @@ public:
 protected:
 
 	void generateRooms() override;
+	void generateMST();
+	void calculateMSTCost();
+	void connectMST();
 	void generateRandomRoom();
 	void generateRoomObject(RoomType type = RANDOMROOM, int customWidth = 0, int customHeight = 0);
+	float CalculateDistance(glm::vec2& v, glm::vec2& w);
 
 private:
 
@@ -23,6 +27,11 @@ private:
 
 private:
 	//TODO: Read these from a .json file
+
+	std::vector<std::shared_ptr<Room>> rooms;
+	std::vector<int> roomsConnected;
+
+	float roomVisibilityDistance;
 
 	int minDistanceBetweenRooms;
 	int maxIterations; // NUmber of times it can iterate without creating a room, if higher then breaks out of the while loop

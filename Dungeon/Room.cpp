@@ -1,31 +1,32 @@
 #include "Room.h"
 #include "../Utility/Debug.h"
 
-
-Room::Room(int minWidth, int maxWidth, int minHeight, int maxHeight)
-{
-	width = rand() % (maxWidth - minWidth + 1) - minWidth;
-	height = rand() %(maxHeight - minHeight + 1) - minHeight;
-
-	roomType = RANDOMROOM;
-}
-
-Room::Room(int width, int height, RoomType type)
+Room::Room(int width, int height, glm::vec2 pos, RoomType type)
 {
 	this->width = width;
 	this->height = height;
 
+	initialPos = pos;
+	this->centerPos = glm::vec2(pos.x + (width / 2), pos.y + (height / 2));
 	roomType = type;
 }
 
-void Room::SetTile(Tile tile...)
+void Room::initialiseRoom()
 {
-
-	floorTiles.push_back(tile);
-	Debug::Log("FLOOR TILES SIZE " + std::to_string(floorTiles.size()));
 }
 
 void Room::generateContent()
+{
+}
+
+void Room::addRoomSeen(std::shared_ptr<Room>& room, float& distance)
+{
+	//Should I really do this with the references?
+	roomSeen.push_back(room); //Maybe this could be the room number instead
+	roomSeenDistance.push_back(distance);
+}
+
+void Room::sortRoomsSeen()
 {
 }
 
@@ -37,6 +38,16 @@ int Room::getWidth()
 int Room::getHeight()
 {
 	return height;
+}
+
+glm::vec2 Room::getCenterPos() const
+{
+	return centerPos;
+}
+
+std::vector<std::shared_ptr<Room>> Room::getRoomsSeen()
+{
+	return roomSeen;
 }
 
 RoomType Room::getType()

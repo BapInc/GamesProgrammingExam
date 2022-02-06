@@ -11,10 +11,11 @@ void TopDownCameraComponent::update(float deltaTime)
 {
 	if (followObject != nullptr)
 	{
+		//get position of PlayerGO
 		glm::vec2 position = followObject->getPosition();
 
 		position.x += offset.x;
-		position.y = offset.y;
+		position.y += offset.y;
 
 		gameObject->setPosition(position);
 		glm::vec3 eye(position, 0);

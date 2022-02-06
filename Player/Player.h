@@ -3,8 +3,9 @@
 #include "../Game/SpriteManager.h"
 #include "../GameStates/LevelState.h"
 #include "../Game/GameObject.h"
+#include "../Commands/MoveCommand.h"
 
-class Player : public Component 
+class Player : public Component
 {
 
 public:
@@ -20,4 +21,6 @@ public:
 
 private:
 	glm::vec2 velocity;
+	//MoveCommand* moveCommand;
+	std::stack<std::shared_ptr<MoveCommand>> moveCommands;
 };

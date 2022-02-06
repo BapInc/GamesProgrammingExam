@@ -52,7 +52,7 @@ void LevelState::start()
 	playerSprite->setSprite(pSprite);
 	playerGO->transform->SetPos({ -200,200 });
 
-	camera->setFollowObject(playerGO, { 0, 0 });
+	camera->setFollowObject(playerGO);
 	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 
 	dungeon->drawAsciiDungeon();

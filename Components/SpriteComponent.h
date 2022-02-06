@@ -12,7 +12,11 @@ public:
 	void renderSprite(sre::SpriteBatch::SpriteBatchBuilder& spriteBatchBuilder) override;
 
 	void setSprite(const sre::Sprite& sprite);
+
 	sre::Sprite getSprite();
+
+	void flipSprite(bool flip);
+
 private:
 	sre::Sprite sprite;
 };

@@ -9,6 +9,7 @@
 Player::Player(GameObject* gameObject) : Component(gameObject), velocity(0)
 {
 	this->gameObject = gameObject;
+	spriteComponent = gameObject->getComponent<SpriteComponent>();
 	//moveCommand = NULL;
 }
 
@@ -18,6 +19,7 @@ void Player::setLevel(LevelState& level)
 }
 
 bool Player::onKey(SDL_Event& event) {
+	spriteComponent = gameObject->getComponent<SpriteComponent>();
 	switch (event.key.keysym.sym) {
 	case SDLK_w:
 		velocity.y = event.type == SDL_KEYDOWN ? 1 : 0;
@@ -28,16 +30,22 @@ bool Player::onKey(SDL_Event& event) {
 		break;
 	case SDLK_a:
 		velocity.x = event.type == SDL_KEYDOWN ? -1 : 0;
+		if (facingRight) {
+			spriteComponent->flipSprite(true);
+			facingRight = false;
+		}
 		break;
 	case SDLK_d:
 		velocity.x = event.type == SDL_KEYDOWN ? 1 : 0;
+		if (!facingRight) {
+			spriteComponent->flipSprite(false);
+			facingRight = true;
+		}
 		break;
 	case SDLK_SPACE:
 
 		break;
 	}
-
-	//gameObject->setPosition();
 
 	return true;
 }

@@ -26,3 +26,7 @@ sre::Sprite SpriteComponent::getSprite()
 {
 	return sprite;
 }
+
+void SpriteComponent::flipSprite(bool flip) {
+	sprite.setFlip({ flip, false });
+}

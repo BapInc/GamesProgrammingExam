@@ -12,7 +12,7 @@ public:
 
 	void update(float deltaTime) override;
 
-	void setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset);
+	void setFollowObject(std::shared_ptr<GameObject> followObject);
 
 	sre::Camera& getCamera();
 

@@ -35,3 +35,7 @@ void SpriteComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAlloc
 	sprite.setScale({ scale["x"].GetFloat(), scale["y"].GetFloat() });
 	setSprite(sprite);
 }
+
+void SpriteComponent::flipSprite(bool flip) {
+	sprite.setFlip({ flip, false });
+}

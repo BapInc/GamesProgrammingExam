@@ -35,13 +35,13 @@ void LevelState::start()
 	auto prefabLoader = new PrefabManager();
 	prefabLoader->loadGameObjectsFromFile("./GameObjects.json", this);
 
-	auto player = prefabLoader->getPrefab("Player");
+	/*auto player = prefabLoader->getPrefab("Player");
 	createGameObject(player.get());
 	player->transform->SetPos({ -100, 150 });
 	glm::vec3 scale = { 10,10,10 };
 	player->getComponent<SpriteComponent>()->getSprite().setScale({ 100,100 });
 	// To show the player on screen
-	camera->setFollowObject(player, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
+	camera->setFollowObject(player, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });*/
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif
@@ -64,7 +64,7 @@ void LevelState::start()
 	playerSprite->setSprite(pSprite);
 	playerGO->transform->SetPos({ -200,200 });
 
-	camera->setFollowObject(playerGO, { 0, 0 });
+	camera->setFollowObject(playerGO);
 	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 
 	dungeon->drawAsciiDungeon();

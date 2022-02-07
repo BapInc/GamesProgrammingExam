@@ -68,7 +68,7 @@ const glm::vec2& DungeonGame::getWindowSize()
 
 void DungeonGame::onKey(SDL_Event& event)
 {
-	currentState->onKey();
+	currentState->onKey(event);
 }
 
 void DungeonGame::update(float time)

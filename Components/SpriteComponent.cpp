@@ -4,7 +4,7 @@
 
 #include "SpriteComponent.h"
 #include "../Game/GameObject.h"
-
+#include "../Utility/Debug.h"
 SpriteComponent::SpriteComponent(GameObject* gameObject) : Component(gameObject)
 {
 	this->gameObject = gameObject;
@@ -25,4 +25,13 @@ void SpriteComponent::setSprite(const sre::Sprite& sprite)
 sre::Sprite SpriteComponent::getSprite()
 {
 	return sprite;
+}
+
+void SpriteComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, GameState* state)
+{
+	const char* img = value->operator[]("sprite").GetString();
+	auto sprite = state->getSprite((char*)img);
+	auto scale = value->operator[]("scale").GetObject();
+	sprite.setScale({ scale["x"].GetFloat(), scale["y"].GetFloat() });
+	setSprite(sprite);
 }

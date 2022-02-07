@@ -48,3 +48,22 @@ void AudioComponent::stopSound(std::string name, FMOD_STUDIO_STOP_MODE stopMode)
 	}
 }
 
+void AudioComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value)
+{
+	// Iterate through a JSON list and add the name and value of each object to the sounds list
+	//"sounds": [
+	//{
+	//	"music": "event:/music/music_main_menu00"
+	//}
+	//]
+	auto jsonSounds = value->operator[]("sounds").GetArray();
+	for (auto& soundEvent : jsonSounds) {
+		for (auto& kvp : soundEvent.GetObject()) {
+
+			addSound(kvp.name.GetString(), kvp.value.GetString());
+		}
+	}
+
+}
+
+

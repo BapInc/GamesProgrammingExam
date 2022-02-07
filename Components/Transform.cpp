@@ -75,6 +75,16 @@ void Transform::SetPos(glm::vec2 pos)
 	//mat = glm::translate(glm::mat4(1.0f), position);
 }
 
+void Transform::SetRot(glm::vec3 rot)
+{
+	rotation = rot;
+}
+
+void Transform::SetScale(glm::vec3 scale)
+{
+	this->scale = scale;
+}
+
 
 float Transform::getAngle() const
 {

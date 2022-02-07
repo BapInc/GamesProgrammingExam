@@ -6,7 +6,7 @@
 #include "fmod.h"
 #include "../Managers/AudioManager.h"
 
-
+using namespace rapidjson;
 class AudioComponent : public Component
 {
 public:
@@ -16,6 +16,7 @@ public:
 	void playSound(std::string name);
 	void stopSound(std::string name, FMOD_STUDIO_STOP_MODE stopMode);
 
+	void AudioComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value) override;
 private:
 
 	std::shared_ptr<AudioManager> audioManager;

@@ -3,6 +3,7 @@
 #include "../Components/SpriteComponent.h"
 #include "../Components/AudioComponent.h"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
+#include "../Managers/PrefabManager.h"
 #include "../Utility/Debug.h"
 
 
@@ -14,6 +15,7 @@ LevelState::LevelState() : debugDraw(physicsScale)
 
 void LevelState::start()
 {
+	initPhysics();
 	loadSpriteSheet("spritesheet.json", "spritesheet.png");
 	dungeon = new NormalDungeon(*this);
 	dungeon->generateDungeon();
@@ -30,6 +32,16 @@ void LevelState::start()
 	auto camAudio = camObj->addComponent<AudioComponent>();
 	camAudio->addSound("music", "event:/music/music_main_menu00");
 	camAudio->playSound("music");
+	auto prefabLoader = new PrefabManager();
+	prefabLoader->loadGameObjectsFromFile("./GameObjects.json", this);
+
+	auto player = prefabLoader->getPrefab("Player");
+	createGameObject(player.get());
+	player->transform->SetPos({ -100, 150 });
+	glm::vec3 scale = { 10,10,10 };
+	player->getComponent<SpriteComponent>()->getSprite().setScale({ 100,100 });
+	// To show the player on screen
+	camera->setFollowObject(player, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif
@@ -174,5 +186,10 @@ std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object)
 	auto obj = std::shared_ptr<GameObject>(object);
 	sceneObjects.push_back(obj);
 	return obj;
+}
+
+b2World* LevelState::getPhysicsWorld()
+{
+	return world;
 }
 

@@ -10,7 +10,8 @@ class Player : public Component
 {
 
 public:
-	explicit Player(GameObject* gameObject);
+	
+	explicit Player(GameObject* gameObject);	
 
 public:
 	void setLevel(LevelState& level);

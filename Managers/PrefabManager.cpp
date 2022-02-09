@@ -3,6 +3,7 @@
 #include "../Utility/Debug.h"
 #include "../Components/AudioComponent.h"
 #include "../Components/SpriteAnimationComponent.h"
+#include "../Components/WeaponComponent.h"
 
 void PrefabManager::loadGameObjectsFromFile(std::string path, LevelState* state)
 {

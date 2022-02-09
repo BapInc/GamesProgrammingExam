@@ -2,6 +2,7 @@
 #include "../Game/DungeonGame.h"
 #include "../Components/SpriteComponent.h"
 #include "../Components/AudioComponent.h"
+#include "../Components/WeaponComponent.h"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "../Managers/PrefabManager.h"
 #include "../Utility/Debug.h"
@@ -45,8 +46,15 @@ void LevelState::start()
 	//PLAYER
 	player = prefabLoader->getPrefab("Player");
 	createGameObject(player.get());
-	player->getComponent<Player>()->setLevel(*this);
+	auto playerComponent = player->getComponent<Player>();
+	playerComponent->setLevel(*this);
 	camera->setFollowObject(player);
+
+	//WEAPON1
+	weapon1 = prefabLoader->getPrefab("Weapon1");
+	createGameObject(weapon1.get());
+	weapon1->addComponent<WeaponComponent>()->setPlayer(player);
+
 
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;

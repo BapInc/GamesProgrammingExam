@@ -19,6 +19,9 @@ void LevelState::start()
 	loadSpriteSheet("spritesheet.json", "spritesheet.png");
 	dungeon = new NormalDungeon(*this);
 	dungeon->generateDungeon();
+
+	//CAMERA
+	//
 	//camera.reset();
 	//sceneObjects.clear();
 	//camera.reset();
@@ -26,25 +29,31 @@ void LevelState::start()
 	camObj->name = "Camera";
 	camera = camObj->addComponent<TopDownCameraComponent>();
 	camObj->getTransform()->SetPos(DungeonGame::getInstance()->getWindowSize() * 0.5f);
+
+	//AUDIO
 	// ======== EXAMPLE =================
 	// || Add Component and play audio ||
 	// ======== EXAMPLE =================
 	auto camAudio = camObj->addComponent<AudioComponent>();
 	camAudio->addSound("music", "event:/music/music_main_menu00");
 	camAudio->playSound("music");
+
+	//PREFABS
 	auto prefabLoader = new PrefabManager();
 	prefabLoader->loadGameObjectsFromFile("./GameObjects.json", this);
 
-	/*auto player = prefabLoader->getPrefab("Player");
+	//PLAYER
+	player = prefabLoader->getPrefab("Player");
 	createGameObject(player.get());
-	player->transform->SetPos({ -100, 150 });
-	glm::vec3 scale = { 10,10,10 };
-	player->getComponent<SpriteComponent>()->getSprite().setScale({ 100,100 });
-	// To show the player on screen
-	camera->setFollowObject(player, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });*/
+	player->getComponent<Player>()->setLevel(*this);
+	player->transform->SetPos({ -200, 200 });
+	player->getComponent<SpriteComponent>()->getSprite().setScale({ 2,2 });
+	camera->setFollowObject(player);
+
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif
+
 	auto obj = createGameObject();
 	obj->name = "Demon";
 	auto spC = obj->addComponent<SpriteComponent>();
@@ -54,7 +63,7 @@ void LevelState::start()
 	obj->transform->SetPos({ -100,150 });
 
 	//Player
-	auto playerGO = createGameObject();
+	/*auto playerGO = createGameObject();
 	playerGO->name = "Player";
 	player = playerGO->addComponent<Player>();
 	player->setLevel(*this);
@@ -65,7 +74,7 @@ void LevelState::start()
 	playerGO->transform->SetPos({ -200,200 });
 
 	camera->setFollowObject(playerGO);
-	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
+	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });*/
 
 	dungeon->drawAsciiDungeon();
 }
@@ -107,7 +116,7 @@ void LevelState::render()
 
 void LevelState::onKey(SDL_Event& event)
 {
-	player->onKey(event);
+	player->getComponent<Player>()->onKey(event);
 
 }
 

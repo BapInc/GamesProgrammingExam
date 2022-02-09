@@ -46,8 +46,6 @@ void LevelState::start()
 	player = prefabLoader->getPrefab("Player");
 	createGameObject(player.get());
 	player->getComponent<Player>()->setLevel(*this);
-	player->transform->SetPos({ -200, 200 });
-	player->getComponent<SpriteComponent>()->getSprite().setScale({ 2,2 });
 	camera->setFollowObject(player);
 
 #ifdef _DEBUG
@@ -61,20 +59,6 @@ void LevelState::start()
 	sprit.setScale({ 2,2 });
 	spC->setSprite(sprit);
 	obj->transform->SetPos({ -100,150 });
-
-	//Player
-	/*auto playerGO = createGameObject();
-	playerGO->name = "Player";
-	player = playerGO->addComponent<Player>();
-	player->setLevel(*this);
-	auto playerSprite = playerGO->addComponent<SpriteComponent>();
-	auto pSprite = getSprite("lizard_f_idle_anim_f0.png");
-	pSprite.setScale({ 2,2 });
-	playerSprite->setSprite(pSprite);
-	playerGO->transform->SetPos({ -200,200 });
-
-	camera->setFollowObject(playerGO);
-	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });*/
 
 	dungeon->drawAsciiDungeon();
 }

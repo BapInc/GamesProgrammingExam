@@ -6,7 +6,7 @@
 #include "../Commands/MoveCommand.h"
 #include "glm/glm.hpp"
 
-Player::Player(GameObject* gameObject) : Component(gameObject), velocity(0)
+Player::Player(GameObject* gameObject) : Component(gameObject)
 {
 	this->gameObject = gameObject;
 	spriteComponent = gameObject->getComponent<SpriteComponent>();
@@ -19,7 +19,6 @@ void Player::setLevel(LevelState& level)
 }
 
 bool Player::onKey(SDL_Event& event) {
-	spriteComponent = gameObject->getComponent<SpriteComponent>();
 	switch (event.key.keysym.sym) {
 	case SDLK_w:
 		velocity.y = event.type == SDL_KEYDOWN ? 1 : 0;
@@ -53,6 +52,8 @@ bool Player::onKey(SDL_Event& event) {
 void Player::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, GameState* state)
 {
 	speed = value->operator[]("speed").GetFloat();
+	velocity.x = value->operator[]("velocity")["x"].GetFloat();
+	velocity.y = value->operator[]("velocity")["y"].GetFloat();
 }
 
 void Player::update(float deltaTime) {

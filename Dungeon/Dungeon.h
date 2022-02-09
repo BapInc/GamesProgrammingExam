@@ -14,6 +14,7 @@ protected:
 	void setMapValues();
 	void calculateAmountOfRooms();
 	virtual void generateRooms() {};
+	virtual void generateRoomConnections() {};
 	
 public:
 

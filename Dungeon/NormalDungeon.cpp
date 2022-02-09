@@ -16,7 +16,7 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 	maxRoomHeight = 5;
 	maxRoomWidth = 5;
 
-	roomVisibilityDistance = 15;
+	roomVisibilityDistance = 100;
 
 	mapWidth = 30;
 	mapHeight = 30;
@@ -137,15 +137,15 @@ void NormalDungeon::generateRooms()
 	} while (rooms.size() != amountOfRooms);
 }
 
-void NormalDungeon::generateMST()
+void NormalDungeon::generateRoomConnections()
 {
 	//check 
 
 	//Calculate all room distances
-	calculateMSTCost();
+	findVisibleRooms();
 }
 
-void NormalDungeon::calculateMSTCost()
+void NormalDungeon::findVisibleRooms()
 {
 	//Create Vector organised with lowest to highest costs
 	//This needs to then know which rooms it is trying to acess, maybe use strings for this
@@ -160,21 +160,17 @@ void NormalDungeon::calculateMSTCost()
 			if (i == j)
 				continue;
 
+			//Add reference to Vector of rooms in each one and calculate distance between them
 			tempDistance = CalculateDistance(rooms[i]->getCenterPos(), rooms[j]->getCenterPos());
 
 			if (tempDistance > roomVisibilityDistance)
 				continue;
 
 			rooms[i]->addRoomSeen(rooms[j], tempDistance);
-			//Add reference to Vector of rooms in each one and calculate distance between them
-			//if()
-
-			//rooms[i].ad
-
-			if (j == rooms.size() - 1)
-				rooms[i]->sortRoomsSeen();
-				//sort vector of rooms depending on distances
 		}
+
+		//sort vector of rooms depending on distances
+		rooms[i]->sortRoomsSeen();
 	}
 }
 
@@ -240,4 +236,8 @@ void NormalDungeon::generateRoomObject(RoomType type, int customWidth, int custo
 float NormalDungeon::CalculateDistance(glm::vec2& v, glm::vec2& w)
 {
 	return abs(sqrt(pow(v.x - w.x, 2) + pow(v.y - w.y, 2)));	
+}
+
+void NormalDungeon::BubbleSort()
+{
 }

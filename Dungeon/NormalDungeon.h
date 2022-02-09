@@ -12,12 +12,13 @@ public:
 protected:
 
 	void generateRooms() override;
-	void generateMST();
+	void generateRoomConnections() override;
 	void calculateMSTCost();
 	void connectMST();
 	void generateRandomRoom();
 	void generateRoomObject(RoomType type = RANDOMROOM, int customWidth = 0, int customHeight = 0);
 	float CalculateDistance(glm::vec2& v, glm::vec2& w);
+	void BubbleSort();
 
 private:
 

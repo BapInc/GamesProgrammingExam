@@ -1,5 +1,6 @@
 #include "Room.h"
 #include "../Utility/Debug.h"
+#include <iostream>
 
 Room::Room(int width, int height, glm::vec2 pos, RoomType type)
 {
@@ -28,6 +29,29 @@ void Room::addRoomSeen(std::shared_ptr<Room>& room, float& distance)
 
 void Room::sortRoomsSeen()
 {
+	bool swapped = false;
+	for (size_t i = 0; i < roomSeenDistance.size(); i++)
+	{
+		swapped = false;
+		for (size_t j = 0; j < roomSeenDistance.size() - 1; j++)
+		{
+			if (roomSeenDistance[j] > roomSeenDistance[j + 1])
+			{
+				Swap(roomSeenDistance[j], roomSeenDistance[j + 1]);
+				swapped = true;
+			}
+		}
+
+		if (swapped == false)
+			break;
+	}
+}
+
+void Room::Swap(float& x, float& y)
+{
+	float temp = x;
+	x = y;
+	y = temp;
 }
 
 int Room::getWidth()

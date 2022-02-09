@@ -22,7 +22,8 @@ public:
 
 	void addRoomSeen(std::shared_ptr<Room>& room, float& distance);
 	void sortRoomsSeen();
-
+private:
+	void Swap(float& x, float& y);
 public:
 
 	int getWidth();
@@ -32,7 +33,7 @@ public:
 
 	RoomType getType();
 	
-
+	
 private: 
 
 	int width;

@@ -7,6 +7,7 @@ void Dungeon::generateDungeon()
 	setMapValues();
 	calculateAmountOfRooms();
 	generateRooms();
+	generateRoomConnections();
 }
 
 void Dungeon::setMapValues()

@@ -47,7 +47,7 @@ private:
 	std::map<b2Fixture*, PhysicsComponent*> physicsComponents;
 
 	std::shared_ptr<TopDownCameraComponent> camera;
-	std::shared_ptr<Player> player;
+	std::shared_ptr<GameObject> player;
 
 	Box2DDebugDraw debugDraw;
 	bool doDebugDraw = false;

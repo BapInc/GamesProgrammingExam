@@ -80,6 +80,10 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 			auto topDownCameraComponent = gameObject->addComponent<TopDownCameraComponent>();
 
 		}
+		else if (componentName == "Player") {
+			auto playerComponent = gameObject->addComponent<Player>();
+			playerComponent->setValuesFromJSON(&component.value, state);
+		}
 
 		Debug::Log("Loading component: " + std::string(componentName));
 	}

@@ -50,8 +50,13 @@ bool Player::onKey(SDL_Event& event) {
 	return true;
 }
 
+void Player::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, GameState* state)
+{
+	speed = value->operator[]("speed").GetFloat();
+}
+
 void Player::update(float deltaTime) {
-	float speed = 100;
+
 	auto newPos = gameObject->getTransform()->getPos() + velocity * speed * deltaTime;
 
 	gameObject->getTransform()->SetPos(newPos);

@@ -2,6 +2,8 @@
 #include "../Utility/Debug.h"
 #include <iostream>
 
+int Room::amountOfRooms = 0;
+
 Room::Room(int width, int height, glm::vec2 pos, RoomType type)
 {
 	this->width = width;
@@ -10,6 +12,9 @@ Room::Room(int width, int height, glm::vec2 pos, RoomType type)
 	initialPos = pos;
 	this->centerPos = glm::vec2(pos.x + (width / 2), pos.y + (height / 2));
 	roomType = type;
+
+	amountOfRooms += 1;
+	roomNumber = amountOfRooms;
 }
 
 void Room::initialiseRoom()
@@ -37,7 +42,7 @@ void Room::sortRoomsSeen()
 		{
 			if (roomSeenDistance[j] > roomSeenDistance[j + 1])
 			{
-				Swap(roomSeenDistance[j], roomSeenDistance[j + 1]);
+				Swap(i, j);
 				swapped = true;
 			}
 		}
@@ -47,11 +52,16 @@ void Room::sortRoomsSeen()
 	}
 }
 
-void Room::Swap(float& x, float& y)
+void Room::Swap(int i, int j)
 {
-	float temp = x;
-	x = y;
-	y = temp;
+	float temp = roomSeenDistance[i];
+	auto tempRoom = roomSeen[i];
+
+	roomSeen[i] = roomSeen[j];
+	roomSeenDistance[i] = roomSeenDistance[j];
+
+	roomSeen[j] = tempRoom;
+	roomSeenDistance[j] = temp;
 }
 
 int Room::getWidth()
@@ -78,3 +88,12 @@ RoomType Room::getType()
 {
 	return roomType;
 }
+int Room::getRoomNumber() const
+{
+	return roomNumber;
+}
+//
+//const int Room::getRoomNumber() const
+//{
+//	return roomNumber;
+//}

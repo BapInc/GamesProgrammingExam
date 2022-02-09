@@ -23,21 +23,22 @@ public:
 	void addRoomSeen(std::shared_ptr<Room>& room, float& distance);
 	void sortRoomsSeen();
 private:
-	void Swap(float& x, float& y);
+	void Swap(int i, int j);
 public:
 
 	int getWidth();
 	int getHeight();
 	glm::vec2 getCenterPos() const;
 	std::vector <std::shared_ptr<Room>> getRoomsSeen();
-
 	RoomType getType();
-	
+	int getRoomNumber() const;
 	
 private: 
 
 	int width;
 	int height;
+	int roomNumber;
+	static int amountOfRooms;
 	glm::vec2 initialPos;
 	glm::vec2 centerPos;
 

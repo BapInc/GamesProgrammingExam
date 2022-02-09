@@ -28,7 +28,7 @@ void LevelState::start()
 	// ======== EXAMPLE =================
 	auto camAudio = camObj->addComponent<AudioComponent>();
 	camAudio->addSound("music", "event:/music/music_main_menu00");
-	camAudio->playSound("music");
+	//camAudio->playSound("music");
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif

@@ -174,7 +174,7 @@ void NormalDungeon::findVisibleRooms()
 	}
 }
 
-void NormalDungeon::connectMST()
+void NormalDungeon::connectRooms()
 {
 	std::vector<std::string> cost;
 	int selectedRoom = 0;

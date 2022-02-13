@@ -15,8 +15,9 @@ public:
 	explicit NavigationComponent(GameObject* gameObject);
 	void update(float deltaTime) override;
 	void setDestination(glm::vec2 position);
-	void setRandomDestination(int minDistance, int maxDistance);
+	void setRandomDestination(int moveLength);
 	void moveToDestination(float deltaTime);
+	void activateNavigation();
 	void setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value);
 	void setMovementSpeed(float speed);
 
@@ -26,6 +27,7 @@ private:
 	bool hasPath = false;
 	bool isPaused = false;
 	float movementSpeed = 10.0f;
+	glm::vec2 initialPosition = { 0,0 };
 
 	glm::vec2 destination = { 0,0 };
 	std::shared_ptr<PhysicsComponent> physicsComponent;

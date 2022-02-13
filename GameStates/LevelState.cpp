@@ -4,6 +4,7 @@
 #include "../Components/AudioComponent.h"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "../Utility/Debug.h"
+#include "../AI/NavigationComponent.h"
 
 using namespace sre;
 
@@ -38,6 +39,7 @@ void LevelState::start()
 	auto enemy = prefabManager->getPrefab("Enemy", this);
 	auto enemyGO = createGameObject(enemy.get());
 	enemyGO->transform->SetPos({ -200,200 });
+	enemyGO->getComponent<NavigationComponent>()->activateNavigation();
 
 
 #ifdef _DEBUG
@@ -142,7 +144,6 @@ void LevelState::updatePhysics()
 		float angle = phys.second->body->GetAngle();
 		auto gameObject = phys.second->getGameObject();
 		if (gameObject != nullptr) {
-			std::cout << gameObject->name << std::endl;
 			gameObject->getTransform()->SetPos(glm::vec2(position.x * physicsScale, position.y * physicsScale));
 			gameObject->getTransform()->Rotate(angle);
 		}

@@ -1,4 +1,7 @@
-#pragma once
+#ifndef WEAPONCOMPONENT_H
+#define WEAPONCOMPONENT_H
+
+#include "Component.h"
 #include "../Components/Component.h"
 #include "../Game/GameObject.h"
 #include "../Components/SpriteComponent.h"
@@ -19,3 +22,4 @@ private:
 
 
 };
+#endif

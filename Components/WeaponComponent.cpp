@@ -21,5 +21,5 @@ void WeaponComponent::update(float deltaTime) {
 
 	auto newPos = player->getTransform()->getPos();
 
-	gameObject->getTransform()->SetPos(newPos);
+	gameObject->getTransform()->SetPos(newPos + glm::vec2(10,-15));
 }

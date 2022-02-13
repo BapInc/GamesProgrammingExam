@@ -37,7 +37,7 @@ void LevelState::start()
 	// ======== EXAMPLE =================
 	auto camAudio = camObj->addComponent<AudioComponent>();
 	camAudio->addSound("music", "event:/music/music_main_menu00");
-	camAudio->playSound("music");
+	//camAudio->playSound("music");
 
 	//PREFABS
 	auto prefabLoader = new PrefabManager();

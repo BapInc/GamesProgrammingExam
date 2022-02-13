@@ -113,18 +113,7 @@ void NormalDungeon::generateRooms()
 		{
 			for (size_t j = 0; j < height; j++)
 			{
-				auto obj = new GameObject();
-				std::string name = "floorTile";
-				obj->setName(name);
-				auto spC = obj->addComponent<SpriteComponent>();
-				auto sprit = levelState->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
-				float scaleMultiplier = 2.0f;
-				sprit.setScale({ scaleMultiplier,scaleMultiplier });
-				spC->setSprite(sprit);
-
-				dungeonMap[randX + i][randY + j] = obj;
-				dungeonMap[randX + i][randY + j]->getTransform()->SetPos(glm::vec2((randX + i) * (sprit.getSpriteSize().x * scaleMultiplier), (randY + j) * (sprit.getSpriteSize().y * scaleMultiplier)));
-				levelState->createGameObject(dungeonMap[randX + i][randY + j]);
+				createFloor(randX + i, randY + j);
 				itWithoutRoom = 0;
 			}
 		}
@@ -178,6 +167,24 @@ void NormalDungeon::findVisibleRooms()
 	}
 }
 
+void NormalDungeon::createFloor(int x, int y)
+{
+	auto obj = new GameObject();
+	std::string name = "floorTile";
+	obj->setName(name);
+	auto spC = obj->addComponent<SpriteComponent>();
+	//TODO: Use prefab manager and randomize tiles
+	auto sprit = levelState->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
+	float scaleMultiplier = 2.0f;
+	sprit.setScale({ scaleMultiplier,scaleMultiplier });
+	spC->setSprite(sprit);
+
+	dungeonMap[x][y] = obj;
+	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (sprit.getSpriteSize().x * scaleMultiplier),
+											(y) * (sprit.getSpriteSize().y * scaleMultiplier)));
+	levelState->createGameObject(dungeonMap[x][y]);
+}
+
 void NormalDungeon::connectRooms()
 {
 	std::vector<float> keys;
@@ -186,24 +193,20 @@ void NormalDungeon::connectRooms()
 	bool isFirstConnection = true;
 	while (roomsConnected.size() != rooms.size())
 	{
-		//for (size_t i = 0; i < rooms.size(); i++)
+		for (size_t j = 0; j < rooms[selectedRoom]->getRoomsSeen().size(); j++)
 		{
+			//Add all seen costs to list
+			int roomSeen = rooms[selectedRoom]->getRoomsSeen()[j]->getRoomNumber();
 
-			for (size_t j = 0; j < rooms[selectedRoom]->getRoomsSeen().size(); j++)
+			//If room is not in cycle add cost
+			if (std::find(roomsConnected.begin(), roomsConnected.end(), roomSeen) == roomsConnected.end())
 			{
-				//Add all seen costs to list
-				int roomSeen = rooms[selectedRoom]->getRoomsSeen()[j]->getRoomNumber();
-
-				//If room is not in cycle add cost
-				if (std::find(roomsConnected.begin(), roomsConnected.end(), roomSeen) == roomsConnected.end())
-				{
-					std::string temp = std::to_string(rooms[selectedRoom]->getRoomNumber()) + parserToken + std::to_string(roomSeen);
-					float distance = rooms[selectedRoom]->getRoomSeenDistance(j);
-					costs[distance] = temp;
-					keys.push_back(distance);
-				}
+				std::string temp = std::to_string(rooms[selectedRoom]->getRoomNumber()) + parserToken + std::to_string(roomSeen);
+				float distance = rooms[selectedRoom]->getRoomSeenDistance(j);
+				costs[distance] = temp;
+				keys.push_back(distance);
 			}
-		} 
+		}
 
 		//TODO: Sort and Chose the cheapest cost and do it, no need to check if there are equal costs.
 		sortCosts(keys);
@@ -247,14 +250,9 @@ void NormalDungeon::connectRooms()
 		rooms[connectRooms.x]->addRoomConnected(rooms[connectRooms.y]);
 		rooms[connectRooms.y]->addRoomConnected(rooms[connectRooms.x]);
 		//Generate corridor and connect rooms
-	}
-}
 
-void NormalDungeon::connectRoom(bool& firstconnection, std::vector<int>& roomscycle)
-{
-	//Add connections to both rooms
-	//Add rooms to the cycle
-	//Remove room from costs
+		generateCorridor(connectRooms.x, connectRooms.y);
+	}
 }
 
 void NormalDungeon::generateRandomRoom()
@@ -262,6 +260,51 @@ void NormalDungeon::generateRandomRoom()
 	int width = rand() % (maxRoomWidth - minRoomWidth + 1) - minRoomWidth;
 	int height = rand() % (maxRoomHeight - minRoomHeight + 1) - minRoomHeight;
 }
+
+void NormalDungeon::generateCorridor(int roomOne, int roomTwo)
+{
+	//Randomize if it starts on y or x. 
+	int randomDir = rand() % 2;
+	std::cout << "RANDOM DIR: " + std::to_string(randomDir);
+	//TODO: Preferably corridors should go right or left depending if they encounter any other corridors
+
+	//for loop for each axis
+	int secondDir;
+	glm::ivec2 tempDistance;
+	tempDistance.x = std::abs(rooms[roomOne]->getCenterPos().x - rooms[roomTwo]->getCenterPos().x);
+	tempDistance.y = std::abs(rooms[roomOne]->getCenterPos().y - rooms[roomTwo]->getCenterPos().y);
+
+	generateCorridorAxis(true, randomDir, roomOne, roomTwo, tempDistance);
+}
+
+void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int roomTwo, glm::ivec2& distance)
+{
+	int tileDistance = 0;
+	if (axis == 0)
+	{
+		axis++;
+		tileDistance = distance.x;
+	}
+	else
+	{
+		axis--;
+		tileDistance = distance.y;
+	}
+
+	for (size_t i = 0; i < tileDistance; i++)
+	{
+		glm::ivec2 temp = rooms[roomOne]->getCenterPos();
+
+		if (axis == 1)
+			createFloor(temp.x + i, temp.y);
+		else
+			createFloor(temp.x, temp.y + i);
+	}
+
+	//if (first)
+		//generateCorridorAxis(false, axis, roomOne, roomTwo, distance);
+}
+
 void NormalDungeon::generateRoomObject(RoomType type, int customWidth, int customHeight)
 {
 	//Room* room;
@@ -297,7 +340,7 @@ void NormalDungeon::generateRoomObject(RoomType type, int customWidth, int custo
 	//}
 }
 
-float NormalDungeon::CalculateDistance(glm::vec2& v, glm::vec2& w)
+float NormalDungeon::CalculateDistance(glm::ivec2& v, glm::ivec2& w)
 {
 	return abs(sqrt(pow(v.x - w.x, 2) + pow(v.y - w.y, 2)));	
 }

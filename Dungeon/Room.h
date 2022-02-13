@@ -29,7 +29,7 @@ public:
 
 	int getWidth();
 	int getHeight();
-	glm::vec2 getCenterPos() const;
+	glm::ivec2 getCenterPos() const;
 	std::vector <std::shared_ptr<Room>> getRoomsSeen();
 	std::vector <std::shared_ptr<Room>> getRoomsConnected();
 	float getRoomSeenDistance(int i);
@@ -43,7 +43,7 @@ private:
 	int roomNumber;
 	static int amountOfRooms;
 	glm::vec2 initialPos;
-	glm::vec2 centerPos;
+	glm::ivec2 centerPos;
 
 	std::vector <std::shared_ptr<Room>> roomSeen;
 	std::vector <float> roomSeenDistance;

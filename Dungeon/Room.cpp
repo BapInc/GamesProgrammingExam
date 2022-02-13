@@ -10,6 +10,7 @@ Room::Room(int width, int height, glm::vec2 pos, RoomType type)
 	this->height = height;
 
 	initialPos = pos;
+	//TODO: Make this 4 | 2 | 1 positions accordingly to the width and height. 
 	this->centerPos = glm::vec2(pos.x + (width / 2), pos.y + (height / 2));
 	roomType = type;
 
@@ -79,7 +80,7 @@ int Room::getHeight()
 	return height;
 }
 
-glm::vec2 Room::getCenterPos() const
+glm::ivec2 Room::getCenterPos() const
 {
 	return centerPos;
 }

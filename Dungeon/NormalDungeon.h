@@ -14,11 +14,13 @@ protected:
 	void generateRooms() override;
 	void generateRoomConnections() override;
 	void findVisibleRooms();
+	void createFloor(int x, int y);
 	void connectRooms();
 	void generateRandomRoom();
-	void connectRoom(bool& firstconnection, std::vector<int>& roomscycle);
+	void generateCorridor(int roomOne, int roomTwo);
+	void generateCorridorAxis(bool first, int axis, int roomOne, int roomTwo, glm::ivec2& distance);
 	void generateRoomObject(RoomType type = RANDOMROOM, int customWidth = 0, int customHeight = 0);
-	float CalculateDistance(glm::vec2& v, glm::vec2& w);
+	float CalculateDistance(glm::ivec2& v, glm::ivec2& w);
 
 private:
 

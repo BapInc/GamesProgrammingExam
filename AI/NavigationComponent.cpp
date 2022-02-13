@@ -30,7 +30,6 @@ void NavigationComponent::setRandomDestination(int moveLength)
 			randY = rand() % 3 - 1;
 	}
 	pos = { pos.x + randX * moveLength, pos.y + randY * moveLength };
-	Debug::Log("x: " + std::to_string(randX) + " y: " + std::to_string(randY));
 	destination = pos;
 
 	hasPath = true;

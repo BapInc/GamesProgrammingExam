@@ -3,7 +3,6 @@
 #include "../Components/SpriteComponent.h"
 #include "../Components/AudioComponent.h"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
-#include "../Managers/PrefabManager.h"
 #include "../Utility/Debug.h"
 
 using namespace sre;
@@ -18,9 +17,7 @@ void LevelState::start()
 	loadSpriteSheet("spritesheet.json", "spritesheet.png");
 	dungeon = new NormalDungeon(*this);
 	dungeon->generateDungeon();
-	//camera.reset();
-	//sceneObjects.clear();
-	//camera.reset();
+
 	auto camObj = createGameObject();
 	camObj->name = "Camera";
 	camera = camObj->addComponent<TopDownCameraComponent>();
@@ -31,32 +28,23 @@ void LevelState::start()
 	auto camAudio = camObj->addComponent<AudioComponent>();
 	camAudio->addSound("music", "event:/music/music_main_menu00");
 	camAudio->playSound("music");
-	auto prefabLoader = new PrefabManager();
-	prefabLoader->loadGameObjectsFromFile("./GameObjects.json", this);
-
-
-	// To show the player on screen
+	prefabManager = std::make_shared<PrefabManager>();
+	prefabManager->loadGameObjectsFromFile("./GameObjects.json", this);
 
 
 	// ======== EXAMPLE =================
 	// ||		   AI				   ||
 	// ======== EXAMPLE =================
-	auto enemy = prefabLoader->getPrefab("Enemy");
-	createGameObject(enemy.get());
-	enemy->transform->SetPos({ -200,200 });
+	auto enemy = prefabManager->getPrefab("Enemy", this);
+	auto enemyGO = createGameObject(enemy.get());
+	enemyGO->transform->SetPos({ -200,200 });
+
 
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif
 
 
-	auto obj = createGameObject();
-	obj->name = "Demon";
-	auto spC = obj->addComponent<SpriteComponent>();
-	auto sprit = getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
-	sprit.setScale({ 2,2 });
-	spC->setSprite(sprit);
-	obj->transform->SetPos({ -100,150 });
 
 	//Player
 	auto playerGO = createGameObject();
@@ -80,11 +68,11 @@ void LevelState::start()
 
 void LevelState::update(float deltaTime)
 {
+	updatePhysics();
 	for (auto& obj : sceneObjects)
 	{
 		obj->update(deltaTime);
 	}
-	updatePhysics();
 
 }
 
@@ -153,8 +141,11 @@ void LevelState::updatePhysics()
 		auto position = phys.second->body->GetPosition();
 		float angle = phys.second->body->GetAngle();
 		auto gameObject = phys.second->getGameObject();
-		gameObject->getTransform()->SetPos(glm::vec2(position.x * physicsScale, position.y * physicsScale));
-		gameObject->getTransform()->Rotate(angle);
+		if (gameObject != nullptr) {
+			std::cout << gameObject->name << std::endl;
+			gameObject->getTransform()->SetPos(glm::vec2(position.x * physicsScale, position.y * physicsScale));
+			gameObject->getTransform()->Rotate(angle);
+		}
 	}
 }
 
@@ -229,6 +220,16 @@ std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object)
 		physicsComponents[physicsComponent->fixture] = physicsComponent.get();
 	}
 	return obj;
+}
+
+std::shared_ptr<GameObject> LevelState::createGameObject(std::shared_ptr<GameObject> object)
+{
+	sceneObjects.push_back(object);
+	auto physicsComponent = object->getComponent<PhysicsComponent>();
+	if (physicsComponent != nullptr) {
+		physicsComponents[physicsComponent->fixture] = physicsComponent.get();
+	}
+	return object;
 }
 
 b2World* LevelState::getPhysicsWorld()

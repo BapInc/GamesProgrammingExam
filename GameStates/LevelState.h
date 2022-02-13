@@ -2,17 +2,20 @@
 #define LEVELSTATE_H
 
 #include "GameState.h"
-#include "../Utility/Box2DDebugDraw.h"
 #include "sre/SpriteAtlas.hpp"
-#include "../Components/PhysicsComponent.h"
 #include "Box2D/Dynamics/b2World.h"
-#include "../Components/TopDownCameraComponent.h"
-#include "../Dungeon/NormalDungeon.h"
+
 #include "../Player/Player.h"
+#include "../Dungeon/NormalDungeon.h"
+#include "../Utility/Box2DDebugDraw.h"
+#include "../Managers/PrefabManager.h"
+#include "../Components/PhysicsComponent.h"
+#include "../Components/TopDownCameraComponent.h"
 
 
 class PhysicsComponent;
 class Player;
+class PrefabManager;
 
 class LevelState : public GameState, public b2ContactListener
 {
@@ -35,6 +38,7 @@ public:
 	void handleContact(b2Contact* contact, bool begin);
 	std::shared_ptr<GameObject> LevelState::createGameObject();
 	std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object);
+	std::shared_ptr<GameObject> LevelState::createGameObject(std::shared_ptr<GameObject> object);
 	b2World* getPhysicsWorld();
 private:
 
@@ -42,6 +46,7 @@ private:
 
 	b2World* world = nullptr;
 	std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
+	std::shared_ptr<PrefabManager> prefabManager;
 
 	std::vector<std::shared_ptr<GameObject>> sceneObjects;
 	std::map<b2Fixture*, PhysicsComponent*> physicsComponents;

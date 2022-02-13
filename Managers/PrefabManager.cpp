@@ -3,6 +3,7 @@
 #include "../Utility/Debug.h"
 #include "../Components/AudioComponent.h"
 #include "../Components/SpriteAnimationComponent.h"
+#include "../Components/PhysicsComponent.h"
 #include "../AI/NavigationComponent.h"
 
 void PrefabManager::loadGameObjectsFromFile(std::string path, LevelState* state)
@@ -95,9 +96,9 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 	}
 }
 
-std::shared_ptr<GameObject> PrefabManager::getPrefab(std::string name)
+std::shared_ptr<GameObject> PrefabManager::getPrefab(std::string name, LevelState* state)
 {
 	auto foundPrefab = prefabs[name];
 	auto prefab = std::make_shared<GameObject>(*foundPrefab);
-	return prefab;
+	return state->createGameObject(prefab);
 }

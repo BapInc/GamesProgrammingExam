@@ -30,6 +30,7 @@ public:
 	int getHeight();
 	glm::vec2 getCenterPos() const;
 	std::vector <std::shared_ptr<Room>> getRoomsSeen();
+	float getRoomSeenDistance(int i);
 	RoomType getType();
 	int getRoomNumber() const;
 	

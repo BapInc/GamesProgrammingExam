@@ -18,10 +18,11 @@ protected:
 	void generateRandomRoom();
 	void generateRoomObject(RoomType type = RANDOMROOM, int customWidth = 0, int customHeight = 0);
 	float CalculateDistance(glm::vec2& v, glm::vec2& w);
-	void BubbleSort();
 
 private:
 
+	void swap(float& x, float& y);
+	glm::ivec2 parseConnections(std::string& string);
 	//TODO: Maybe keep pointers to start/end and reward rooms
 
 	LevelState* levelState;
@@ -48,6 +49,8 @@ private:
 
 	int bossRoomWidth;
 	int bossRoomHeight;
+
+	char parserToken = '_';
 };
 
 #endif // ! NORMALDUNGEON

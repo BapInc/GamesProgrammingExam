@@ -84,6 +84,11 @@ std::vector<std::shared_ptr<Room>> Room::getRoomsSeen()
 	return roomSeen;
 }
 
+float Room::getRoomSeenDistance(int i)
+{
+	return roomSeenDistance[i];
+}
+
 RoomType Room::getType()
 {
 	return roomType;

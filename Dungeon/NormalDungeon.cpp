@@ -3,6 +3,7 @@
 #include "../Components/SpriteComponent.h"
 #include <iostream>
 #include <cmath>
+#include <map>
 
 typedef  std::pair<int, int> iPair;
 
@@ -176,18 +177,29 @@ void NormalDungeon::findVisibleRooms()
 
 void NormalDungeon::connectRooms()
 {
-	std::vector<std::string> cost;
+	std::vector<float> keys;
+	std::map<float, std::string> costs;
 	int selectedRoom = 0;
 	while (roomsConnected.size() != rooms.size())
 	{
-		for (size_t i = 0; i < rooms[selectedRoom]->getRoomsSeen().size(); i++)
+		//for (size_t i = 0; i < rooms.size(); i++)
 		{
-			//Add all seen costs to list
-			//std::string temp = 
-			//cost.push_back()
-		}
 
-		//TODO: Chose the cheapest cost and do it, no need to check if there are equal costs.
+			for (size_t j = 0; j < rooms[selectedRoom]->getRoomsSeen().size(); j++)
+			{
+				//Add all seen costs to list
+			
+				std::string temp = std::to_string(rooms[selectedRoom]->getRoomNumber()) + parserToken + std::to_string(rooms[selectedRoom]->getRoomsSeen()[j]->getRoomNumber());
+				std::cout << "string: " + temp << std::endl;
+
+				float distance = rooms[selectedRoom]->getRoomSeenDistance(j);
+				costs[distance] = temp;
+				keys.push_back(distance);
+			}
+		} 
+
+
+		//TODO: Sort and Chose the cheapest cost and do it, no need to check if there are equal costs.
 
 		//Generate corridor and connect rooms
 	}
@@ -238,6 +250,14 @@ float NormalDungeon::CalculateDistance(glm::vec2& v, glm::vec2& w)
 	return abs(sqrt(pow(v.x - w.x, 2) + pow(v.y - w.y, 2)));	
 }
 
-void NormalDungeon::BubbleSort()
+void NormalDungeon::swap(float& x, float& y)
 {
+	float temp = x;
+	x = y;
+	y = temp;
+}
+
+glm::ivec2 NormalDungeon::parseConnections(std::string& string)
+{
+	return glm::ivec2();
 }

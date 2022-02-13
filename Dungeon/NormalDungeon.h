@@ -16,12 +16,14 @@ protected:
 	void findVisibleRooms();
 	void connectRooms();
 	void generateRandomRoom();
+	void connectRoom(bool& firstconnection, std::vector<int>& roomscycle);
 	void generateRoomObject(RoomType type = RANDOMROOM, int customWidth = 0, int customHeight = 0);
 	float CalculateDistance(glm::vec2& v, glm::vec2& w);
 
 private:
 
 	void swap(float& x, float& y);
+	void sortCosts(std::vector<float>& mapkeys);
 	glm::ivec2 parseConnections(std::string& string);
 	//TODO: Maybe keep pointers to start/end and reward rooms
 

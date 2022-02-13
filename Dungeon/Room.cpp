@@ -13,8 +13,8 @@ Room::Room(int width, int height, glm::vec2 pos, RoomType type)
 	this->centerPos = glm::vec2(pos.x + (width / 2), pos.y + (height / 2));
 	roomType = type;
 
-	amountOfRooms += 1;
 	roomNumber = amountOfRooms;
+	amountOfRooms += 1;
 }
 
 void Room::initialiseRoom()
@@ -32,6 +32,11 @@ void Room::addRoomSeen(std::shared_ptr<Room>& room, float& distance)
 	roomSeenDistance.push_back(distance);
 }
 
+void Room::addRoomConnected(std::shared_ptr<Room>& room)
+{
+	roomsConnected.push_back(room);
+}
+
 void Room::sortRoomsSeen()
 {
 	bool swapped = false;
@@ -42,7 +47,7 @@ void Room::sortRoomsSeen()
 		{
 			if (roomSeenDistance[j] > roomSeenDistance[j + 1])
 			{
-				Swap(i, j);
+				swap(i, j);
 				swapped = true;
 			}
 		}
@@ -52,7 +57,7 @@ void Room::sortRoomsSeen()
 	}
 }
 
-void Room::Swap(int i, int j)
+void Room::swap(int i, int j)
 {
 	float temp = roomSeenDistance[i];
 	auto tempRoom = roomSeen[i];
@@ -82,6 +87,11 @@ glm::vec2 Room::getCenterPos() const
 std::vector<std::shared_ptr<Room>> Room::getRoomsSeen()
 {
 	return roomSeen;
+}
+
+std::vector<std::shared_ptr<Room>> Room::getRoomsConnected()
+{
+	return roomsConnected;
 }
 
 float Room::getRoomSeenDistance(int i)

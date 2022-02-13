@@ -1,6 +1,7 @@
 #include "NormalDungeon.h"
 #include "../Utility/Debug.h"
 #include "../Components/SpriteComponent.h"
+#include <algorithm>
 #include <iostream>
 #include <cmath>
 #include <map>
@@ -144,6 +145,8 @@ void NormalDungeon::generateRoomConnections()
 
 	//Calculate all room distances
 	findVisibleRooms();
+
+	connectRooms();
 }
 
 void NormalDungeon::findVisibleRooms()
@@ -180,6 +183,7 @@ void NormalDungeon::connectRooms()
 	std::vector<float> keys;
 	std::map<float, std::string> costs;
 	int selectedRoom = 0;
+	bool isFirstConnection = true;
 	while (roomsConnected.size() != rooms.size())
 	{
 		//for (size_t i = 0; i < rooms.size(); i++)
@@ -188,21 +192,69 @@ void NormalDungeon::connectRooms()
 			for (size_t j = 0; j < rooms[selectedRoom]->getRoomsSeen().size(); j++)
 			{
 				//Add all seen costs to list
-			
-				std::string temp = std::to_string(rooms[selectedRoom]->getRoomNumber()) + parserToken + std::to_string(rooms[selectedRoom]->getRoomsSeen()[j]->getRoomNumber());
-				std::cout << "string: " + temp << std::endl;
+				int roomSeen = rooms[selectedRoom]->getRoomsSeen()[j]->getRoomNumber();
 
-				float distance = rooms[selectedRoom]->getRoomSeenDistance(j);
-				costs[distance] = temp;
-				keys.push_back(distance);
+				//If room is not in cycle add cost
+				if (std::find(roomsConnected.begin(), roomsConnected.end(), roomSeen) == roomsConnected.end())
+				{
+					std::string temp = std::to_string(rooms[selectedRoom]->getRoomNumber()) + parserToken + std::to_string(roomSeen);
+					float distance = rooms[selectedRoom]->getRoomSeenDistance(j);
+					costs[distance] = temp;
+					keys.push_back(distance);
+				}
 			}
 		} 
 
-
 		//TODO: Sort and Chose the cheapest cost and do it, no need to check if there are equal costs.
+		sortCosts(keys);
 
+		glm::ivec2 connectRooms;
+
+		bool isRoomInCycle = false;
+		do
+		{
+			connectRooms = parseConnections(costs[keys[0]]);
+			if (std::find(roomsConnected.begin(), roomsConnected.end(), connectRooms.y) != roomsConnected.end())
+			{
+				costs.erase(keys[0]);
+				keys.erase(keys.begin());
+				isRoomInCycle = true;
+			}
+			else
+			{
+				isRoomInCycle = false;
+			}
+
+		} while (isRoomInCycle == true);
+
+		float distance = keys[0];
+
+		//Add connections to both rooms
+		if (isFirstConnection)
+		{
+			roomsConnected.push_back(connectRooms.x);
+			isFirstConnection = false;
+		}
+
+		//Add rooms to the cycle
+		roomsConnected.push_back(connectRooms.y);
+		selectedRoom = connectRooms.y;
+		//Remove room from costs
+		costs.erase(distance);
+		keys.erase(keys.begin());
+
+		//room connections
+		rooms[connectRooms.x]->addRoomConnected(rooms[connectRooms.y]);
+		rooms[connectRooms.y]->addRoomConnected(rooms[connectRooms.x]);
 		//Generate corridor and connect rooms
 	}
+}
+
+void NormalDungeon::connectRoom(bool& firstconnection, std::vector<int>& roomscycle)
+{
+	//Add connections to both rooms
+	//Add rooms to the cycle
+	//Remove room from costs
 }
 
 void NormalDungeon::generateRandomRoom()
@@ -257,7 +309,36 @@ void NormalDungeon::swap(float& x, float& y)
 	y = temp;
 }
 
+void NormalDungeon::sortCosts(std::vector<float>& mapkeys)
+{
+	bool swapped = false;
+	for (size_t i = 0; i < mapkeys.size(); i++)
+	{
+		swapped = false;
+		for (size_t j = 0; j < mapkeys.size() - 1; j++)
+		{
+			if (mapkeys[j] > mapkeys[j + 1])
+			{
+				swap(mapkeys[j], mapkeys[j + 1]);
+				swapped = true;
+			}
+		}
+
+		if (swapped == false)
+			break;
+	}
+}
+
 glm::ivec2 NormalDungeon::parseConnections(std::string& string)
 {
-	return glm::ivec2();
+	glm::ivec2 temp;
+	std::string tempString;
+	int pos = string.find(parserToken);
+
+	tempString = string.substr(0, pos);
+	std::string tempString2 = string.substr(pos + 1, std::string::npos);
+
+	temp.x = std::stoi(tempString);
+	temp.y = std::stoi(tempString2);
+	return temp;
 }

@@ -21,15 +21,17 @@ public:
 public:
 
 	void addRoomSeen(std::shared_ptr<Room>& room, float& distance);
+	void addRoomConnected(std::shared_ptr<Room>& room);
 	void sortRoomsSeen();
 private:
-	void Swap(int i, int j);
+	void swap(int i, int j);
 public:
 
 	int getWidth();
 	int getHeight();
 	glm::vec2 getCenterPos() const;
 	std::vector <std::shared_ptr<Room>> getRoomsSeen();
+	std::vector <std::shared_ptr<Room>> getRoomsConnected();
 	float getRoomSeenDistance(int i);
 	RoomType getType();
 	int getRoomNumber() const;
@@ -45,7 +47,7 @@ private:
 
 	std::vector <std::shared_ptr<Room>> roomSeen;
 	std::vector <float> roomSeenDistance;
-	std::vector <std::shared_ptr<int>> roomsConnected;
+	std::vector <std::shared_ptr<Room>> roomsConnected;
 
 	std::vector<std::shared_ptr<char>> roomMap;
 	//TODO: Maybe use if sort isn't used and to shift objects around

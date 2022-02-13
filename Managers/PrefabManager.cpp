@@ -3,6 +3,7 @@
 #include "../Utility/Debug.h"
 #include "../Components/AudioComponent.h"
 #include "../Components/SpriteAnimationComponent.h"
+#include "../AI/NavigationComponent.h"
 
 void PrefabManager::loadGameObjectsFromFile(std::string path, LevelState* state)
 {
@@ -67,18 +68,27 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 		}
 		else if (componentName == "SpriteAnimationComponent")
 		{
+			Debug::Log("Adding SpriteAnimationComponent");
 			auto spriteAnimationComponent = gameObject->addComponent<SpriteAnimationComponent>();
 
 		}
 		else if (componentName == "SpriteComponent")
 		{
+			Debug::Log("Adding SpriteComponent");
 			auto spriteComponent = gameObject->addComponent<SpriteComponent>();
 			spriteComponent->setValuesFromJSON(&component.value, state);
 		}
 		else if (componentName == "TopDownCameraComponent")
 		{
+			Debug::Log("Adding TopDownCameraComponent");
 			auto topDownCameraComponent = gameObject->addComponent<TopDownCameraComponent>();
 
+		}
+		else if (componentName == "NavigationComponent")
+		{
+			Debug::Log("Adding NavigationComponent");
+			auto navigationComponent = gameObject->addComponent<NavigationComponent>();
+			navigationComponent->setValuesFromJSON(&component.value);
 		}
 
 		Debug::Log("Loading component: " + std::string(componentName));

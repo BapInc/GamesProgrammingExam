@@ -6,7 +6,6 @@
 #include "../Managers/PrefabManager.h"
 #include "../Utility/Debug.h"
 
-
 using namespace sre;
 
 LevelState::LevelState() : debugDraw(physicsScale)
@@ -35,16 +34,22 @@ void LevelState::start()
 	auto prefabLoader = new PrefabManager();
 	prefabLoader->loadGameObjectsFromFile("./GameObjects.json", this);
 
-	auto player = prefabLoader->getPrefab("Player");
-	createGameObject(player.get());
-	player->transform->SetPos({ -100, 150 });
-	glm::vec3 scale = { 10,10,10 };
-	player->getComponent<SpriteComponent>()->getSprite().setScale({ 100,100 });
+
 	// To show the player on screen
-	camera->setFollowObject(player, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
+
+
+	// ======== EXAMPLE =================
+	// ||		   AI				   ||
+	// ======== EXAMPLE =================
+	auto enemy = prefabLoader->getPrefab("Enemy");
+	createGameObject(enemy.get());
+	enemy->transform->SetPos({ -200,200 });
+
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif
+
+
 	auto obj = createGameObject();
 	obj->name = "Demon";
 	auto spC = obj->addComponent<SpriteComponent>();
@@ -68,6 +73,9 @@ void LevelState::start()
 	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 
 	dungeon->drawAsciiDungeon();
+
+
+
 }
 
 void LevelState::update(float deltaTime)
@@ -76,6 +84,8 @@ void LevelState::update(float deltaTime)
 	{
 		obj->update(deltaTime);
 	}
+	updatePhysics();
+
 }
 
 void LevelState::render()
@@ -103,6 +113,13 @@ void LevelState::render()
 		rp.drawLines(debugDraw.getLines());
 		debugDraw.clear();
 	}
+
+	ImGui::SetNextWindowPos(ImVec2(Renderer::instance->getWindowSize().x / 2 - 100, .0f), ImGuiSetCond_Always);
+	ImGui::SetNextWindowSize(ImVec2(400, 100), ImGuiSetCond_Always);
+	ImGui::Begin("Player");
+	//ImGui::Text("Player pos: x: %02d, y: %02d", enemyPos.x, enemyPos.y);
+	ImGui::Text("I am text");
+	ImGui::End();
 }
 
 void LevelState::onKey(SDL_Event& event)
@@ -120,6 +137,24 @@ void LevelState::initPhysics()
 	if (doDebugDraw)
 	{
 		world->SetDebugDraw(&debugDraw);
+	}
+}
+
+void LevelState::updatePhysics()
+{
+	const float32 timeStep = 1.0f / 60.0f;
+	const int positionIterations = 2;
+	const int velocityIterations = 6;
+	world->Step(timeStep, velocityIterations, positionIterations);
+
+	for (auto phys : physicsComponents)
+	{
+		if (phys.second->rbType == b2_staticBody) continue;
+		auto position = phys.second->body->GetPosition();
+		float angle = phys.second->body->GetAngle();
+		auto gameObject = phys.second->getGameObject();
+		gameObject->getTransform()->SetPos(glm::vec2(position.x * physicsScale, position.y * physicsScale));
+		gameObject->getTransform()->Rotate(angle);
 	}
 }
 
@@ -178,6 +213,10 @@ std::shared_ptr<GameObject> LevelState::createGameObject()
 {
 	auto obj = std::shared_ptr<GameObject>(new GameObject());
 	sceneObjects.push_back(obj);
+	auto physicsComponent = obj->getComponent<PhysicsComponent>();
+	if (physicsComponent != nullptr) {
+		physicsComponents[physicsComponent->fixture] = physicsComponent.get();
+	}
 	return obj;
 }
 
@@ -185,6 +224,10 @@ std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object)
 {
 	auto obj = std::shared_ptr<GameObject>(object);
 	sceneObjects.push_back(obj);
+	auto physicsComponent = obj->getComponent<PhysicsComponent>();
+	if (physicsComponent != nullptr) {
+		physicsComponents[physicsComponent->fixture] = physicsComponent.get();
+	}
 	return obj;
 }
 

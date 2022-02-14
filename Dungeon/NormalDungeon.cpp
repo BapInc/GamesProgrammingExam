@@ -13,10 +13,16 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 	minAmountOfRooms = 3;
 	maxAmountOfRooms = 5;
 
-	minRoomWidth = 3;
-	minRoomHeight = 3;
-	maxRoomHeight = 5;
-	maxRoomWidth = 5;
+	minRoomWidth = 5;
+	minRoomHeight = 5;
+	maxRoomHeight = 6;
+	maxRoomWidth = 6;
+
+	if (minRoomHeight > maxRoomHeight)
+		Debug::Log("Min Room Height is bigger than Max Room height", WARNING);
+
+	if (minRoomWidth > maxRoomWidth)
+		Debug::Log("Min Room Width is bigger than Max Room Width", WARNING);
 
 	roomVisibilityDistance = 100;
 
@@ -63,6 +69,11 @@ void NormalDungeon::generateRooms()
 		int width = rand() % maxRoomWidth + minRoomWidth;
 		int height = rand() % maxRoomHeight + minRoomHeight;
 
+		if (minRoomWidth == maxRoomWidth)
+			width = minRoomWidth;
+
+		if (minRoomHeight == maxRoomHeight)
+			height = minRoomHeight;
 		//If out of bounds reset || This can be replaced so randX and randY are smaller than mapWidth or height also needs a difference so it's not too close to borders for walls
 		if (randX + width > mapWidth || randY + height > mapHeight)
 		{

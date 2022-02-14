@@ -66,14 +66,18 @@ void NormalDungeon::generateRooms()
 		//Debug::Log("MAP XPOS: " + std::to_string(randX) + "| Map YPOS: " + std::to_string(randY));
 
 		//Check if empty, if not empty go back
-		int width = rand() % maxRoomWidth + minRoomWidth;
-		int height = rand() % maxRoomHeight + minRoomHeight;
+		int width = rand() % (maxRoomWidth - minRoomWidth + 1) + minRoomWidth;
+		int height = rand() % (maxRoomHeight - minRoomHeight + 1) + minRoomHeight;
 
+		//Rand safety checks
 		if (minRoomWidth == maxRoomWidth)
 			width = minRoomWidth;
 
 		if (minRoomHeight == maxRoomHeight)
 			height = minRoomHeight;
+
+		std::cout << "WIDTH: " + std::to_string(width) << std::endl;
+		std::cout << "HEIGHT: " + std::to_string(height) << std::endl;
 		//If out of bounds reset || This can be replaced so randX and randY are smaller than mapWidth or height also needs a difference so it's not too close to borders for walls
 		if (randX + width > mapWidth || randY + height > mapHeight)
 		{
@@ -282,8 +286,8 @@ void NormalDungeon::generateCorridor(int roomOne, int roomTwo)
 	//for loop for each axis
 	int secondDir;
 	glm::ivec2 tempDistance;
-	tempDistance.x = std::abs(rooms[roomOne]->getCenterPos().x - rooms[roomTwo]->getCenterPos().x);
-	tempDistance.y = std::abs(rooms[roomOne]->getCenterPos().y - rooms[roomTwo]->getCenterPos().y);
+	tempDistance.x = rooms[roomOne]->getCenterPos().x - rooms[roomTwo]->getCenterPos().x;
+	tempDistance.y = rooms[roomOne]->getCenterPos().y - rooms[roomTwo]->getCenterPos().y;
 
 	generateCorridorAxis(true, randomDir, roomOne, roomTwo, tempDistance);
 }
@@ -291,15 +295,21 @@ void NormalDungeon::generateCorridor(int roomOne, int roomTwo)
 void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int roomTwo, glm::ivec2& distance)
 {
 	int tileDistance = 0;
+	int additive = 1;
 	if (axis == 0)
 	{
 		axis++;
-		tileDistance = distance.x;
+		tileDistance = std::abs(distance.x);
+		if (distance.x < 0)
+			additive = -1;
 	}
 	else
 	{
 		axis--;
-		tileDistance = distance.y;
+		tileDistance = std::abs(distance.y);
+		
+		if (distance.y < 0)
+			additive = -1;
 	}
 
 	for (size_t i = 0; i < tileDistance; i++)
@@ -307,9 +317,9 @@ void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int 
 		glm::ivec2 temp = rooms[roomOne]->getCenterPos();
 
 		if (axis == 1)
-			createFloor(temp.x + i, temp.y);
+			createFloor(temp.x + additive, temp.y);
 		else
-			createFloor(temp.x, temp.y + i);
+			createFloor(temp.x, temp.y + additive);
 	}
 
 	//if (first)

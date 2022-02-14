@@ -105,3 +105,10 @@ glm::vec3 Transform::getScale() const
 {
 	return scale;
 }
+
+Transform* Transform::clone(GameObject* gameObject)
+{
+	auto clone = new Transform(*this);
+	clone->gameObject = gameObject;
+	return clone;
+}

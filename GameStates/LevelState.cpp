@@ -28,7 +28,7 @@ void LevelState::start()
 	// ======== EXAMPLE =================
 	auto camAudio = camObj->addComponent<AudioComponent>();
 	camAudio->addSound("music", "event:/music/music_main_menu00");
-	camAudio->playSound("music");
+	//camAudio->playSound("music");
 	prefabManager = std::make_shared<PrefabManager>();
 	prefabManager->loadGameObjectsFromFile("./GameObjects.json", this);
 
@@ -39,7 +39,17 @@ void LevelState::start()
 	auto enemy = prefabManager->getPrefab("Enemy", this);
 	auto enemyGO = createGameObject(enemy.get());
 	enemyGO->transform->SetPos({ -200,200 });
-	enemyGO->getComponent<NavigationComponent>()->activateNavigation();
+	auto nav = enemyGO->getComponent<NavigationComponent>();
+	nav->activateNavigation();
+
+	auto enemy1 = prefabManager->getPrefab("Enemy", this);
+	auto enemyGO1 = createGameObject(enemy1.get());
+	enemyGO1->transform->SetPos({ -210,200 });
+	auto nav2 = enemyGO1->getComponent<NavigationComponent>();
+	nav2->activateNavigation();
+
+	Debug::Log("Samesies? " + std::to_string(enemyGO.get() == enemyGO1.get()));
+	Debug::Log("Physics samesies? " + std::to_string(enemyGO->getComponent<PhysicsComponent>().get() == enemyGO1->getComponent<PhysicsComponent>().get()));
 
 
 #ifdef _DEBUG
@@ -143,10 +153,8 @@ void LevelState::updatePhysics()
 		auto position = phys.second->body->GetPosition();
 		float angle = phys.second->body->GetAngle();
 		auto gameObject = phys.second->getGameObject();
-		if (gameObject != nullptr) {
-			gameObject->getTransform()->SetPos(glm::vec2(position.x * physicsScale, position.y * physicsScale));
-			gameObject->getTransform()->Rotate(angle);
-		}
+		gameObject->getTransform()->SetPos(glm::vec2(position.x * physicsScale, position.y * physicsScale));
+		gameObject->getTransform()->Rotate(angle);
 	}
 }
 

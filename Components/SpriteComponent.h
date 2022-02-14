@@ -17,6 +17,8 @@ public:
 	sre::Sprite getSprite();
 
 	void setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, GameState* state);
+
+	std::shared_ptr<SpriteComponent> clone(GameObject* gameObject);
 private:
 	sre::Sprite sprite;
 };

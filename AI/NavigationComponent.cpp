@@ -13,7 +13,7 @@ void NavigationComponent::update(float deltaTime)
 {
 	if (!isPaused && hasPath)
 		moveToDestination(deltaTime);
-	else
+	else if (!isPaused)
 		setRandomDestination(200);
 }
 
@@ -31,7 +31,7 @@ void NavigationComponent::setRandomDestination(int moveLength)
 	}
 	pos = { pos.x + randX * moveLength, pos.y + randY * moveLength };
 	destination = pos;
-
+	Debug::Log("Dir: " + std::to_string(randX) + " " + std::to_string(randY));
 	hasPath = true;
 }
 
@@ -49,15 +49,25 @@ void NavigationComponent::moveToDestination(float deltaTime)
 	if (distance <= 1)
 		setRandomDestination(200);
 	physicsComponent->setLinearVelocity(dir * movementSpeed);
+	//Debug::Log(std::to_string(physicsComponent->getLinearVelocity().x) + " " + std::to_string(physicsComponent->getLinearVelocity().y));
 }
 
 void NavigationComponent::activateNavigation() {
-	isPaused = false;
+	srand(time(NULL));
+	physicsComponent = gameObject->getComponent<PhysicsComponent>();
 	initialPosition = gameObject->getTransform()->getPos();
+	isPaused = false;
 }
 
 void NavigationComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value)
 {
 	float speed = value->operator[]("movementSpeed").GetFloat();
 	movementSpeed = speed;
+}
+
+std::shared_ptr<NavigationComponent> NavigationComponent::clone(GameObject* gameObject)
+{
+	auto clone = std::shared_ptr<NavigationComponent>(new NavigationComponent(*this));
+	clone->gameObject = gameObject;
+	return clone;
 }

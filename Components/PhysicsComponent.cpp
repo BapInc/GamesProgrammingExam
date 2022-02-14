@@ -111,6 +111,23 @@ void PhysicsComponent::setSensor(bool enabled)
 	fixture->SetSensor(enabled);
 }
 
+std::shared_ptr<PhysicsComponent> PhysicsComponent::clone(GameObject* gameObject)
+{
+	auto clone = std::shared_ptr<PhysicsComponent>(new PhysicsComponent(*this));
+	if (polygon != nullptr)
+		clone->polygon = new b2PolygonShape(*polygon);
+	if (circle != nullptr)
+		clone->circle = new b2CircleShape(*circle);
+	clone->body = new b2Body(*body);
+	clone->fixture = new b2Fixture(*fixture);
+	clone->gameObject = gameObject;
+	b2BodyDef bd;
+	bd.type = b2BodyType::b2_dynamicBody;
+	bd.position = b2Vec2(0, 0);
+	clone->body = world->CreateBody(&bd);
+	return clone;
+}
+
 void PhysicsComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, b2World* world)
 {
 	this->world = world;

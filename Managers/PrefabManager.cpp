@@ -99,6 +99,19 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 std::shared_ptr<GameObject> PrefabManager::getPrefab(std::string name, LevelState* state)
 {
 	auto foundPrefab = prefabs[name];
-	auto prefab = std::make_shared<GameObject>(*foundPrefab);
-	return state->createGameObject(prefab);
+	//std::shared_ptr<GameObject> clone;
+
+	auto clone = foundPrefab->clone();
+
+	//auto components = clone->getComponents();
+	//components.clear();
+	//Debug::Log("Components size: " + std::to_string(components.size()));
+
+	//for (auto component : foundPrefab->getComponents()) {
+	//	auto cln = new Component(*component);
+	//	auto newPntr = std::shared_ptr<Component>(cln);
+	//	components.push_back(std::shared_ptr<Component>(newPntr));
+	//}
+	//Debug::Log("Components size2: " + std::to_string(components.size()));
+	return state->createGameObject(clone);
 }

@@ -20,12 +20,13 @@ public:
 	void activateNavigation();
 	void setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value);
 	void setMovementSpeed(float speed);
+	std::shared_ptr<NavigationComponent> clone(GameObject* gameObject);
 
 
 
 private:
 	bool hasPath = false;
-	bool isPaused = false;
+	bool isPaused = true;
 	float movementSpeed = 10.0f;
 	glm::vec2 initialPosition = { 0,0 };
 

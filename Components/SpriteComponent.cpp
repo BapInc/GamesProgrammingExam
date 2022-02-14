@@ -35,3 +35,10 @@ void SpriteComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAlloc
 	sprite.setScale({ scale["x"].GetFloat(), scale["y"].GetFloat() });
 	setSprite(sprite);
 }
+
+std::shared_ptr<SpriteComponent> SpriteComponent::clone(GameObject* gameObject)
+{
+	auto clone = std::shared_ptr<SpriteComponent>(new SpriteComponent(*this));
+	clone->gameObject = gameObject;
+	return clone;
+}

@@ -13,6 +13,7 @@ public:
 	virtual ~Component() = default;
 
 	GameObject* getGameObject();
+	void setGameObject(GameObject* gameObject);
 	virtual bool onKey(SDL_Event& event);                   // The function should return true, if the key event is consumed. This prevents other components to receive the event.
 
 	virtual void update(float deltaTime);

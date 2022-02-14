@@ -41,6 +41,7 @@ public:
 	std::string getName() const;
 	const std::vector<std::shared_ptr<Component>>& getComponents();
 	Transform* getTransform();
+	GameObject* clone();
 
 private:
 

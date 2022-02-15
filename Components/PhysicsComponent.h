@@ -28,7 +28,8 @@ public:
 	void setSensor(bool enabled);
 
 	void setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, b2World* world);
-	std::shared_ptr<PhysicsComponent> clone(GameObject* gameObject);
+	void setWorld(b2World* world);
+	std::shared_ptr<PhysicsComponent> clone(GameObject* gameObject, b2World* world);
 private:
 	b2PolygonShape* polygon = nullptr;
 	b2CircleShape* circle = nullptr;

@@ -60,6 +60,7 @@ void PhysicsComponent::setLinearVelocity(glm::vec2 velocity)
 	body->SetLinearVelocity(v);
 }
 
+
 void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 center, float density)
 {
 	assert(body == nullptr);
@@ -77,7 +78,6 @@ void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 cente
 	fxD.density = density;
 	fixture = body->CreateFixture(&fxD);
 
-	//BirdGame::instance->registerPhysicsComponent(this);
 }
 
 void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center, float density)
@@ -96,9 +96,38 @@ void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center
 	fxD.shape = polygon;
 	fxD.density = density;
 	fixture = body->CreateFixture(&fxD);
+}
 
-	//TODO: Register physics components
-	//BirdGame::instance->registerPhysicsComponent(this);
+
+std::shared_ptr<PhysicsComponent> PhysicsComponent::clone(GameObject* gameObject, b2World* world)
+{
+	auto clone = std::make_shared<PhysicsComponent>(gameObject);
+
+	clone->gameObject = gameObject;
+	clone->setWorld(world);
+	//if (polygon != nullptr)
+	//	clone->polygon = new b2PolygonShape(*polygon);
+	//if (circle != nullptr)
+	//	clone->circle = new b2CircleShape(*circle);
+
+	clone->polygon = nullptr;
+	clone->shapeType = b2Shape::Type::e_circle;
+
+	b2BodyDef bd;
+	bd.type = b2BodyType::b2_dynamicBody;
+	bd.position = b2Vec2(clone->gameObject->getTransform()->getPos().x, clone->gameObject->getTransform()->getPos().y);
+
+	clone->rbType = b2BodyType::b2_dynamicBody;
+	clone->body = clone->world->CreateBody(&bd);
+	clone->circle = new b2CircleShape();
+	clone->circle->m_radius = 0.1f;
+
+	b2FixtureDef fxD;
+	fxD.shape = clone->circle;
+	fxD.density = 1;
+
+	clone->fixture = clone->body->CreateFixture(&fxD);
+	return clone;
 }
 
 bool PhysicsComponent::isSensor()
@@ -111,22 +140,6 @@ void PhysicsComponent::setSensor(bool enabled)
 	fixture->SetSensor(enabled);
 }
 
-std::shared_ptr<PhysicsComponent> PhysicsComponent::clone(GameObject* gameObject)
-{
-	auto clone = std::shared_ptr<PhysicsComponent>(new PhysicsComponent(*this));
-	if (polygon != nullptr)
-		clone->polygon = new b2PolygonShape(*polygon);
-	if (circle != nullptr)
-		clone->circle = new b2CircleShape(*circle);
-	clone->body = new b2Body(*body);
-	clone->fixture = new b2Fixture(*fixture);
-	clone->gameObject = gameObject;
-	b2BodyDef bd;
-	bd.type = b2BodyType::b2_dynamicBody;
-	bd.position = b2Vec2(0, 0);
-	clone->body = world->CreateBody(&bd);
-	return clone;
-}
 
 void PhysicsComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, b2World* world)
 {
@@ -184,5 +197,11 @@ void PhysicsComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllo
 		float radius = value->operator[]("radius").GetFloat();
 		initCircle(type, radius, center, density);
 	}
+
 }
+
+void PhysicsComponent::setWorld(b2World* world) {
+	this->world = world;
+}
+
 

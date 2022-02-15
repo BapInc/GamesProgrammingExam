@@ -36,20 +36,16 @@ void LevelState::start()
 	// ======== EXAMPLE =================
 	// ||		   AI				   ||
 	// ======== EXAMPLE =================
-	auto enemy = prefabManager->getPrefab("Enemy", this);
-	auto enemyGO = createGameObject(enemy.get());
-	enemyGO->transform->SetPos({ -200,200 });
-	auto nav = enemyGO->getComponent<NavigationComponent>();
-	nav->activateNavigation();
+	for (int i = 0; i < 4; i++) {
 
-	auto enemy1 = prefabManager->getPrefab("Enemy", this);
-	auto enemyGO1 = createGameObject(enemy1.get());
-	enemyGO1->transform->SetPos({ -210,200 });
-	auto nav2 = enemyGO1->getComponent<NavigationComponent>();
-	nav2->activateNavigation();
-
-	Debug::Log("Samesies? " + std::to_string(enemyGO.get() == enemyGO1.get()));
-	Debug::Log("Physics samesies? " + std::to_string(enemyGO->getComponent<PhysicsComponent>().get() == enemyGO1->getComponent<PhysicsComponent>().get()));
+		// Set pos does nothing because of the way physicscomponents are instantiated
+		auto enemyPos = glm::vec2((-210 + ((i + 10) * i)), 200) / physicsScale;
+		//auto enemyPos = glm::vec2(-200 /, 200);
+		auto enemy = prefabManager->getPrefab("Enemy", this, enemyPos, world);
+		auto enemyGO = createGameObject(enemy.get());
+		auto nav = enemyGO->getComponent<NavigationComponent>();
+		nav->activateNavigation();
+	}
 
 
 #ifdef _DEBUG
@@ -68,13 +64,19 @@ void LevelState::start()
 	pSprite.setScale({ 2,2 });
 	playerSprite->setSprite(pSprite);
 	playerGO->transform->SetPos({ -200,200 });
+	//auto phys = playerGO->addComponent<PhysicsComponent>();
+	//phys->setWorld(world);
+	//phys->initBox(b2BodyType::b2_dynamicBody, { 1 / physicsScale,1 / physicsScale }, { -200 / physicsScale, 200 / physicsScale }, 1);
+	//phys->initCircle(b2_dynamicBody, 10 / physicsScale, { playerGO->getTransform()->getPos().x / physicsScale,playerGO->getTransform()->getPos().y / physicsScale }, 1);
+	//physicsComponents[phys->fixture] = phys.get();
+
 
 	camera->setFollowObject(playerGO, { 0, 0 });
 	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
 
 	dungeon->drawAsciiDungeon();
 
-
+	prefabManager->clearPrefabs();
 
 }
 
@@ -125,6 +127,25 @@ void LevelState::render()
 void LevelState::onKey(SDL_Event& event)
 {
 	player->onKey(event);
+	if (event.type == SDL_KEYDOWN)
+	{
+		switch (event.key.keysym.sym)
+		{
+
+		case SDLK_p:
+			// press 'd' for physics debug
+			doDebugDraw = !doDebugDraw;
+			if (doDebugDraw)
+			{
+				world->SetDebugDraw(&debugDraw);
+			}
+			else
+			{
+				world->SetDebugDraw(nullptr);
+			}
+			break;
+		}
+	}
 
 }
 
@@ -212,32 +233,32 @@ void LevelState::handleContact(b2Contact* contact, bool begin)
 std::shared_ptr<GameObject> LevelState::createGameObject()
 {
 	auto obj = std::shared_ptr<GameObject>(new GameObject());
-	sceneObjects.push_back(obj);
 	auto physicsComponent = obj->getComponent<PhysicsComponent>();
 	if (physicsComponent != nullptr) {
 		physicsComponents[physicsComponent->fixture] = physicsComponent.get();
 	}
+	sceneObjects.push_back(obj);
 	return obj;
 }
 
 std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object)
 {
 	auto obj = std::shared_ptr<GameObject>(object);
-	sceneObjects.push_back(obj);
 	auto physicsComponent = obj->getComponent<PhysicsComponent>();
 	if (physicsComponent != nullptr) {
 		physicsComponents[physicsComponent->fixture] = physicsComponent.get();
 	}
+	sceneObjects.push_back(obj);
 	return obj;
 }
 
 std::shared_ptr<GameObject> LevelState::createGameObject(std::shared_ptr<GameObject> object)
 {
-	sceneObjects.push_back(object);
 	auto physicsComponent = object->getComponent<PhysicsComponent>();
 	if (physicsComponent != nullptr) {
 		physicsComponents[physicsComponent->fixture] = physicsComponent.get();
 	}
+	sceneObjects.push_back(object);
 	return object;
 }
 

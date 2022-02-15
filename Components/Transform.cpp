@@ -1,5 +1,7 @@
 #include "Transform.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include "../Game/GameObject.h"
+#include "PhysicsComponent.h"
 
 Transform::Transform(GameObject* gameObject) : Component(gameObject)
 {
@@ -69,9 +71,11 @@ void Transform::Scale(glm::vec3& scale)
 	}
 }
 
+
 void Transform::SetPos(glm::vec2 pos)
 {
 	position = pos;
+	auto physicsComponent = gameObject->getComponent<PhysicsComponent>();
 	//mat = glm::translate(glm::mat4(1.0f), position);
 }
 

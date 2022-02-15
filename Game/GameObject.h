@@ -5,6 +5,7 @@
 #include <vector>
 #include "glm/glm.hpp"
 #include "sre/SpriteBatch.hpp"
+#include "Box2D/Dynamics/b2World.h"
 #include "../Components/Transform.h"
 
 // Forward declaration
@@ -41,7 +42,7 @@ public:
 	std::string getName() const;
 	const std::vector<std::shared_ptr<Component>>& getComponents();
 	Transform* getTransform();
-	GameObject* clone();
+	GameObject* clone(glm::vec2 pos, b2World* world);
 
 private:
 

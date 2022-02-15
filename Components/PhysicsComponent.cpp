@@ -64,6 +64,9 @@ void PhysicsComponent::setLinearVelocity(glm::vec2 velocity)
 void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 center, float density)
 {
 	assert(body == nullptr);
+
+	this->radius = radius;
+
 	// do init
 	shapeType = b2Shape::Type::e_circle;
 	b2BodyDef bd;
@@ -83,6 +86,10 @@ void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 cente
 void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center, float density)
 {
 	assert(body == nullptr);
+
+	width = size.x;
+	height = size.y;
+
 	// do init
 	shapeType = b2Shape::Type::e_polygon;
 	b2BodyDef bd;
@@ -105,13 +112,26 @@ std::shared_ptr<PhysicsComponent> PhysicsComponent::clone(GameObject* gameObject
 
 	clone->gameObject = gameObject;
 	clone->setWorld(world);
-	//if (polygon != nullptr)
-	//	clone->polygon = new b2PolygonShape(*polygon);
-	//if (circle != nullptr)
-	//	clone->circle = new b2CircleShape(*circle);
 
-	clone->polygon = nullptr;
-	clone->shapeType = b2Shape::Type::e_circle;
+	b2FixtureDef fxD;
+
+	if (polygon != nullptr)
+	{
+		clone->polygon = new b2PolygonShape(*polygon);
+		b2BlockAllocator* allocator = new b2BlockAllocator();
+		allocator->Allocate(sizeof(polygon));
+
+		clone->polygon = new b2PolygonShape(*polygon);
+		fxD.shape = clone->polygon;
+		clone->shapeType = b2Shape::Type::e_polygon;
+	}
+	else if (circle != nullptr) {
+		clone->circle = new b2CircleShape(*circle);
+		fxD.shape = clone->circle;
+		clone->shapeType = b2Shape::Type::e_circle;
+	}
+
+	//clone->polygon = nullptr;
 
 	b2BodyDef bd;
 	bd.type = b2BodyType::b2_dynamicBody;
@@ -119,11 +139,9 @@ std::shared_ptr<PhysicsComponent> PhysicsComponent::clone(GameObject* gameObject
 
 	clone->rbType = b2BodyType::b2_dynamicBody;
 	clone->body = clone->world->CreateBody(&bd);
-	clone->circle = new b2CircleShape();
-	clone->circle->m_radius = 0.1f;
-
-	b2FixtureDef fxD;
-	fxD.shape = clone->circle;
+	//clone->circle = new b2CircleShape();
+	//clone->circle->m_radius = 0.1f;
+	clone->body->SetFixedRotation(true);
 	fxD.density = 1;
 
 	clone->fixture = clone->body->CreateFixture(&fxD);
@@ -173,8 +191,8 @@ void PhysicsComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllo
 		}
 
 		glm::vec2 size = { 0,0 };
-		size.x = value->operator[]("size").GetObject()["x"].GetFloat();
-		size.y = value->operator[]("size").GetObject()["y"].GetFloat();
+		size.x = value->operator[]("size").GetObject()["x"].GetFloat() / 100;
+		size.y = value->operator[]("size").GetObject()["y"].GetFloat() / 100;
 
 		initBox(type, size, center, density);
 	}
@@ -194,7 +212,7 @@ void PhysicsComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllo
 		{
 			type = b2BodyType::b2_staticBody;
 		}
-		float radius = value->operator[]("radius").GetFloat();
+		float radius = value->operator[]("radius").GetFloat() / 100;
 		initCircle(type, radius, center, density);
 	}
 

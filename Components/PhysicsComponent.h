@@ -39,6 +39,9 @@ private:
 	b2BodyType rbType;
 	std::vector<PhysicsComponent*> collidingBodies;
 	b2World* world = nullptr;
+	float height = 1.0f;
+	float width = 1.0f;
+	float radius = 1.0f;
 	friend class LevelState;
 
 

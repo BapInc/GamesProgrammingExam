@@ -122,8 +122,9 @@
         },
         "density": 1.0
       },
-      "WeaponComponent": {}
+      "WeaponComponent": {
+
+      }
     }
   }
-  
 ]

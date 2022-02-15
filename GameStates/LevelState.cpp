@@ -4,7 +4,6 @@
 #include "../Components/AudioComponent.h"
 #include "../Components/WeaponComponent.h"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
-#include "../Managers/PrefabManager.h"
 #include "../Utility/Debug.h"
 
 
@@ -12,6 +11,7 @@ using namespace sre;
 
 LevelState::LevelState() : debugDraw(physicsScale)
 {
+	std::cout << "Level";
 }
 
 void LevelState::start()
@@ -40,35 +40,32 @@ void LevelState::start()
 	//camAudio->playSound("music");
 
 	//PREFABS
-	auto prefabLoader = new PrefabManager();
+	prefabLoader = new PrefabManager();
 	prefabLoader->loadGameObjectsFromFile("./GameObjects.json", this);
 
 	//PLAYER
-	player = prefabLoader->getPrefab("Player");
+	player = loadPrefab("Player");
 	createGameObject(player.get());
-	auto playerComponent = player->getComponent<Player>();
-	playerComponent->setLevel(*this);
+	player->getComponent<Player>()->setLevel(*this);
 	camera->setFollowObject(player);
-
-	//WEAPON1
-	weapon1 = prefabLoader->getPrefab("Weapon1");
-	createGameObject(weapon1.get());
-	weapon1->addComponent<WeaponComponent>()->setPlayer(player);
-
 
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif
 
-	auto obj = createGameObject();
+	/*auto obj = createGameObject();
 	obj->name = "Demon";
 	auto spC = obj->addComponent<SpriteComponent>();
 	auto sprit = getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
 	sprit.setScale({ 2,2 });
 	spC->setSprite(sprit);
-	obj->transform->SetPos({ -100,150 });
+	obj->transform->SetPos({ -100,150 });*/
 
 	dungeon->drawAsciiDungeon();
+}
+
+std::shared_ptr<GameObject> LevelState::loadPrefab(std::string prefab) {
+	return prefabLoader->getPrefab(prefab);
 }
 
 void LevelState::update(float deltaTime)

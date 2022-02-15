@@ -8,11 +8,13 @@
 #include "Box2D/Dynamics/b2World.h"
 #include "../Components/TopDownCameraComponent.h"
 #include "../Dungeon/NormalDungeon.h"
+#include "../Managers/PrefabManager.h"
 #include "../Player/Player.h"
 
 
 class PhysicsComponent;
 class Player;
+class PrefabManager;
 
 class LevelState : public GameState, public b2ContactListener
 {
@@ -29,7 +31,7 @@ public:
 
 	void BeginContact(b2Contact* contact) override;
 	void EndContact(b2Contact* contact) override;
-
+	std::shared_ptr<GameObject> loadPrefab(std::string prefab);
 	void generateNewDungeon();
 
 	void handleContact(b2Contact* contact, bool begin);
@@ -48,12 +50,15 @@ private:
 
 	std::shared_ptr<TopDownCameraComponent> camera;
 	std::shared_ptr<GameObject> player;
-	std::shared_ptr<GameObject> weapon1;
+	//std::shared_ptr<GameObject> weapon1;
+
+	PrefabManager* prefabLoader;
 
 	Box2DDebugDraw debugDraw;
 	bool doDebugDraw = false;
 	Dungeon* dungeon;
 
+	//PrefabManager* prefabLoader;
 
 	void updatePhysics();
 	void registerPhysicsComponent(PhysicsComponent* r);

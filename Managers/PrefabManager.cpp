@@ -86,7 +86,7 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 			auto playerComponent = gameObject->addComponent<Player>();
 			playerComponent->setValuesFromJSON(&component.value, state);
 		}
-		else if (componentName == "Weapon1") {
+		else if (componentName == "WeaponComponent") {
 			auto weaponComponent = gameObject->addComponent<WeaponComponent>();
 		}
 

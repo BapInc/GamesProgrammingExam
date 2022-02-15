@@ -2,9 +2,9 @@
 #include <SDL_events.h>
 #include <iostream>
 #include "../Game/GameObject.h"
-#include "../Components/SpriteComponent.h"
 #include "../Commands/MoveCommand.h"
 #include "glm/glm.hpp"
+#include "../Components/WeaponComponent.h"
 
 Player::Player(GameObject* gameObject) : Component(gameObject)
 {
@@ -13,9 +13,9 @@ Player::Player(GameObject* gameObject) : Component(gameObject)
 	//moveCommand = NULL;
 }
 
-void Player::setLevel(LevelState& level)
+void Player::setLevel(LevelState& levelState)
 {
-	this->level = std::make_unique<LevelState>(level);
+	this->levelState = &levelState;
 }
 
 bool Player::onKey(SDL_Event& event) {
@@ -29,24 +29,41 @@ bool Player::onKey(SDL_Event& event) {
 		break;
 	case SDLK_a:
 		velocity.x = event.type == SDL_KEYDOWN ? -1 : 0;
-		if (facingRight) {
+		if (getFacing()) {
 			spriteComponent->flipSprite(true);
 			facingRight = false;
 		}
 		break;
 	case SDLK_d:
 		velocity.x = event.type == SDL_KEYDOWN ? 1 : 0;
-		if (!facingRight) {
+		if (!getFacing()) {
 			spriteComponent->flipSprite(false);
 			facingRight = true;
 		}
 		break;
-	case SDLK_SPACE:
+	case SDLK_1:
+		if (test) {
+			weapon1 = levelState->loadPrefab("Weapon1");
+			levelState->createGameObject(weapon1.get());
+			weapon1->getComponent<WeaponComponent>()->setPlayer(*gameObject);
+			test = false;
+		}
+		break;
+	case SDLK_2:
 
+		break;
+	case SDLK_SPACE:
+		//press 1 -> bullet = granade
+		//press 2 -> bullet = other bullet
+		//shoot(bullet)
 		break;
 	}
 
 	return true;
+}
+
+bool Player::getFacing() {
+	return facingRight;
 }
 
 void Player::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, GameState* state)

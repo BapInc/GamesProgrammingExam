@@ -5,6 +5,7 @@
 #include "SpriteComponent.h"
 #include "../Game/GameObject.h"
 #include "../Utility/Debug.h"
+#include <iostream>
 SpriteComponent::SpriteComponent(GameObject* gameObject) : Component(gameObject)
 {
 	this->gameObject = gameObject;

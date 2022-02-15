@@ -55,6 +55,15 @@ void GameObject::update(float deltaTime)
 	}
 }
 
+bool GameObject::getActive() {
+	return isActive;
+}
+
+void GameObject::setActive(bool setActive)
+{
+	isActive = setActive;
+}
+
 void GameObject::setName(std::string& name)
 {
 	this->name = name;

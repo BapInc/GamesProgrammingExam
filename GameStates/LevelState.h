@@ -50,7 +50,6 @@ private:
 
 	std::shared_ptr<TopDownCameraComponent> camera;
 	std::shared_ptr<GameObject> player;
-	//std::shared_ptr<GameObject> weapon1;
 
 	PrefabManager* prefabLoader;
 

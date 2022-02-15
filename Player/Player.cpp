@@ -18,7 +18,19 @@ void Player::setLevel(LevelState& levelState)
 	this->levelState = &levelState;
 }
 
+void Player::start() {
+	weapon1 = levelState->loadPrefab("Weapon1");
+	levelState->createGameObject(weapon1.get());
+	weapon1->getComponent<WeaponComponent>()->setPlayer(*gameObject);
+
+	weapon2 = levelState->loadPrefab("Weapon2");
+	levelState->createGameObject(weapon2.get());
+	weapon2->getComponent<WeaponComponent>()->setPlayer(*gameObject);
+	weapon2->setActive(false);
+}
+
 bool Player::onKey(SDL_Event& event) {
+	bool temp = true;
 	switch (event.key.keysym.sym) {
 	case SDLK_w:
 		velocity.y = event.type == SDL_KEYDOWN ? 1 : 0;
@@ -42,15 +54,12 @@ bool Player::onKey(SDL_Event& event) {
 		}
 		break;
 	case SDLK_1:
-		if (test) {
-			weapon1 = levelState->loadPrefab("Weapon1");
-			levelState->createGameObject(weapon1.get());
-			weapon1->getComponent<WeaponComponent>()->setPlayer(*gameObject);
-			test = false;
-		}
+		weapon1->setActive(true);	
+		weapon2->setActive(false);	
 		break;
 	case SDLK_2:
-
+		weapon1->setActive(false);
+		weapon2->setActive(true);
 		break;
 	case SDLK_SPACE:
 		//press 1 -> bullet = granade

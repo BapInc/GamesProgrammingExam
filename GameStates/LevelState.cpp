@@ -48,6 +48,7 @@ void LevelState::start()
 	createGameObject(player.get());
 	player->getComponent<Player>()->setLevel(*this);
 	camera->setFollowObject(player);
+	player->getComponent<Player>()->start();
 
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
@@ -72,7 +73,9 @@ void LevelState::update(float deltaTime)
 {
 	for (auto& obj : sceneObjects)
 	{
-		obj->update(deltaTime);
+		if (obj->getActive()) {
+			obj->update(deltaTime);
+		}
 	}
 }
 
@@ -87,7 +90,9 @@ void LevelState::render()
 	auto spriteBatchBuilder = SpriteBatch::create();
 	for (auto& go : sceneObjects)
 	{
-		go->renderSprite(spriteBatchBuilder);
+		if (go->getActive()) {
+			go->renderSprite(spriteBatchBuilder);
+		}
 	}
 
 
@@ -182,6 +187,7 @@ std::shared_ptr<GameObject> LevelState::createGameObject()
 std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object)
 {
 	auto obj = std::shared_ptr<GameObject>(object);
+	obj->setActive(true);
 	sceneObjects.push_back(obj);
 	return obj;
 }

@@ -36,7 +36,8 @@ public:
 	void update(float deltaTime);
 
 	void setName(std::string& name);
-
+	bool getActive();
+	void setActive(bool setActive);
 	std::string getTag() const;
 	std::string getName();
 	const std::vector<std::shared_ptr<Component>>& getComponents();
@@ -45,6 +46,7 @@ public:
 private:
 
 	bool shouldDestroy = false;
+	bool isActive;
 
 	Transform* transform;
 

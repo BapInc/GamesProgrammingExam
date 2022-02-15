@@ -19,8 +19,7 @@ public:
 	void update(float deltaTime) override;
 	void setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, GameState* state);
 	bool getFacing();
-	bool facingRight = true;
-	
+	void start();
 
 private:
 	float speed;
@@ -29,6 +28,8 @@ private:
 	std::stack<std::shared_ptr<MoveCommand>> moveCommands;
 	std::shared_ptr<SpriteComponent> spriteComponent;
 	std::shared_ptr<GameObject> weapon1;
+	std::shared_ptr<GameObject> weapon2;
 	LevelState* levelState;
+	bool facingRight = true;
 	bool test = true;
 };

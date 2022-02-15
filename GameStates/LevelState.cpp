@@ -2,8 +2,8 @@
 #include "../Game/DungeonGame.h"
 #include "../Components/SpriteComponent.h"
 #include "../Components/AudioComponent.h"
+#include "../Components/WeaponComponent.h"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
-#include "../Managers/PrefabManager.h"
 #include "../Utility/Debug.h"
 
 
@@ -11,6 +11,7 @@ using namespace sre;
 
 LevelState::LevelState() : debugDraw(physicsScale)
 {
+	std::cout << "Level";
 }
 
 void LevelState::start()
@@ -36,47 +37,35 @@ void LevelState::start()
 	// ======== EXAMPLE =================
 	auto camAudio = camObj->addComponent<AudioComponent>();
 	camAudio->addSound("music", "event:/music/music_main_menu00");
-	camAudio->playSound("music");
+	//camAudio->playSound("music");
 
 	//PREFABS
-	auto prefabLoader = new PrefabManager();
+	prefabLoader = new PrefabManager();
 	prefabLoader->loadGameObjectsFromFile("./GameObjects.json", this);
 
 	//PLAYER
-	player = prefabLoader->getPrefab("Player");
+	player = loadPrefab("Player");
 	createGameObject(player.get());
 	player->getComponent<Player>()->setLevel(*this);
-	player->transform->SetPos({ -200, 200 });
-	player->getComponent<SpriteComponent>()->getSprite().setScale({ 2,2 });
 	camera->setFollowObject(player);
 
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif
 
-	auto obj = createGameObject();
+	/*auto obj = createGameObject();
 	obj->name = "Demon";
 	auto spC = obj->addComponent<SpriteComponent>();
 	auto sprit = getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
 	sprit.setScale({ 2,2 });
 	spC->setSprite(sprit);
-	obj->transform->SetPos({ -100,150 });
-
-	//Player
-	/*auto playerGO = createGameObject();
-	playerGO->name = "Player";
-	player = playerGO->addComponent<Player>();
-	player->setLevel(*this);
-	auto playerSprite = playerGO->addComponent<SpriteComponent>();
-	auto pSprite = getSprite("lizard_f_idle_anim_f0.png");
-	pSprite.setScale({ 2,2 });
-	playerSprite->setSprite(pSprite);
-	playerGO->transform->SetPos({ -200,200 });
-
-	camera->setFollowObject(playerGO);
-	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });*/
+	obj->transform->SetPos({ -100,150 });*/
 
 	dungeon->drawAsciiDungeon();
+}
+
+std::shared_ptr<GameObject> LevelState::loadPrefab(std::string prefab) {
+	return prefabLoader->getPrefab(prefab);
 }
 
 void LevelState::update(float deltaTime)

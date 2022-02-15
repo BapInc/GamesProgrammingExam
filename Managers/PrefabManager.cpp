@@ -3,6 +3,8 @@
 #include "../Utility/Debug.h"
 #include "../Components/AudioComponent.h"
 #include "../Components/SpriteAnimationComponent.h"
+#include "../Components/WeaponComponent.h"
+
 
 void PrefabManager::loadGameObjectsFromFile(std::string path, LevelState* state)
 {
@@ -83,6 +85,9 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 		else if (componentName == "Player") {
 			auto playerComponent = gameObject->addComponent<Player>();
 			playerComponent->setValuesFromJSON(&component.value, state);
+		}
+		else if (componentName == "WeaponComponent") {
+			auto weaponComponent = gameObject->addComponent<WeaponComponent>();
 		}
 
 		Debug::Log("Loading component: " + std::string(componentName));

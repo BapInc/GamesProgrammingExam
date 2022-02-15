@@ -37,9 +37,11 @@ private:
 
 	std::vector<std::shared_ptr<Room>> rooms;
 	std::vector<int> roomsConnected;
-	std::shared_ptr<Room> startRoom;
+
+	glm::vec2 tileSize;
 
 	float roomVisibilityDistance;
+	float scaleMultiplier;
 
 	int minDistanceBetweenRooms;
 	int maxIterations; // NUmber of times it can iterate without creating a room, if higher then breaks out of the while loop

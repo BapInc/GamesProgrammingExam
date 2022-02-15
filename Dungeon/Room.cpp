@@ -4,14 +4,16 @@
 
 int Room::amountOfRooms = 0;
 
-Room::Room(int width, int height, glm::vec2 pos, RoomType type)
+Room::Room(int width, int height, glm::vec2 pos, glm::vec2 scale, RoomType type)
 {
 	this->width = width;
 	this->height = height;
 
 	initialPos = pos;
 	//TODO: Make this 4 | 2 | 1 positions accordingly to the width and height. 
-	this->centerPos = glm::vec2(pos.x + (width / 2), pos.y + (height / 2));
+	centerPos = glm::vec2(pos.x + (width / 2), pos.y + (height / 2));
+	centerPosScaled = glm::vec2((pos.x + (width / 2)) * scale.x , (pos.y + (height / 2)) * scale.y );
+
 	roomType = type;
 
 	roomNumber = amountOfRooms;
@@ -83,6 +85,11 @@ int Room::getHeight()
 glm::ivec2 Room::getCenterPos() const
 {
 	return centerPos;
+}
+
+glm::ivec2 Room::getCenterPosScaled() const
+{
+	return centerPosScaled;
 }
 
 std::vector<std::shared_ptr<Room>> Room::getRoomsSeen()

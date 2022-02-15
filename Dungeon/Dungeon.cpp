@@ -11,6 +11,11 @@ void Dungeon::generateDungeon()
 	generateWalls();
 }
 
+glm::ivec2 Dungeon::getStartRoomPos()
+{
+	return startRoom->getCenterPosScaled();
+}
+
 void Dungeon::setMapValues()
 {
 	for (size_t i = 0; i < mapWidth; i++)

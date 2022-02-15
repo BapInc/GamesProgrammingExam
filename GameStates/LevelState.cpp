@@ -48,18 +48,18 @@ void LevelState::start()
 	createGameObject(player.get());
 	player->getComponent<Player>()->setLevel(*this);
 	camera->setFollowObject(player);
-
+	player->transform->SetPos(dungeon->getStartRoomPos());
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif
 
-	/*auto obj = createGameObject();
+	auto obj = createGameObject();
 	obj->name = "Demon";
 	auto spC = obj->addComponent<SpriteComponent>();
 	auto sprit = getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
 	sprit.setScale({ 2,2 });
 	spC->setSprite(sprit);
-	obj->transform->SetPos({ -100,150 });*/
+	obj->transform->SetPos({ -100,150 });
 
 	dungeon->drawAsciiDungeon();
 }

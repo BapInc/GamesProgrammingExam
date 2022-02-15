@@ -16,8 +16,11 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 
 	minRoomWidth = 5;
 	minRoomHeight = 5;
-	maxRoomHeight = 6;
-	maxRoomWidth = 6;
+	maxRoomHeight = 10;
+	maxRoomWidth = 10;
+
+	startRoomWidth = 6;
+	startRoomHeight = 6;
 
 	if (minRoomHeight > maxRoomHeight)
 		Debug::Log("Min Room Height is bigger than Max Room height", WARNING);
@@ -39,15 +42,16 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 
 void NormalDungeon::generateRooms()
 {
+	//Generate starting room
+	generateRoom(startRoomWidth, startRoomHeight, STARTROOM);
+
 	//Get random position
 	int temp = 0;
 
 	//TODO: Stop hardcoding the value 50
 	int maxTiles = (mapHeight * maxRoomHeight) / 50; //50 being the percentage of how much the rooms can fill (Not counting walls nor corridors) 
 
-
-	int numberOfTiles = 0;
-	int itWithoutRoom = 0;
+	int isWithoutRoom = 0;
 
 	//TODO: Check if max possible tiles calculation is working currectly when walls are being generated
 	//Max Room tiles and counting walls (Not corridors)
@@ -60,10 +64,6 @@ void NormalDungeon::generateRooms()
 
 	do
 	{
-		//Random Point in map
-		int randX = rand() % mapWidth;
-		int randY = rand() % mapHeight;
-
 		//Debug::Log("MAP XPOS: " + std::to_string(randX) + "| Map YPOS: " + std::to_string(randY));
 
 		//Check if empty, if not empty go back
@@ -77,69 +77,101 @@ void NormalDungeon::generateRooms()
 		if (minRoomHeight == maxRoomHeight)
 			height = minRoomHeight;
 
-		//If out of bounds reset || This can be replaced so randX and randY are smaller than mapWidth or height also needs a difference so it's not too close to borders for walls
-		if (randX + width > mapWidth || randY + height > mapHeight)
+		if (!generateRoom(width, height))
+			isWithoutRoom += 1;
+
+		if (isWithoutRoom > maxIterations)
 		{
-			continue;
+			Debug::Log("Map Size is too small, not all rooms generated", ALERT);
+			break;
 		}
-
-		bool breakout = false;
-		for (int i = -minDistanceBetweenRooms; i < width + minDistanceBetweenRooms ; i++)
-		{
-			for (int j = -minDistanceBetweenRooms; j < height + minDistanceBetweenRooms ; j++)
-			{
-				//IF OUT OF BOUNDS CONTINUE
-				if (   i + randX < 0 
-					|| j + randY < 0
-					|| i + randX >= mapWidth 
-					|| j + randY >= mapHeight)
-					continue;
-				
-				//If there's already a tile in the calculated area, reset while loop
-				if (dungeonMap[randX + i][randY + j] != nullptr)
-				{
-					breakout = true;
-					break;
-				}
-			}
-
-			if (breakout)
-				break;
-		}
-
-		//Reset While loop
-		if (breakout)
-		{
-			itWithoutRoom += 1;
-
-			if (itWithoutRoom > maxIterations)
-			{
-				Debug::Log("Map Size is too small, not all rooms generated", ALERT);
-				break;
-			}
-
-			continue;
-		}
-
-		//For Loops are done again, just so there's no need to create and destroy object in memory
-		//Loops width and height and adds floor tiles and its attributes
-		for (size_t i = 0; i < width; i++)
-		{
-			for (size_t j = 0; j < height; j++)
-			{
-				createFloor(randX + i, randY + j);
-				itWithoutRoom = 0;
-			}
-		}
-
-		//If room is generated succesfully
-		auto room = std::shared_ptr<Room>(new Room(width, height,glm::vec2(randX, randY), RANDOMROOM));
-		rooms.push_back(room);
-		numberOfTiles += width * height;
-
-		temp += 1;
-
+			
 	} while (rooms.size() != amountOfRooms);
+}
+
+bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
+{
+	bool breakout = false;
+
+	//Random Point in map
+	int randX = rand() % mapWidth;
+	int randY = rand() % mapHeight;
+
+	//If out of bounds reset || This can be replaced so randX and randY are smaller than mapWidth or height also needs a difference so it's not too close to borders for walls
+	if (randX + width > mapWidth || randY + height > mapHeight)
+	{
+		return false;
+	}
+
+	for (int i = -minDistanceBetweenRooms; i < width + minDistanceBetweenRooms; i++)
+	{
+		for (int j = -minDistanceBetweenRooms; j < height + minDistanceBetweenRooms; j++)
+		{
+			//IF OUT OF BOUNDS CONTINUE
+			if (i + randX < 0
+				|| j + randY < 0
+				|| i + randX >= mapWidth
+				|| j + randY >= mapHeight)
+				continue;
+
+			//If there's already a tile in the calculated area, reset while loop
+			if (dungeonMap[randX + i][randY + j] != nullptr)
+			{
+				breakout = true;
+				break;
+			}
+		}
+
+		if (breakout)
+			break;
+	}
+
+	//Reset While loop
+	if (breakout)
+	{
+		return false;
+	}
+
+	//For Loops are done again, just so there's no need to create and destroy object in memory
+	//Loops width and height and adds floor tiles and its attributes
+	for (size_t i = 0; i < width; i++)
+	{
+		for (size_t j = 0; j < height; j++)
+		{
+			createFloor(randX + i, randY + j);
+		}
+	}
+
+	//If room is generated succesfully
+	auto room = std::shared_ptr<Room>(new Room(width, height, glm::vec2(randX, randY), type));
+	rooms.push_back(room);
+
+	switch (type)
+	{
+	case CUSTOMSIZE:
+
+		break;
+
+	case RANDOMROOM:
+
+		break;
+	case STARTROOM:
+
+		if (startRoom == NULL)
+			startRoom = room;
+		else
+			Debug::Log("More than one startRoom instance", ALERT);
+
+		break;
+	case BOSSROOM:
+
+		break;
+	case REWARDSROOM:
+
+		break;
+	default:
+		break;
+	}
 }
 
 void NormalDungeon::generateRoomConnections()
@@ -199,7 +231,6 @@ void NormalDungeon::createFloor(int x, int y)
 
 void NormalDungeon::createWall(int x, int y)
 {
-	std::cout << "WALL CREATED" << std::endl;
 	//TODO: Check if there's a tile in that spot of the map
 	auto obj = new GameObject();
 	std::string name = "wallTile";
@@ -291,7 +322,7 @@ void NormalDungeon::generateCorridor(int roomOne, int roomTwo)
 {
 	//Randomize if it starts on y or x. 
 	int randomDir = rand() % 2;
-	std::cout << "RANDOM DIR: " + std::to_string(randomDir) << std::endl;
+
 	//TODO: Preferably corridors should go right or left depending if they encounter any other corridors
 
 	//for loop for each axis
@@ -318,14 +349,11 @@ void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int 
 	{
 		axis--;
 		tileDistance = std::abs(distance.y);
-		
-
 	}
-	std::cout << "X DISTANCE: " + std::to_string(distance.x) + " | Y DISTANCE: " + std::to_string(distance.y) << std::endl;
+
 	glm::ivec2 pos;
 	for (size_t i = 0; i < tileDistance; i++)
 	{
-
 		additive = i;
 		if (axis == 1)
 		{
@@ -345,43 +373,8 @@ void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int 
 		}
 	}
 
-		if (first)
-			generateCorridorAxis(false, axis, roomOne, roomTwo, distance, pos);
-}
-
-void NormalDungeon::generateRoomObject(RoomType type, int customWidth, int customHeight)
-{
-	//Room* room;
-	//switch (type)
-	//{
-	//case CUSTOMSIZE:
-
-	//	room = new Room(customWidth, customHeight);
-
-	//	break;
-	//case RANDOMROOM:
-
-	//	room = new Room(minRoomWidth, maxRoomWidth, minRoomHeight, maxRoomHeight);
-
-	//	break;
-	//case STARTROOM:
-
-	//	room = new Room(startRoomWidth, startRoomHeight, STARTROOM);
-
-	//	break;
-	//case BOSSROOM:
-
-	//	room = new Room(bossRoomWidth, bossRoomHeight, BOSSROOM);
-
-	//	break;
-	//case REWARDSROOM:
-
-	//	//TODO: Improve rewards room customisation
-	//	room = new Room(customWidth, customHeight, REWARDSROOM);
-	//	break;
-	//default:
-	//	break;
-	//}
+	if (first)
+		generateCorridorAxis(false, axis, roomOne, roomTwo, distance, pos);
 }
 
 void NormalDungeon::generateWalls()
@@ -411,7 +404,6 @@ void NormalDungeon::generateWalls()
 					if (j + r < 0 || i + c < 0)
 						continue;
 
-					std::cout << "X: " + std::to_string(j + r) + " | Y: " + std::to_string(i + c) << std::endl;
 					if (dungeonMap[j + r][i + c] == NULL)
 						createWall(j + r, i + c);
 				}

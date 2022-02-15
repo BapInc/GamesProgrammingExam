@@ -19,8 +19,10 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 	maxRoomHeight = 10;
 	maxRoomWidth = 10;
 
-	startRoomWidth = 6;
-	startRoomHeight = 6;
+	startRoomWidth = 3;
+	startRoomHeight = 3;
+
+	scaleMultiplier = 4.0f;
 
 	if (minRoomHeight > maxRoomHeight)
 		Debug::Log("Min Room Height is bigger than Max Room height", WARNING);
@@ -38,6 +40,9 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 	minDistanceBetweenRooms = 3;
 
 	this->levelState = &levelState;
+
+	auto sprit = this->levelState->getSprite("floor_1.png");
+	tileSize = sprit.getSpriteSize();
 }
 
 void NormalDungeon::generateRooms()
@@ -143,7 +148,7 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 	}
 
 	//If room is generated succesfully
-	auto room = std::shared_ptr<Room>(new Room(width, height, glm::vec2(randX, randY), type));
+	auto room = std::shared_ptr<Room>(new Room(width, height, glm::vec2(randX, randY), tileSize * scaleMultiplier, type));
 	rooms.push_back(room);
 
 	switch (type)
@@ -161,7 +166,6 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 			startRoom = room;
 		else
 			Debug::Log("More than one startRoom instance", ALERT);
-
 		break;
 	case BOSSROOM:
 
@@ -219,13 +223,13 @@ void NormalDungeon::createFloor(int x, int y)
 	auto spC = obj->addComponent<SpriteComponent>();
 	//TODO: Use prefab manager and randomize tiles
 	auto sprit = levelState->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
-	float scaleMultiplier = 4.0f;
 	sprit.setScale({ scaleMultiplier,scaleMultiplier });
 	spC->setSprite(sprit);
 
 	dungeonMap[x][y] = obj;
-	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (sprit.getSpriteSize().x * scaleMultiplier),
-											(y) * (sprit.getSpriteSize().y * scaleMultiplier)));
+	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (tileSize.x * scaleMultiplier),
+											(y) * (tileSize.y * scaleMultiplier)));
+
 	levelState->createGameObject(dungeonMap[x][y]);
 }
 
@@ -238,13 +242,12 @@ void NormalDungeon::createWall(int x, int y)
 	auto spC = obj->addComponent<SpriteComponent>();
 	//TODO: Use prefab manager and randomize tiles
 	auto sprit = levelState->getSprite("wall_banner_red.png"); // spriteAtlas->get("floor_1.png");
-	float scaleMultiplier = 4.0f;
 	sprit.setScale({ scaleMultiplier,scaleMultiplier });
 	spC->setSprite(sprit);
 
 	dungeonMap[x][y] = obj;
-	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (sprit.getSpriteSize().x * scaleMultiplier),
-		(y) * (sprit.getSpriteSize().y * scaleMultiplier)));
+	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (tileSize.x * scaleMultiplier),
+		(y) * (tileSize.y * scaleMultiplier)));
 	levelState->createGameObject(dungeonMap[x][y]);
 }
 

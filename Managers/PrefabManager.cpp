@@ -62,7 +62,6 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 		}
 		else if (componentName == "PhysicsComponent")
 		{
-			Debug::Log("Adding physics component");
 			auto physicsComponent = gameObject->addComponent<PhysicsComponent>();
 			physicsComponent->setValuesFromJSON(&component.value, state->getPhysicsWorld());
 
@@ -89,8 +88,6 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 		else if (componentName == "WeaponComponent") {
 			auto weaponComponent = gameObject->addComponent<WeaponComponent>();
 		}
-
-		Debug::Log("Loading component: " + std::string(componentName));
 	}
 }
 

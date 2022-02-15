@@ -13,7 +13,7 @@ enum RoomType
 class Room
 {
 public:
-	Room(int width, int height, glm::vec2 pos, RoomType type = CUSTOMSIZE);
+	Room(int width, int height, glm::vec2 pos, glm::vec2 scale, RoomType type = CUSTOMSIZE);
 
 	void initialiseRoom();
 	void generateContent();
@@ -30,6 +30,7 @@ public:
 	int getWidth();
 	int getHeight();
 	glm::ivec2 getCenterPos() const;
+	glm::ivec2 getCenterPosScaled() const;
 	std::vector <std::shared_ptr<Room>> getRoomsSeen();
 	std::vector <std::shared_ptr<Room>> getRoomsConnected();
 	float getRoomSeenDistance(int i);
@@ -44,6 +45,7 @@ private:
 	static int amountOfRooms;
 	glm::vec2 initialPos;
 	glm::ivec2 centerPos;
+	glm::ivec2 centerPosScaled;
 
 	std::vector <std::shared_ptr<Room>> roomSeen;
 	std::vector <float> roomSeenDistance;

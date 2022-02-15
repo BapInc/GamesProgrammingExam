@@ -38,7 +38,7 @@ public:
 	void setName(std::string& name);
 
 	std::string getTag() const;
-	std::string getName() const;
+	std::string getName();
 	const std::vector<std::shared_ptr<Component>>& getComponents();
 	Transform* getTransform();
 

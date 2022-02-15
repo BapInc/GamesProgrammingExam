@@ -15,6 +15,7 @@ protected:
 	void calculateAmountOfRooms();
 	virtual void generateRooms() {};
 	virtual void generateRoomConnections() {};
+	virtual void generateWalls() {};
 	
 public:
 

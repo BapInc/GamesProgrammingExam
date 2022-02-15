@@ -5,13 +5,14 @@
 #include <iostream>
 #include <cmath>
 #include <map>
+#include <string>
 
 typedef  std::pair<int, int> iPair;
 
 NormalDungeon::NormalDungeon(LevelState& levelState)
 {
-	minAmountOfRooms = 3;
-	maxAmountOfRooms = 5;
+	minAmountOfRooms = 5;
+	maxAmountOfRooms = 10;
 
 	minRoomWidth = 5;
 	minRoomHeight = 5;
@@ -26,8 +27,8 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 
 	roomVisibilityDistance = 100;
 
-	mapWidth = 30;
-	mapHeight = 30;
+	mapWidth = 70;
+	mapHeight = 70;
 
 	maxIterations = 100;
 
@@ -143,9 +144,6 @@ void NormalDungeon::generateRooms()
 
 void NormalDungeon::generateRoomConnections()
 {
-	//check 
-
-	//Calculate all room distances
 	findVisibleRooms();
 
 	connectRooms();
@@ -189,13 +187,33 @@ void NormalDungeon::createFloor(int x, int y)
 	auto spC = obj->addComponent<SpriteComponent>();
 	//TODO: Use prefab manager and randomize tiles
 	auto sprit = levelState->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
-	float scaleMultiplier = 2.0f;
+	float scaleMultiplier = 4.0f;
 	sprit.setScale({ scaleMultiplier,scaleMultiplier });
 	spC->setSprite(sprit);
 
 	dungeonMap[x][y] = obj;
 	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (sprit.getSpriteSize().x * scaleMultiplier),
 											(y) * (sprit.getSpriteSize().y * scaleMultiplier)));
+	levelState->createGameObject(dungeonMap[x][y]);
+}
+
+void NormalDungeon::createWall(int x, int y)
+{
+	std::cout << "WALL CREATED" << std::endl;
+	//TODO: Check if there's a tile in that spot of the map
+	auto obj = new GameObject();
+	std::string name = "wallTile";
+	obj->setName(name);
+	auto spC = obj->addComponent<SpriteComponent>();
+	//TODO: Use prefab manager and randomize tiles
+	auto sprit = levelState->getSprite("wall_banner_red.png"); // spriteAtlas->get("floor_1.png");
+	float scaleMultiplier = 4.0f;
+	sprit.setScale({ scaleMultiplier,scaleMultiplier });
+	spC->setSprite(sprit);
+
+	dungeonMap[x][y] = obj;
+	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (sprit.getSpriteSize().x * scaleMultiplier),
+		(y) * (sprit.getSpriteSize().y * scaleMultiplier)));
 	levelState->createGameObject(dungeonMap[x][y]);
 }
 
@@ -364,6 +382,42 @@ void NormalDungeon::generateRoomObject(RoomType type, int customWidth, int custo
 	//default:
 	//	break;
 	//}
+}
+
+void NormalDungeon::generateWalls()
+{
+	for (size_t i = 0; i < mapHeight; i++)
+	{
+		for (size_t j = 0; j < mapWidth; j++)
+		{
+			if (dungeonMap[j][i] == NULL)
+				continue;
+			
+			if (dungeonMap[j][i]->getName() != "floorTile")
+				continue;
+			
+			//Rows
+			for (int r = -1; r < 2; r++)
+			{
+				//Columns
+				for (int c = -1; c < 2; c++)
+				{
+					if (r == 0 && c == 0)
+						continue;
+
+					if (j + r >= mapWidth || i + c >= mapHeight)
+						continue;
+
+					if (j + r < 0 || i + c < 0)
+						continue;
+
+					std::cout << "X: " + std::to_string(j + r) + " | Y: " + std::to_string(i + c) << std::endl;
+					if (dungeonMap[j + r][i + c] == NULL)
+						createWall(j + r, i + c);
+				}
+			}
+		}
+	}
 }
 
 float NormalDungeon::CalculateDistance(glm::ivec2& v, glm::ivec2& w)

@@ -8,6 +8,7 @@ void Dungeon::generateDungeon()
 	calculateAmountOfRooms();
 	generateRooms();
 	generateRoomConnections();
+	generateWalls();
 }
 
 void Dungeon::setMapValues()
@@ -34,7 +35,16 @@ void Dungeon::drawAsciiDungeon()
 			char tempChar = ' ';
 
 			if (temp != nullptr)
-				tempChar = '.';
+			{
+				if(temp->getName() == "floorTile")
+				{ 
+					tempChar = '.';
+				}
+				else if (temp->getName() == "wallTile")
+				{
+					tempChar = 'x';
+				}
+			}
 
 			std::cout << tempChar;
 		}

@@ -15,10 +15,12 @@ protected:
 	void generateRoomConnections() override;
 	void findVisibleRooms();
 	void createFloor(int x, int y);
+	void createWall(int x, int y);
 	void connectRooms();
 	void generateCorridor(int roomOne, int roomTwo);
 	void generateCorridorAxis(bool first, int axis, int roomOne, int roomTwo, glm::ivec2& distance, glm::ivec2& startPos);
 	void generateRoomObject(RoomType type = RANDOMROOM, int customWidth = 0, int customHeight = 0);
+	void generateWalls() override;
 	float CalculateDistance(glm::ivec2& v, glm::ivec2& w);
 
 private:

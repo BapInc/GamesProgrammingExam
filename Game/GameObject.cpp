@@ -36,7 +36,7 @@ std::string GameObject::getTag() const
 	return tag;
 }
 
-std::string GameObject::getName() const
+std::string GameObject::getName()
 {
 	return name;
 }
@@ -55,6 +55,15 @@ void GameObject::update(float deltaTime)
 	{
 		comp->update(deltaTime);
 	}
+}
+
+bool GameObject::getActive() {
+	return isActive;
+}
+
+void GameObject::setActive(bool setActive)
+{
+	isActive = setActive;
 }
 
 void GameObject::setName(std::string& name)

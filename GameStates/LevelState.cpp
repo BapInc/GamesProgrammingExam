@@ -2,6 +2,7 @@
 #include "../Game/DungeonGame.h"
 #include "../Components/SpriteComponent.h"
 #include "../Components/AudioComponent.h"
+#include "../Components/WeaponComponent.h"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "../Utility/Debug.h"
 #include "../AI/NavigationComponent.h"
@@ -10,6 +11,7 @@ using namespace sre;
 
 LevelState::LevelState() : debugDraw(physicsScale)
 {
+	std::cout << "Level";
 }
 
 void LevelState::start()
@@ -23,6 +25,8 @@ void LevelState::start()
 	camObj->name = "Camera";
 	camera = camObj->addComponent<TopDownCameraComponent>();
 	camObj->getTransform()->SetPos(DungeonGame::getInstance()->getWindowSize() * 0.5f);
+
+	//AUDIO
 	// ======== EXAMPLE =================
 	// || Add Component and play audio ||
 	// ======== EXAMPLE =================
@@ -32,6 +36,13 @@ void LevelState::start()
 	prefabManager = std::make_shared<PrefabManager>();
 	prefabManager->loadGameObjectsFromFile("./GameObjects.json", this);
 
+	//PLAYER
+	player = loadPrefab("Player");
+	createGameObject(player.get());
+	player->getComponent<Player>()->setLevel(*this);
+	camera->setFollowObject(player);
+	player->getComponent<Player>()->start();
+	player->transform->SetPos(dungeon->getStartRoomPos());
 
 	// ======== EXAMPLE =================
 	// ||		   AI				   ||
@@ -52,32 +63,14 @@ void LevelState::start()
 	std::cout << "Camera instantiated" << std::endl;
 #endif
 
-
-
-	//Player
-	auto playerGO = createGameObject();
-	playerGO->name = "Player";
-	player = playerGO->addComponent<Player>();
-	player->setLevel(*this);
-	auto playerSprite = playerGO->addComponent<SpriteComponent>();
-	auto pSprite = getSprite("lizard_f_idle_anim_f0.png");
-	pSprite.setScale({ 2,2 });
-	playerSprite->setSprite(pSprite);
-	playerGO->transform->SetPos({ -200,200 });
-	//auto phys = playerGO->addComponent<PhysicsComponent>();
-	//phys->setWorld(world);
-	//phys->initBox(b2BodyType::b2_dynamicBody, { 1 / physicsScale,1 / physicsScale }, { -200 / physicsScale, 200 / physicsScale }, 1);
-	//phys->initCircle(b2_dynamicBody, 10 / physicsScale, { playerGO->getTransform()->getPos().x / physicsScale,playerGO->getTransform()->getPos().y / physicsScale }, 1);
-	//physicsComponents[phys->fixture] = phys.get();
-
-
-	camera->setFollowObject(playerGO, { 0, 0 });
-	//camera->setFollowObject(obj, { +150,DungeonGame::getInstance()->getWindowSize().y / 2 });
-
 	dungeon->drawAsciiDungeon();
 
 	prefabManager->clearPrefabs();
 
+}
+
+std::shared_ptr<GameObject> LevelState::loadPrefab(std::string prefab) {
+	return prefabLoader->getPrefab(prefab);
 }
 
 void LevelState::update(float deltaTime)
@@ -85,7 +78,9 @@ void LevelState::update(float deltaTime)
 	updatePhysics();
 	for (auto& obj : sceneObjects)
 	{
-		obj->update(deltaTime);
+		if (obj->getActive()) {
+			obj->update(deltaTime);
+		}
 	}
 
 }
@@ -101,7 +96,9 @@ void LevelState::render()
 	auto spriteBatchBuilder = SpriteBatch::create();
 	for (auto& go : sceneObjects)
 	{
-		go->renderSprite(spriteBatchBuilder);
+		if (go->getActive()) {
+			go->renderSprite(spriteBatchBuilder);
+		}
 	}
 
 
@@ -126,6 +123,7 @@ void LevelState::render()
 
 void LevelState::onKey(SDL_Event& event)
 {
+	player->getComponent<Player>()->onKey(event);
 	player->onKey(event);
 	if (event.type == SDL_KEYDOWN)
 	{
@@ -244,6 +242,7 @@ std::shared_ptr<GameObject> LevelState::createGameObject()
 std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object)
 {
 	auto obj = std::shared_ptr<GameObject>(object);
+	obj->setActive(true);
 	auto physicsComponent = obj->getComponent<PhysicsComponent>();
 	if (physicsComponent != nullptr) {
 		physicsComponents[physicsComponent->fixture] = physicsComponent.get();

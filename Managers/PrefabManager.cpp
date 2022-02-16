@@ -5,6 +5,8 @@
 #include "../Components/SpriteAnimationComponent.h"
 #include "../Components/PhysicsComponent.h"
 #include "../AI/NavigationComponent.h"
+#include "../Components/WeaponComponent.h"
+
 
 void PrefabManager::loadGameObjectsFromFile(std::string path, LevelState* state)
 {
@@ -62,7 +64,6 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 		}
 		else if (componentName == "PhysicsComponent")
 		{
-			Debug::Log("Adding physics component");
 			auto physicsComponent = gameObject->addComponent<PhysicsComponent>();
 			physicsComponent->setValuesFromJSON(&component.value, state->getPhysicsWorld());
 
@@ -84,6 +85,13 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 			Debug::Log("Adding TopDownCameraComponent");
 			auto topDownCameraComponent = gameObject->addComponent<TopDownCameraComponent>();
 
+		}
+		else if (componentName == "Player") {
+			auto playerComponent = gameObject->addComponent<Player>();
+			playerComponent->setValuesFromJSON(&component.value, state);
+		}
+		else if (componentName == "WeaponComponent") {
+			auto weaponComponent = gameObject->addComponent<WeaponComponent>();
 		}
 		else if (componentName == "NavigationComponent")
 		{

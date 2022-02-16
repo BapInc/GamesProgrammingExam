@@ -37,9 +37,10 @@ public:
 	void update(float deltaTime);
 
 	void setName(std::string& name);
-
+	bool getActive();
+	void setActive(bool setActive);
 	std::string getTag() const;
-	std::string getName() const;
+	std::string getName();
 	const std::vector<std::shared_ptr<Component>>& getComponents();
 	Transform* getTransform();
 	GameObject* clone(glm::vec2 pos, b2World* world);
@@ -47,6 +48,7 @@ public:
 private:
 
 	bool shouldDestroy = false;
+	bool isActive;
 
 	Transform* transform;
 

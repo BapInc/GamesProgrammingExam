@@ -14,22 +14,21 @@ void TopDownCameraComponent::update(float deltaTime)
 	{
 		//get position of PlayerGO
 		glm::vec2 position = followObject->getTransform()->getPos();
-
-		position.x += offset.x;
-		position.y += offset.y;
-
-		gameObject->getTransform()->Translate(position);
+		//Set position of PlayerGO to the camera game object
+		gameObject->getTransform()->SetPos(position);
+		//eye -> defines the position of the camera
 		glm::vec3 eye(position, 0);
+		//at -> the position where the camera is looking at (-1 is down)
 		glm::vec3 at(position, -1);
+		//up -> specifies the up direction of the camera
 		glm::vec3 up(0, 1, 0);
 		camera.lookAt(eye, at, up);
 	}
 }
 
-void TopDownCameraComponent::setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset)
+void TopDownCameraComponent::setFollowObject(std::shared_ptr<GameObject> followObject)
 {
 	this->followObject = followObject;
-	this->offset = offset;
 }
 
 sre::Camera& TopDownCameraComponent::getCamera()

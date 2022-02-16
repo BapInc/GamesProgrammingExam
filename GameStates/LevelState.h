@@ -11,6 +11,7 @@
 #include "../Managers/PrefabManager.h"
 #include "../Components/PhysicsComponent.h"
 #include "../Components/TopDownCameraComponent.h"
+#include "../Player/Player.h"
 
 
 class PhysicsComponent;
@@ -32,7 +33,7 @@ public:
 
 	void BeginContact(b2Contact* contact) override;
 	void EndContact(b2Contact* contact) override;
-
+	std::shared_ptr<GameObject> loadPrefab(std::string prefab);
 	void generateNewDungeon();
 
 	void handleContact(b2Contact* contact, bool begin);
@@ -52,12 +53,15 @@ private:
 	std::map<b2Fixture*, PhysicsComponent*> physicsComponents;
 
 	std::shared_ptr<TopDownCameraComponent> camera;
-	std::shared_ptr<Player> player;
+	std::shared_ptr<GameObject> player;
+
+	PrefabManager* prefabLoader;
 
 	Box2DDebugDraw debugDraw;
 	bool doDebugDraw = false;
 	Dungeon* dungeon;
 
+	//PrefabManager* prefabLoader;
 
 	void updatePhysics();
 	void registerPhysicsComponent(PhysicsComponent* r);

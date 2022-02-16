@@ -7,6 +7,13 @@ void Dungeon::generateDungeon()
 	setMapValues();
 	calculateAmountOfRooms();
 	generateRooms();
+	generateRoomConnections();
+	generateWalls();
+}
+
+glm::ivec2 Dungeon::getStartRoomPos()
+{
+	return startRoom->getCenterPosScaled();
 }
 
 void Dungeon::setMapValues()
@@ -33,7 +40,16 @@ void Dungeon::drawAsciiDungeon()
 			char tempChar = ' ';
 
 			if (temp != nullptr)
-				tempChar = '.';
+			{
+				if(temp->getName() == "floorTile")
+				{ 
+					tempChar = '.';
+				}
+				else if (temp->getName() == "wallTile")
+				{
+					tempChar = 'x';
+				}
+			}
 
 			std::cout << tempChar;
 		}

@@ -1,10 +1,10 @@
-#ifndef RESOURCELOADER_H
-#define RESOURCELOADER_H
+#ifndef PREFABMANAGER_H
+#define PREFABMANAGER_H
 #include <string>
 #include "../GameStates/LevelState.h"
 #include <map>
 
-class PrefabManager {
+class PrefabManager{
 public:
 	void loadGameObjectsFromFile(std::string path, LevelState* state);
 	void addComponents(rapidjson::Value& go, std::shared_ptr<GameObject>& gameObject, LevelState* state);

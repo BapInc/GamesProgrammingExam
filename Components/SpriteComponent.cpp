@@ -5,6 +5,7 @@
 #include "SpriteComponent.h"
 #include "../Game/GameObject.h"
 #include "../Utility/Debug.h"
+#include <iostream>
 SpriteComponent::SpriteComponent(GameObject* gameObject) : Component(gameObject)
 {
 	this->gameObject = gameObject;
@@ -34,6 +35,10 @@ void SpriteComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAlloc
 	auto scale = value->operator[]("scale").GetObject();
 	sprite.setScale({ scale["x"].GetFloat(), scale["y"].GetFloat() });
 	setSprite(sprite);
+}
+
+void SpriteComponent::flipSprite(bool flip) {
+	sprite.setFlip({ flip, false });
 }
 
 std::shared_ptr<SpriteComponent> SpriteComponent::clone(GameObject* gameObject)

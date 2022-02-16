@@ -18,15 +18,20 @@ void Player::setLevel(LevelState& levelState)
 	this->levelState = &levelState;
 }
 
-void Player::start() {
+void Player::addWeapon() {
 	weapon1 = levelState->loadPrefab("Weapon1");
 	levelState->createGameObject(weapon1.get());
 	weapon1->getComponent<WeaponComponent>()->setPlayer(*gameObject);
+	weapon1->getComponent<WeaponComponent>()->setLevel(*levelState);
 
 	weapon2 = levelState->loadPrefab("Weapon2");
 	levelState->createGameObject(weapon2.get());
 	weapon2->getComponent<WeaponComponent>()->setPlayer(*gameObject);
+	weapon2->getComponent<WeaponComponent>()->setLevel(*levelState);
 	weapon2->setActive(false);
+
+	weaponInventory.push_back(weapon1);
+	weaponInventory.push_back(weapon2);
 }
 
 bool Player::onKey(SDL_Event& event) {
@@ -54,21 +59,52 @@ bool Player::onKey(SDL_Event& event) {
 		}
 		break;
 	case SDLK_1:
-		weapon1->setActive(true);	
-		weapon2->setActive(false);	
+		selectWeapon(1);
 		break;
 	case SDLK_2:
-		weapon1->setActive(false);
-		weapon2->setActive(true);
+		selectWeapon(2);
 		break;
 	case SDLK_SPACE:
-		//press 1 -> bullet = granade
-		//press 2 -> bullet = other bullet
-		//shoot(bullet)
+
+		if (event.type == SDL_KEYDOWN && pressed == false) {
+
+			pressed = true;
+
+			auto bullet = selectedWeapon()->getComponent<WeaponComponent>()->getBulletType();
+		}
+	
+		//shoot(bullet, player pos, mouse dir, mouse rot)
+
+		if (event.type == SDL_KEYUP) {
+			pressed = false;
+		}
 		break;
 	}
 
 	return true;
+}
+
+void Player::selectWeapon(int keyboardNumber) {
+	for (int i = 0; i < weaponInventory.size(); i++) {
+		if (i == keyboardNumber - 1) {
+			weaponInventory[i]->setActive(true);
+		}
+		else {
+			weaponInventory[i]->setActive(false);
+		}
+	}
+}
+
+std::shared_ptr<GameObject> Player::selectedWeapon() {
+	for (int i = 0; i < weaponInventory.size(); i++) {
+		if (weaponInventory[i]->getActive()) {
+			return weaponInventory[i];
+		}
+	}
+}
+
+void Player::shoot() {
+
 }
 
 bool Player::getFacing() {

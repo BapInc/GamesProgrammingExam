@@ -10,6 +10,9 @@ DungeonGame::DungeonGame()
 	Debug::Log("Game instantiated", SUCCESS);
 #endif 
 	renderer.setWindowSize(windowSize);
+
+	SDL_GetWindowSize(renderer.getSDLWindow(), &w, &h);
+
 	renderer.init().withSdlInitFlags(SDL_INIT_EVERYTHING)
 		.withSdlWindowFlags(SDL_WINDOW_OPENGL);
 	// Load audio 

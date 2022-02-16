@@ -37,7 +37,7 @@ void LevelState::start()
 	prefabManager->loadGameObjectsFromFile("./GameObjects.json", this);
 
 	//PLAYER
-	player = loadPrefab("Player");
+	player = loadPrefab("Player", glm::vec2(-200, 200) / physicsScale);
 	createGameObject(player.get());
 	player->getComponent<Player>()->setLevel(*this);
 	camera->setFollowObject(player);
@@ -50,9 +50,9 @@ void LevelState::start()
 	for (int i = 0; i < 4; i++) {
 
 		// Set pos does nothing because of the way physicscomponents are instantiated
-		auto enemyPos = glm::vec2((-210 + ((i + 10) * i)), 200) / physicsScale;
+		auto enemyPos = glm::vec2((-200 + ((i + 10) * i)), 200) / physicsScale;
 		//auto enemyPos = glm::vec2(-200 /, 200);
-		auto enemy = prefabManager->getPrefab("Enemy", this, enemyPos, world);
+		auto enemy = prefabManager->getPrefab("Enemy", this, enemyPos);
 		auto enemyGO = createGameObject(enemy.get());
 		auto nav = enemyGO->getComponent<NavigationComponent>();
 		nav->activateNavigation();
@@ -69,8 +69,8 @@ void LevelState::start()
 
 }
 
-std::shared_ptr<GameObject> LevelState::loadPrefab(std::string prefab) {
-	return prefabLoader->getPrefab(prefab);
+std::shared_ptr<GameObject> LevelState::loadPrefab(std::string prefab, glm::vec2 pos) {
+	return prefabManager->getPrefab(prefab, this, pos);
 }
 
 void LevelState::update(float deltaTime)
@@ -124,7 +124,6 @@ void LevelState::render()
 void LevelState::onKey(SDL_Event& event)
 {
 	player->getComponent<Player>()->onKey(event);
-	player->onKey(event);
 	if (event.type == SDL_KEYDOWN)
 	{
 		switch (event.key.keysym.sym)

@@ -19,11 +19,11 @@ void Player::setLevel(LevelState& levelState)
 }
 
 void Player::start() {
-	weapon1 = levelState->loadPrefab("Weapon1");
+	weapon1 = levelState->loadPrefab("Weapon1", gameObject->getTransform()->getPos());
 	levelState->createGameObject(weapon1.get());
 	weapon1->getComponent<WeaponComponent>()->setPlayer(*gameObject);
 
-	weapon2 = levelState->loadPrefab("Weapon2");
+	weapon2 = levelState->loadPrefab("Weapon2", gameObject->getTransform()->getPos());
 	levelState->createGameObject(weapon2.get());
 	weapon2->getComponent<WeaponComponent>()->setPlayer(*gameObject);
 	weapon2->setActive(false);
@@ -54,8 +54,8 @@ bool Player::onKey(SDL_Event& event) {
 		}
 		break;
 	case SDLK_1:
-		weapon1->setActive(true);	
-		weapon2->setActive(false);	
+		weapon1->setActive(true);
+		weapon2->setActive(false);
 		break;
 	case SDLK_2:
 		weapon1->setActive(false);

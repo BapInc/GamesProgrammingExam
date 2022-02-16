@@ -4,6 +4,8 @@
 #include "../Components/Component.h"
 #include "../Components/SpriteComponent.h"
 #include "../AI/NavigationComponent.h"
+#include "../Player/Player.h"
+#include "../Components/WeaponComponent.h"
 
 GameObject::~GameObject()
 {
@@ -81,7 +83,7 @@ Transform* GameObject::getTransform()
 	return transform;
 }
 
-GameObject* GameObject::clone(glm::vec2 pos, b2World* world)
+GameObject* GameObject::clone(glm::vec2 pos, LevelState* state)
 {
 	auto cloneGO = new GameObject(*this);
 	cloneGO->transform = transform->clone(cloneGO);
@@ -105,15 +107,29 @@ GameObject* GameObject::clone(glm::vec2 pos, b2World* world)
 
 		auto phys = std::dynamic_pointer_cast<PhysicsComponent>(component);
 		if (phys != nullptr) {
-			auto physComp = std::shared_ptr<PhysicsComponent>(phys->clone(cloneGO, world));
+			auto physComp = std::shared_ptr<PhysicsComponent>(phys->clone(cloneGO, state->getPhysicsWorld()));
 			cloneGO->components.push_back(physComp);
 
 			continue;
 		}
+		auto player = std::dynamic_pointer_cast<Player>(component);
+		if (player != nullptr) {
+			auto playerClone = new Player(*player);
+			playerClone->setLevel(*state);
+			auto playerComponent = std::shared_ptr<Player>(new Player(*playerClone));
+			cloneGO->components.push_back(playerComponent);
+			continue;
+		}
+		auto weapon = std::dynamic_pointer_cast<WeaponComponent>(component);
+		if (weapon != nullptr) {
+			auto weaponComponent = std::shared_ptr<WeaponComponent>(new WeaponComponent(*weapon));
+			cloneGO->components.push_back(weaponComponent);
+			continue;
+		}
 	}
-
 	for (auto& component : cloneGO->components) {
 		component->setGameObject(cloneGO);
 	}
 	return cloneGO;
 }
+

@@ -33,7 +33,7 @@ public:
 
 	void BeginContact(b2Contact* contact) override;
 	void EndContact(b2Contact* contact) override;
-	std::shared_ptr<GameObject> loadPrefab(std::string prefab);
+	std::shared_ptr<GameObject> loadPrefab(std::string prefab, glm::vec2 pos);
 	void generateNewDungeon();
 
 	void handleContact(b2Contact* contact, bool begin);
@@ -55,7 +55,6 @@ private:
 	std::shared_ptr<TopDownCameraComponent> camera;
 	std::shared_ptr<GameObject> player;
 
-	PrefabManager* prefabLoader;
 
 	Box2DDebugDraw debugDraw;
 	bool doDebugDraw = false;

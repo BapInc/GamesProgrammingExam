@@ -104,10 +104,10 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 	}
 }
 
-std::shared_ptr<GameObject> PrefabManager::getPrefab(std::string name, LevelState* state, glm::vec2 pos, b2World* world)
+std::shared_ptr<GameObject> PrefabManager::getPrefab(std::string name, LevelState* state, glm::vec2 pos)
 {
 	auto foundPrefab = prefabs[name];
-	auto clone = foundPrefab->clone(pos, world);
+	auto clone = foundPrefab->clone(pos, state);
 	return state->createGameObject(clone);
 }
 

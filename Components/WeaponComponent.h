@@ -18,7 +18,7 @@ public:
 	void update(float deltaTime) override;
 	void setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, GameState* state);
 	std::shared_ptr<GameObject> getBulletType();
-	void rotateWeapon();
+	float& getMouseRotation();
 
 private:
 	GameObject* player;

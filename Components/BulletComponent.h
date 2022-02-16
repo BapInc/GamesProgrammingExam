@@ -7,10 +7,12 @@ class BulletComponent : public Component
 public:
 	explicit BulletComponent(GameObject* gameObject);
 
-	void shoot(sre::Sprite bullet, glm::vec2 pos, glm::vec2 vel, float rot);
+	void setBulletDirection(glm::vec2 mouseDirection);
+
 	void update(float deltaTime) override;
 	
 private:
-	
 
+	glm::vec2 bulletDirection;
+	float speed = 200.0f;
 };

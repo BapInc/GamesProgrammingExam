@@ -5,11 +5,15 @@
 #include "../Commands/MoveCommand.h"
 #include "glm/glm.hpp"
 #include "../Components/WeaponComponent.h"
+#include "../Components/BulletComponent.h"
+#include "../Game/DungeonGame.h"
 
 Player::Player(GameObject* gameObject) : Component(gameObject)
 {
 	this->gameObject = gameObject;
 	spriteComponent = gameObject->getComponent<SpriteComponent>();
+	originX = DungeonGame::getInstance()->getWindowSize().x / 2;
+	originY = DungeonGame::getInstance()->getWindowSize().y / 2;
 	//moveCommand = NULL;
 }
 
@@ -70,11 +74,10 @@ bool Player::onKey(SDL_Event& event) {
 
 			pressed = true;
 
-			auto bullet = selectedWeapon()->getComponent<WeaponComponent>()->getBulletType();
+			bullet = selectedWeapon()->getComponent<WeaponComponent>()->getBulletType();
+			bullet->getComponent<BulletComponent>()->setBulletDirection(setMouseDirection());
 		}
 	
-		//shoot(bullet, player pos, mouse dir, mouse rot)
-
 		if (event.type == SDL_KEYUP) {
 			pressed = false;
 		}
@@ -82,6 +85,11 @@ bool Player::onKey(SDL_Event& event) {
 	}
 
 	return true;
+}
+
+glm::vec2 Player::setMouseDirection() {
+	SDL_GetMouseState(&x, &y);
+	return glm::normalize(glm::vec2(x - originX, -y + originY));
 }
 
 void Player::selectWeapon(int keyboardNumber) {
@@ -101,10 +109,6 @@ std::shared_ptr<GameObject> Player::selectedWeapon() {
 			return weaponInventory[i];
 		}
 	}
-}
-
-void Player::shoot() {
-
 }
 
 bool Player::getFacing() {

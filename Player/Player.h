@@ -22,18 +22,27 @@ public:
 	void addWeapon();
 	void selectWeapon(int keyboardNumber);
 	std::shared_ptr<GameObject> Player::selectedWeapon();
-	void shoot();
+	glm::vec2 setMouseDirection();
 
 private:
-	float speed;
-	glm::vec2 velocity;
-	std::vector<std::shared_ptr<GameObject>> weaponInventory;
 	//MoveCommand* moveCommand;
 	std::stack<std::shared_ptr<MoveCommand>> moveCommands;
 	std::shared_ptr<SpriteComponent> spriteComponent;
+	LevelState* levelState;
+
+	//Weapons
+	std::vector<std::shared_ptr<GameObject>> weaponInventory;
 	std::shared_ptr<GameObject> weapon1;
 	std::shared_ptr<GameObject> weapon2;
-	LevelState* levelState;
+	std::shared_ptr<GameObject> bullet;
+
+	//Player movements
+	float speed;
+	glm::vec2 velocity;
 	bool facingRight = true;
 	bool pressed = false;
+
+	//Mouse coordinates
+	int x, y;
+	int originX, originY;
 };

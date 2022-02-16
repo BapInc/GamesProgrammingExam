@@ -37,11 +37,12 @@ bool WeaponComponent::flipWeapon() {
 	return player->getComponent<Player>()->getFacing();
 }
 
-void WeaponComponent::rotateWeapon() {
+float& WeaponComponent::getMouseRotation() {
 	SDL_GetMouseState(&x, &y);
 	radians = std::atan2(x - originX, -y + originY);
 	angle = -(radians * 180 / PI);
-	gameObject->getTransform()->Rotate(angle);
+
+	return angle;
 }
 
 
@@ -53,5 +54,5 @@ void WeaponComponent::update(float deltaTime) {
 	else {
 		gameObject->getTransform()->SetPos(newPos + glm::vec2(-10, -15));
 	}
-	rotateWeapon();
+	gameObject->getTransform()->Rotate(getMouseRotation());
 }

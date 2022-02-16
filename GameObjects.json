@@ -219,7 +219,8 @@
           "y": 0.5
         },
         "density": 1.0
-      }
+      },
+      "BulletComponent": {}
     }
   },
   {
@@ -265,7 +266,8 @@
           "y": 0.5
         },
         "density": 1.0
-      }
+      },
+      "BulletComponent": {}
     }
   }
 ]

@@ -3,10 +3,10 @@
 
 #include "../Components/BulletComponent.h"
 
-class GranadeComponent : public BulletComponent
+class GrenadeComponent : public BulletComponent
 {
 public:
-	explicit GranadeComponent(GameObject* gameObject);
+	explicit GrenadeComponent(GameObject* gameObject);
 	void shoot(float deltaTime) override;
 
 };

@@ -126,6 +126,11 @@ GameObject* GameObject::clone(glm::vec2 pos, LevelState* state)
 			cloneGO->components.push_back(playerComponent);
 			continue;
 		}
+		if (grenade != nullptr) {
+			auto grenadeComponent = std::shared_ptr<GranadeComponent>(new GranadeComponent(*grenade));
+			cloneGO->components.push_back(grenadeComponent);
+			continue;
+		}
 		if (weapon != nullptr) {
 			auto weaponComponent = std::shared_ptr<WeaponComponent>(new WeaponComponent(*weapon));
 			cloneGO->components.push_back(weaponComponent);
@@ -134,11 +139,6 @@ GameObject* GameObject::clone(glm::vec2 pos, LevelState* state)
 		if (bullet != nullptr) {
 			auto bulletComponent = std::shared_ptr<BulletComponent>(new BulletComponent(*bullet));
 			cloneGO->components.push_back(bulletComponent);
-			continue;
-		}
-		if (grenade != nullptr) {
-			auto grenadeComponent = std::shared_ptr<GranadeComponent>(new GranadeComponent(*grenade));
-			cloneGO->components.push_back(grenadeComponent);
 			continue;
 		}
 

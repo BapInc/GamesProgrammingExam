@@ -48,7 +48,11 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 void NormalDungeon::generateRooms()
 {
 	//Generate starting room
-	generateRoom(startRoomWidth, startRoomHeight, STARTROOM);
+	do
+	{
+		generateRoom(startRoomWidth, startRoomHeight, STARTROOM);
+
+	} while (rooms.size() == 0);
 
 	//Get random position
 	int temp = 0;
@@ -162,10 +166,11 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 		break;
 	case STARTROOM:
 
-		if (startRoom == NULL)
-			startRoom = room;
-		else
+		if(startRoom != NULL)
 			Debug::Log("More than one startRoom instance", ALERT);
+		else
+			startRoom = room;
+
 		break;
 	case BOSSROOM:
 
@@ -241,7 +246,7 @@ void NormalDungeon::createWall(int x, int y)
 	obj->setName(name);
 	auto spC = obj->addComponent<SpriteComponent>();
 	//TODO: Use prefab manager and randomize tiles
-	auto sprit = levelState->getSprite("wall_banner_red.png"); // spriteAtlas->get("floor_1.png");
+	auto sprit = levelState->getSprite("wall_mid.png"); // spriteAtlas->get("floor_1.png");
 	sprit.setScale({ scaleMultiplier,scaleMultiplier });
 	spC->setSprite(sprit);
 
@@ -269,6 +274,22 @@ void NormalDungeon::connectRooms()
 			{
 				std::string temp = std::to_string(rooms[selectedRoom]->getRoomNumber()) + parserToken + std::to_string(roomSeen);
 				float distance = rooms[selectedRoom]->getRoomSeenDistance(j);
+
+				float tempDistanceAdditive = 0.000002f;
+				bool loop = true;
+				//if same distance is already in map
+				if (costs.find(distance) != costs.end())
+				{
+					while (loop)
+					{
+						Debug::Log("Found Once", ALERT);
+						distance += tempDistanceAdditive;
+						if (costs.find(distance) == costs.end())
+							loop = false;
+
+					}
+				}
+
 				costs[distance] = temp;
 				keys.push_back(distance);
 			}
@@ -282,12 +303,14 @@ void NormalDungeon::connectRooms()
 		bool isRoomInCycle = false;
 		do
 		{
+			std::cout << "costs: " + std::to_string(keys[0]) +" | " + (costs[keys[0]]) << std::endl;
 			connectRooms = parseConnections(costs[keys[0]]);
 			if (std::find(roomsConnected.begin(), roomsConnected.end(), connectRooms.y) != roomsConnected.end())
 			{
 				costs.erase(keys[0]);
 				keys.erase(keys.begin());
 				isRoomInCycle = true;
+
 			}
 			else
 			{
@@ -298,6 +321,7 @@ void NormalDungeon::connectRooms()
 
 		float distance = keys[0];
 
+		std::cout << "Vector break here 1" << std::endl;
 		//Add connections to both rooms
 		if (isFirstConnection)
 		{
@@ -311,6 +335,8 @@ void NormalDungeon::connectRooms()
 		//Remove room from costs
 		costs.erase(distance);
 		keys.erase(keys.begin());
+
+		std::cout << "Vector break here 2" << std::endl;
 
 		//room connections
 		rooms[connectRooms.x]->addRoomConnected(rooms[connectRooms.y]);
@@ -375,6 +401,7 @@ void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int 
 			createFloor(pos.x, pos.y);
 		}
 	}
+	std::cout << "Vector break here 3" << std::endl;
 
 	if (first)
 		generateCorridorAxis(false, axis, roomOne, roomTwo, distance, pos);

@@ -48,8 +48,9 @@ void LevelState::start()
 	createGameObject(player.get());
 	player->getComponent<Player>()->setLevel(*this);
 	camera->setFollowObject(player);
-	player->getComponent<Player>()->start();
+	player->getComponent<Player>()->addWeapon();
 	player->transform->SetPos(dungeon->getStartRoomPos());
+
 #ifdef _DEBUG
 	std::cout << "Camera instantiated" << std::endl;
 #endif

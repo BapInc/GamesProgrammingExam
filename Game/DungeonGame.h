@@ -18,6 +18,8 @@ public:
 private:
 	static DungeonGame* instance;
 
+	int w, h;
+
 	sre::SDLRenderer renderer; //TODO: Should renderer be here or in Playstate?
 	const glm::vec2 windowSize = glm::vec2(1920 / 1.5f, 1080 / 1.5f);
 

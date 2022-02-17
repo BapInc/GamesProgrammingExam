@@ -263,6 +263,14 @@ std::shared_ptr<GameObject> LevelState::createGameObject(std::shared_ptr<GameObj
 	return object;
 }
 
+void LevelState::destroy(GameObject* gameObject) {
+	for (int i = 0; i < sceneObjects.size(); i++) {
+		if (sceneObjects[i].get() == gameObject) {
+			sceneObjects.erase(sceneObjects.begin() + i);
+		}
+	}
+}
+
 b2World* LevelState::getPhysicsWorld()
 {
 	return world;

@@ -30,6 +30,7 @@ private:
 	//MoveCommand* moveCommand;
 	std::stack<std::shared_ptr<MoveCommand>> moveCommands;
 	std::shared_ptr<SpriteComponent> spriteComponent;
+	std::shared_ptr<PhysicsComponent> physicsComponent;
 	LevelState* levelState;
 
 	//Weapons

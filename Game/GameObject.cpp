@@ -7,6 +7,7 @@
 #include "../Player/Player.h"
 #include "../Components/WeaponComponent.h"
 #include "../Components/BulletComponent.h"
+#include "../Components/GranadeComponent.h"
 
 GameObject::~GameObject()
 {
@@ -98,6 +99,7 @@ GameObject* GameObject::clone(glm::vec2 pos, LevelState* state)
 		auto player = std::dynamic_pointer_cast<Player>(component);
 		auto weapon = std::dynamic_pointer_cast<WeaponComponent>(component);
 		auto bullet = std::dynamic_pointer_cast<BulletComponent>(component);
+		auto grenade = std::dynamic_pointer_cast<GranadeComponent>(component);
 
 		if (sprite != nullptr) {
 			auto spriteClone = std::shared_ptr<SpriteComponent>(sprite->clone(cloneGO));
@@ -132,6 +134,11 @@ GameObject* GameObject::clone(glm::vec2 pos, LevelState* state)
 		if (bullet != nullptr) {
 			auto bulletComponent = std::shared_ptr<BulletComponent>(new BulletComponent(*bullet));
 			cloneGO->components.push_back(bulletComponent);
+			continue;
+		}
+		if (grenade != nullptr) {
+			auto grenadeComponent = std::shared_ptr<GranadeComponent>(new GranadeComponent(*grenade));
+			cloneGO->components.push_back(grenadeComponent);
 			continue;
 		}
 

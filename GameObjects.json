@@ -36,8 +36,8 @@
           "y": 20.0
         },
         "center": {
-          "x": 0.5,
-          "y": 0.5
+          "x": 0,
+          "y": 0
         },
         "density": 1.0
       },
@@ -202,8 +202,8 @@
         "shape": "box",
         "b2BodyType": "b2_dynamicBody",
         "size": {
-          "x": 1.0,
-          "y": 2.0
+          "x": 5.0,
+          "y": 5.0
         },
         "center": {
           "x": 0.5,
@@ -211,7 +211,7 @@
         },
         "density": 1.0
       },
-      "BulletComponent": {}
+      "GranadeComponent": {}
     }
   },
   {
@@ -248,8 +248,8 @@
         "shape": "box",
         "b2BodyType": "b2_dynamicBody",
         "size": {
-          "x": 1.0,
-          "y": 2.0
+          "x": 5.0,
+          "y": 5.0
         },
         "center": {
           "x": 0.5,

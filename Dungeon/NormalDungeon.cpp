@@ -282,11 +282,9 @@ void NormalDungeon::connectRooms()
 				{
 					while (loop)
 					{
-						Debug::Log("Found Once", ALERT);
 						distance += tempDistanceAdditive;
 						if (costs.find(distance) == costs.end())
 							loop = false;
-
 					}
 				}
 
@@ -303,7 +301,6 @@ void NormalDungeon::connectRooms()
 		bool isRoomInCycle = false;
 		do
 		{
-			std::cout << "costs: " + std::to_string(keys[0]) +" | " + (costs[keys[0]]) << std::endl;
 			connectRooms = parseConnections(costs[keys[0]]);
 			if (std::find(roomsConnected.begin(), roomsConnected.end(), connectRooms.y) != roomsConnected.end())
 			{
@@ -321,7 +318,6 @@ void NormalDungeon::connectRooms()
 
 		float distance = keys[0];
 
-		std::cout << "Vector break here 1" << std::endl;
 		//Add connections to both rooms
 		if (isFirstConnection)
 		{
@@ -335,8 +331,6 @@ void NormalDungeon::connectRooms()
 		//Remove room from costs
 		costs.erase(distance);
 		keys.erase(keys.begin());
-
-		std::cout << "Vector break here 2" << std::endl;
 
 		//room connections
 		rooms[connectRooms.x]->addRoomConnected(rooms[connectRooms.y]);
@@ -363,7 +357,7 @@ void NormalDungeon::generateCorridor(int roomOne, int roomTwo)
 	generateCorridorAxis(true, randomDir, roomOne, roomTwo, tempDistance, rooms[roomOne]->getCenterPos());
 }
 
-void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int roomTwo, glm::ivec2& distance, glm::ivec2& startPos)
+void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int roomTwo, glm::ivec2& distance, glm::ivec2 startPos)
 {
 	int tileDistance = 0;
 	int additive = -1;
@@ -380,28 +374,27 @@ void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int 
 		tileDistance = std::abs(distance.y);
 	}
 
-	glm::ivec2 pos;
+	glm::ivec2 pos = startPos;
 	for (size_t i = 0; i < tileDistance; i++)
 	{
-		additive = i;
+		additive = 1;
 		if (axis == 1)
 		{
 			if (distance.x > 0)
-				additive = -i;
+				additive = -1;
 
-			pos = glm::ivec2(startPos.x + additive, startPos.y);
+			pos = glm::ivec2(pos.x + additive, pos.y);
 			createFloor(pos.x, pos.y);
 		}
 		else
 		{
 			if (distance.y > 0)
-				additive = -i;
+				additive = -1;
 
-			pos = glm::ivec2(startPos.x, startPos.y + additive);
+			pos = glm::ivec2(pos.x, pos.y + additive);
 			createFloor(pos.x, pos.y);
 		}
 	}
-	std::cout << "Vector break here 3" << std::endl;
 
 	if (first)
 		generateCorridorAxis(false, axis, roomOne, roomTwo, distance, pos);

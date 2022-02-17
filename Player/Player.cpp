@@ -12,6 +12,7 @@ Player::Player(GameObject* gameObject) : Component(gameObject)
 {
 	this->gameObject = gameObject;
 	spriteComponent = gameObject->getComponent<SpriteComponent>();
+	physicsComponent = gameObject->getComponent<PhysicsComponent>();
 	originX = DungeonGame::getInstance()->getWindowSize().x / 2;
 	originY = DungeonGame::getInstance()->getWindowSize().y / 2;
 	//moveCommand = NULL;
@@ -72,6 +73,7 @@ bool Player::onKey(SDL_Event& event) {
 
 			pressed = true;
 			auto temp = selectedWeapon()->getComponent<WeaponComponent>()->getBulletType();
+
 			temp->getComponent<BulletComponent>()->setBulletDirection(setMouseDirection());
 		}
 

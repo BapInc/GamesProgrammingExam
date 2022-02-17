@@ -175,7 +175,6 @@ void PhysicsComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllo
 
 	if (shape == "box")
 	{
-		Debug::Log("Creating Box", Logs::WARNING);
 		b2BodyType type;
 		if (bodyType == "b2_dynamicBody")
 		{
@@ -198,7 +197,6 @@ void PhysicsComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllo
 	}
 	else if (shape == "circle")
 	{
-		Debug::Log("Creating circle", Logs::WARNING);
 		b2BodyType type;
 		if (bodyType == "b2_dynamicBody")
 		{

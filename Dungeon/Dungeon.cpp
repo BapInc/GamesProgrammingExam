@@ -13,6 +13,9 @@ void Dungeon::generateDungeon()
 
 glm::ivec2 Dungeon::getStartRoomPos()
 {
+	if (startRoom == nullptr)
+		std::cout << "start room null" << std::endl;
+
 	return startRoom->getCenterPosScaled();
 }
 

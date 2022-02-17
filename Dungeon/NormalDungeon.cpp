@@ -48,7 +48,11 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 void NormalDungeon::generateRooms()
 {
 	//Generate starting room
-	generateRoom(startRoomWidth, startRoomHeight, STARTROOM);
+	do
+	{
+		generateRoom(startRoomWidth, startRoomHeight, STARTROOM);
+
+	} while (rooms.size() == 0);
 
 	//Get random position
 	int temp = 0;
@@ -162,10 +166,11 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 		break;
 	case STARTROOM:
 
-		if (startRoom == NULL)
-			startRoom = room;
-		else
+		if(startRoom != NULL)
 			Debug::Log("More than one startRoom instance", ALERT);
+		else
+			startRoom = room;
+
 		break;
 	case BOSSROOM:
 
@@ -241,7 +246,7 @@ void NormalDungeon::createWall(int x, int y)
 	obj->setName(name);
 	auto spC = obj->addComponent<SpriteComponent>();
 	//TODO: Use prefab manager and randomize tiles
-	auto sprit = levelState->getSprite("wall_banner_red.png"); // spriteAtlas->get("floor_1.png");
+	auto sprit = levelState->getSprite("wall_mid.png"); // spriteAtlas->get("floor_1.png");
 	sprit.setScale({ scaleMultiplier,scaleMultiplier });
 	spC->setSprite(sprit);
 
@@ -269,6 +274,20 @@ void NormalDungeon::connectRooms()
 			{
 				std::string temp = std::to_string(rooms[selectedRoom]->getRoomNumber()) + parserToken + std::to_string(roomSeen);
 				float distance = rooms[selectedRoom]->getRoomSeenDistance(j);
+
+				float tempDistanceAdditive = 0.000002f;
+				bool loop = true;
+				//if same distance is already in map
+				if (costs.find(distance) != costs.end())
+				{
+					while (loop)
+					{
+						distance += tempDistanceAdditive;
+						if (costs.find(distance) == costs.end())
+							loop = false;
+					}
+				}
+
 				costs[distance] = temp;
 				keys.push_back(distance);
 			}
@@ -288,6 +307,7 @@ void NormalDungeon::connectRooms()
 				costs.erase(keys[0]);
 				keys.erase(keys.begin());
 				isRoomInCycle = true;
+
 			}
 			else
 			{
@@ -337,7 +357,7 @@ void NormalDungeon::generateCorridor(int roomOne, int roomTwo)
 	generateCorridorAxis(true, randomDir, roomOne, roomTwo, tempDistance, rooms[roomOne]->getCenterPos());
 }
 
-void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int roomTwo, glm::ivec2& distance, glm::ivec2& startPos)
+void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int roomTwo, glm::ivec2& distance, glm::ivec2 startPos)
 {
 	int tileDistance = 0;
 	int additive = -1;
@@ -354,24 +374,24 @@ void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int 
 		tileDistance = std::abs(distance.y);
 	}
 
-	glm::ivec2 pos;
+	glm::ivec2 pos = startPos;
 	for (size_t i = 0; i < tileDistance; i++)
 	{
-		additive = i;
+		additive = 1;
 		if (axis == 1)
 		{
 			if (distance.x > 0)
-				additive = -i;
+				additive = -1;
 
-			pos = glm::ivec2(startPos.x + additive, startPos.y);
+			pos = glm::ivec2(pos.x + additive, pos.y);
 			createFloor(pos.x, pos.y);
 		}
 		else
 		{
 			if (distance.y > 0)
-				additive = -i;
+				additive = -1;
 
-			pos = glm::ivec2(startPos.x, startPos.y + additive);
+			pos = glm::ivec2(pos.x, pos.y + additive);
 			createFloor(pos.x, pos.y);
 		}
 	}

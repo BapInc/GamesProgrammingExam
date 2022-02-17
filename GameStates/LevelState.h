@@ -41,10 +41,13 @@ public:
 	std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object);
 	std::shared_ptr<GameObject> LevelState::createGameObject(std::shared_ptr<GameObject> object);
 	b2World* getPhysicsWorld();
+	float getPhysicsScale();
+	float getTimeScale();
+	static constexpr float physicsScale = 100;
+	static constexpr float32 timeStep = 1.0f / 60.0f;
+
+
 private:
-
-	const float physicsScale = 100;
-
 	b2World* world = nullptr;
 	std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
 	std::shared_ptr<PrefabManager> prefabManager;

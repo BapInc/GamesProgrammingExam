@@ -84,7 +84,8 @@ void Player::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtA
 
 void Player::update(float deltaTime) {
 
-	auto newPos = gameObject->getTransform()->getPos() + velocity * speed * deltaTime;
-
-	gameObject->getTransform()->SetPos(newPos);
+	auto newPos = gameObject->getTransform()->getPos() + velocity * (speed / LevelState::physicsScale) * deltaTime;
+	//gameObject->getComponent<PhysicsComponent>()->setLinearVelocity(velocity * speed * deltaTime);
+	gameObject->getComponent<PhysicsComponent>()->moveTo(newPos);
+	//gameObject->getTransform()->SetPos(newPos);
 }

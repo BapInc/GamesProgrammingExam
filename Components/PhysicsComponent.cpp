@@ -218,6 +218,11 @@ void PhysicsComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllo
 
 }
 
+void PhysicsComponent::moveTo(glm::vec2 pos) {
+	glm::vec2 delta = pos - gameObject->getTransform()->getPos();
+	setLinearVelocity(delta * (1 / LevelState::timeStep));
+}
+
 void PhysicsComponent::setWorld(b2World* world) {
 	this->world = world;
 }

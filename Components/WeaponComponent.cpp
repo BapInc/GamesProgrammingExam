@@ -2,6 +2,7 @@
 #include "..\Player\Player.h"
 #include <SDL_events.h>
 #include <iostream>
+#include "../Utility/Debug.h"
 
 
 WeaponComponent::WeaponComponent(GameObject* gameObject) : Component(gameObject)
@@ -25,7 +26,7 @@ bool WeaponComponent::flipWeapon() {
 void WeaponComponent::update(float deltaTime) {
 	auto newPos = player->getTransform()->getPos();
 	if (flipWeapon()) {
-		gameObject->getTransform()->SetPos(newPos + glm::vec2(10,-15));
+		gameObject->getTransform()->SetPos(newPos + glm::vec2(10, -15));
 	}
 	else {
 		gameObject->getTransform()->SetPos(newPos + glm::vec2(-10, -15));

@@ -43,6 +43,7 @@ void LevelState::start()
 	camera->setFollowObject(player);
 	player->getComponent<Player>()->start();
 	player->transform->SetPos(dungeon->getStartRoomPos());
+	Debug::Log(std::to_string(player->transform->getPos().x) + " " + std::to_string(player->transform->getPos().y));
 
 	// ======== EXAMPLE =================
 	// ||		   AI				   ||

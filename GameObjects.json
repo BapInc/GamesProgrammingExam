@@ -42,7 +42,7 @@
         "density": 1.0
       },
       "Player": {
-        "speed": 100.0,
+        "speed": 300.0,
         "velocity": {
           "x": 0.0,
           "y": 0.0
@@ -71,7 +71,7 @@
         "density": 1.0
       },
       "NavigationComponent": {
-        "movementSpeed": 4.0
+        "movementSpeed": 2.0
       }
     }
   },

@@ -135,7 +135,7 @@ std::shared_ptr<PhysicsComponent> PhysicsComponent::clone(GameObject* gameObject
 
 	b2BodyDef bd;
 	bd.type = b2BodyType::b2_dynamicBody;
-	bd.position = b2Vec2(clone->gameObject->getTransform()->getPos().x, clone->gameObject->getTransform()->getPos().y);
+	bd.position = b2Vec2(clone->gameObject->getTransform()->getPos().x / LevelState::physicsScale, clone->gameObject->getTransform()->getPos().y / LevelState::physicsScale);
 
 	clone->rbType = b2BodyType::b2_dynamicBody;
 	clone->body = clone->world->CreateBody(&bd);

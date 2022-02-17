@@ -37,13 +37,11 @@ void LevelState::start()
 	prefabManager->loadGameObjectsFromFile("./GameObjects.json", this);
 
 	//PLAYER
-	player = loadPrefab("Player", glm::vec2(-200, 200) / physicsScale);
-	createGameObject(player.get());
+	player = loadPrefab("Player", dungeon->getStartRoomPos());
 	player->getComponent<Player>()->setLevel(*this);
 	camera->setFollowObject(player);
 	player->getComponent<Player>()->start();
-	player->transform->SetPos(dungeon->getStartRoomPos());
-	Debug::Log(std::to_string(player->transform->getPos().x) + " " + std::to_string(player->transform->getPos().y));
+	//player->transform->SetPos(dungeon->getStartRoomPos());
 
 	// ======== EXAMPLE =================
 	// ||		   AI				   ||
@@ -51,7 +49,7 @@ void LevelState::start()
 	for (int i = 0; i < 4; i++) {
 
 		// Set pos does nothing because of the way physicscomponents are instantiated
-		auto enemyPos = glm::vec2((-200 + ((i + 10) * i)), 200) / physicsScale;
+		auto enemyPos = glm::vec2((dungeon->getStartRoomPos().x + ((i + 10) * i)), dungeon->getStartRoomPos().y);
 		//auto enemyPos = glm::vec2(-200 /, 200);
 		auto enemy = prefabManager->getPrefab("Enemy", this, enemyPos);
 		auto enemyGO = createGameObject(enemy.get());
@@ -67,6 +65,8 @@ void LevelState::start()
 	dungeon->drawAsciiDungeon();
 
 	prefabManager->clearPrefabs();
+	Debug::Log(std::to_string(player->transform->getPos().x) + " " + std::to_string(player->transform->getPos().y));
+	Debug::Log(std::to_string(dungeon->getStartRoomPos().x) + " " + std::to_string(dungeon->getStartRoomPos().y));
 
 }
 

@@ -140,6 +140,11 @@ GameObject* GameObject::clone(glm::vec2 pos, LevelState* state)
 			cloneGO->components.push_back(std::shared_ptr<Component>(new Component(*component)));
 		}*/
 	}
+	auto player = cloneGO->getComponent<Player>();
+	if (player != nullptr) {
+		player->setSpriteComponent(cloneGO->getComponent<SpriteComponent>());
+
+	}
 	for (auto& component : cloneGO->components) {
 		component->setGameObject(cloneGO);
 	}

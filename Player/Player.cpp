@@ -89,6 +89,11 @@ glm::vec2 Player::setMouseDirection() {
 	return glm::normalize(glm::vec2(x - originX, -y + originY));
 }
 
+void Player::setSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent)
+{
+	this->spriteComponent = spriteComponent;
+}
+
 void Player::selectWeapon(int keyboardNumber) {
 	for (int i = 0; i < weaponInventory.size(); i++) {
 		if (i == keyboardNumber - 1) {

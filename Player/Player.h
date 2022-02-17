@@ -24,6 +24,7 @@ public:
 	void selectWeapon(int keyboardNumber);
 	std::shared_ptr<GameObject> Player::selectedWeapon();
 	glm::vec2 setMouseDirection();
+	void setSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent);
 
 private:
 	//MoveCommand* moveCommand;

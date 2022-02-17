@@ -14,7 +14,6 @@
   },
   {
     "name": "Player",
-    "position": { "x": -200.0, "y": 200.0 },
     "transform": {
       "scale": { "x": 2, "y": 2, "z": 2 },
       "rotation": { "x": 0, "y": 0, "z": 0 },
@@ -52,7 +51,6 @@
   },
   {
     "name": "Enemy",
-    "position": { "x": -150.0, "y": 300.0 },
     "transform": {
       "scale": { "x": 2, "y": 2, "z": 2 },
       "rotation": { "x": 0, "y": 0, "z": 0 },
@@ -77,10 +75,6 @@
   },
   {
     "name": "projectile",
-    "position": {
-      "x": -150.0,
-      "y": 300.0
-    },
     "components": {
       "SpriteComponent": {
         "sprite": "ui_heart_full.png",
@@ -100,10 +94,6 @@
   },
   {
     "name": "Weapon1",
-    "position": {
-      "x": -200.0,
-      "y": 200.0
-    },
     "transform": {
       "scale": {
         "x": 2,
@@ -135,10 +125,6 @@
   },
   {
     "name": "Weapon2",
-    "position": {
-      "x": -200.0,
-      "y": 200.0
-    },
     "transform": {
       "scale": {
         "x": 2,
@@ -170,10 +156,6 @@
   },
   {
     "name": "Bullet1",
-    "position": {
-      "x": -200.0,
-      "y": 200.0
-    },
     "transform": {
       "scale": {
         "x": 2,
@@ -216,10 +198,6 @@
   },
   {
     "name": "Bullet2",
-    "position": {
-      "x": -200.0,
-      "y": 200.0
-    },
     "transform": {
       "scale": {
         "x": 2,

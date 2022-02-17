@@ -23,7 +23,7 @@ void Player::setLevel(LevelState& levelState)
 }
 
 void Player::addWeapon() {
-	weapon1 = levelState->loadPrefab("Weapon1");
+	weapon1 = levelState->loadPrefab("Weapon1", gameObject->getTransform()->getPos());
 	weapon1->getComponent<WeaponComponent>()->setPlayer(*gameObject);
 	weapon1->getComponent<WeaponComponent>()->setLevel(*levelState);
 
@@ -71,11 +71,10 @@ bool Player::onKey(SDL_Event& event) {
 		if (event.type == SDL_KEYDOWN && pressed == false) {
 
 			pressed = true;
-
-			bullet = selectedWeapon()->getComponent<WeaponComponent>()->getBulletType();
-			bullet->getComponent<BulletComponent>()->setBulletDirection(setMouseDirection());
+			auto temp = selectedWeapon()->getComponent<WeaponComponent>()->getBulletType();
+			temp->getComponent<BulletComponent>()->setBulletDirection(setMouseDirection());
 		}
-	
+
 		if (event.type == SDL_KEYUP) {
 			pressed = false;
 		}

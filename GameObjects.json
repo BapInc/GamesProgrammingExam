@@ -128,21 +128,8 @@
           "y": 1
         }
       },
-      "PhysicsComponent": {
-        "shape": "box",
-        "b2BodyType": "b2_dynamicBody",
-        "size": {
-          "x": 1.0,
-          "y": 2.0
-        },
-        "center": {
-          "x": 0.5,
-          "y": 0.5
-        },
-        "density": 1.0
-      },
       "WeaponComponent": {
-        "bullet":  "Bullet1"
+        "bullet": "Bullet1"
       }
     }
   },
@@ -175,19 +162,6 @@
           "x": 1,
           "y": 1
         }
-      },
-      "PhysicsComponent": {
-        "shape": "box",
-        "b2BodyType": "b2_dynamicBody",
-        "size": {
-          "x": 1.0,
-          "y": 2.0
-        },
-        "center": {
-          "x": 0.5,
-          "y": 0.5
-        },
-        "density": 1.0
       },
       "WeaponComponent": {
         "bullet": "Bullet2"
@@ -223,7 +197,6 @@
           "x": 1,
           "y": 1
         }
-
       },
       "PhysicsComponent": {
         "shape": "box",
@@ -270,7 +243,6 @@
           "x": 1,
           "y": 1
         }
-
       },
       "PhysicsComponent": {
         "shape": "box",

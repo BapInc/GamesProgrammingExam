@@ -105,6 +105,7 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 			navigationComponent->setValuesFromJSON(&component.value);
 		}
 
+
 		Debug::Log("Loading component: " + std::string(componentName));
 	}
 }

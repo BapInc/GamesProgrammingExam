@@ -4,13 +4,14 @@
 #include "../Game/GameObject.h"
 #include "../Commands/MoveCommand.h"
 #include "../Components/SpriteComponent.h"
+#include "../GameStates/LevelState.h"
 
 class Player : public Component
 {
 
 public:
-	
-	explicit Player(GameObject* gameObject);	
+
+	explicit Player(GameObject* gameObject);
 
 public:
 	void setLevel(LevelState& levelState);

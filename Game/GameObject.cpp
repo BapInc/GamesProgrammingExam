@@ -6,6 +6,7 @@
 #include "../AI/NavigationComponent.h"
 #include "../Player/Player.h"
 #include "../Components/WeaponComponent.h"
+#include "../Components/BulletComponent.h"
 
 GameObject::~GameObject()
 {
@@ -92,6 +93,12 @@ GameObject* GameObject::clone(glm::vec2 pos, LevelState* state)
 
 	for (auto& component : components) {
 		auto sprite = std::dynamic_pointer_cast<SpriteComponent>(component);
+		auto nav = std::dynamic_pointer_cast<NavigationComponent>(component);
+		auto phys = std::dynamic_pointer_cast<PhysicsComponent>(component);
+		auto player = std::dynamic_pointer_cast<Player>(component);
+		auto weapon = std::dynamic_pointer_cast<WeaponComponent>(component);
+		auto bullet = std::dynamic_pointer_cast<BulletComponent>(component);
+
 		if (sprite != nullptr) {
 			auto spriteClone = std::shared_ptr<SpriteComponent>(sprite->clone(cloneGO));
 			cloneGO->components.push_back(spriteClone);
@@ -99,20 +106,17 @@ GameObject* GameObject::clone(glm::vec2 pos, LevelState* state)
 			continue;
 		}
 
-		auto nav = std::dynamic_pointer_cast<NavigationComponent>(component);
 		if (nav != nullptr) {
 			cloneGO->components.push_back(std::shared_ptr<NavigationComponent>(nav->clone(cloneGO)));
 			continue;
 		}
 
-		auto phys = std::dynamic_pointer_cast<PhysicsComponent>(component);
 		if (phys != nullptr) {
 			auto physComp = std::shared_ptr<PhysicsComponent>(phys->clone(cloneGO, state->getPhysicsWorld()));
 			cloneGO->components.push_back(physComp);
 
 			continue;
 		}
-		auto player = std::dynamic_pointer_cast<Player>(component);
 		if (player != nullptr) {
 			auto playerClone = new Player(*player);
 			playerClone->setLevel(*state);
@@ -120,12 +124,21 @@ GameObject* GameObject::clone(glm::vec2 pos, LevelState* state)
 			cloneGO->components.push_back(playerComponent);
 			continue;
 		}
-		auto weapon = std::dynamic_pointer_cast<WeaponComponent>(component);
 		if (weapon != nullptr) {
 			auto weaponComponent = std::shared_ptr<WeaponComponent>(new WeaponComponent(*weapon));
 			cloneGO->components.push_back(weaponComponent);
 			continue;
 		}
+		if (bullet != nullptr) {
+			auto bulletComponent = std::shared_ptr<BulletComponent>(new BulletComponent(*bullet));
+			cloneGO->components.push_back(bulletComponent);
+			continue;
+		}
+
+		// THIS DOESN'T WORK. Pushing back new Component(*component); pushes back a new gameobject and not component
+	/*	else {
+			cloneGO->components.push_back(std::shared_ptr<Component>(new Component(*component)));
+		}*/
 	}
 	for (auto& component : cloneGO->components) {
 		component->setGameObject(cloneGO);

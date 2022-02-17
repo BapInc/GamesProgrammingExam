@@ -66,7 +66,7 @@ void LevelState::start()
 
 	dungeon->drawAsciiDungeon();
 
-	prefabManager->clearPrefabs();
+	//prefabManager->clearPrefabs();
 	Debug::Log(std::to_string(player->transform->getPos().x) + " " + std::to_string(player->transform->getPos().y));
 	Debug::Log(std::to_string(dungeon->getStartRoomPos().x) + " " + std::to_string(dungeon->getStartRoomPos().y));
 

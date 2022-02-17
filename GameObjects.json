@@ -128,7 +128,22 @@
           "y": 1
         }
       },
-      "WeaponComponent": {}
+      "PhysicsComponent": {
+        "shape": "box",
+        "b2BodyType": "b2_dynamicBody",
+        "size": {
+          "x": 1.0,
+          "y": 2.0
+        },
+        "center": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "density": 1.0
+      },
+      "WeaponComponent": {
+        "bullet":  "Bullet1"
+      }
     }
   },
   {
@@ -161,7 +176,116 @@
           "y": 1
         }
       },
-      "WeaponComponent": {}
+      "PhysicsComponent": {
+        "shape": "box",
+        "b2BodyType": "b2_dynamicBody",
+        "size": {
+          "x": 1.0,
+          "y": 2.0
+        },
+        "center": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "density": 1.0
+      },
+      "WeaponComponent": {
+        "bullet": "Bullet2"
+      }
+    }
+  },
+  {
+    "name": "Bullet1",
+    "position": {
+      "x": -200.0,
+      "y": 200.0
+    },
+    "transform": {
+      "scale": {
+        "x": 2,
+        "y": 2,
+        "z": 2
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "position": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "components": {
+      "SpriteComponent": {
+        "sprite": "flask_big_blue.png",
+        "scale": {
+          "x": 1,
+          "y": 1
+        }
+
+      },
+      "PhysicsComponent": {
+        "shape": "box",
+        "b2BodyType": "b2_dynamicBody",
+        "size": {
+          "x": 1.0,
+          "y": 2.0
+        },
+        "center": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "density": 1.0
+      },
+      "BulletComponent": {}
+    }
+  },
+  {
+    "name": "Bullet2",
+    "position": {
+      "x": -200.0,
+      "y": 200.0
+    },
+    "transform": {
+      "scale": {
+        "x": 2,
+        "y": 2,
+        "z": 2
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "position": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "components": {
+      "SpriteComponent": {
+        "sprite": "coin_anim_f0.png",
+        "scale": {
+          "x": 1,
+          "y": 1
+        }
+
+      },
+      "PhysicsComponent": {
+        "shape": "box",
+        "b2BodyType": "b2_dynamicBody",
+        "size": {
+          "x": 1.0,
+          "y": 2.0
+        },
+        "center": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "density": 1.0
+      },
+      "BulletComponent": {}
     }
   }
 ]

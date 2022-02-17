@@ -5,11 +5,15 @@
 #include "../Commands/MoveCommand.h"
 #include "glm/glm.hpp"
 #include "../Components/WeaponComponent.h"
+#include "../Components/BulletComponent.h"
+#include "../Game/DungeonGame.h"
 
 Player::Player(GameObject* gameObject) : Component(gameObject)
 {
 	this->gameObject = gameObject;
 	spriteComponent = gameObject->getComponent<SpriteComponent>();
+	originX = DungeonGame::getInstance()->getWindowSize().x / 2;
+	originY = DungeonGame::getInstance()->getWindowSize().y / 2;
 	//moveCommand = NULL;
 }
 
@@ -18,13 +22,18 @@ void Player::setLevel(LevelState& levelState)
 	this->levelState = &levelState;
 }
 
-void Player::start() {
-	weapon1 = levelState->loadPrefab("Weapon1", gameObject->getTransform()->getPos());
+void Player::addWeapon() {
+	weapon1 = levelState->loadPrefab("Weapon1");
 	weapon1->getComponent<WeaponComponent>()->setPlayer(*gameObject);
+	weapon1->getComponent<WeaponComponent>()->setLevel(*levelState);
 
 	weapon2 = levelState->loadPrefab("Weapon2", gameObject->getTransform()->getPos());
 	weapon2->getComponent<WeaponComponent>()->setPlayer(*gameObject);
+	weapon2->getComponent<WeaponComponent>()->setLevel(*levelState);
 	weapon2->setActive(false);
+
+	weaponInventory.push_back(weapon1);
+	weaponInventory.push_back(weapon2);
 }
 
 bool Player::onKey(SDL_Event& event) {
@@ -52,21 +61,52 @@ bool Player::onKey(SDL_Event& event) {
 		}
 		break;
 	case SDLK_1:
-		weapon1->setActive(true);
-		weapon2->setActive(false);
+		selectWeapon(1);
 		break;
 	case SDLK_2:
-		weapon1->setActive(false);
-		weapon2->setActive(true);
+		selectWeapon(2);
 		break;
 	case SDLK_SPACE:
-		//press 1 -> bullet = granade
-		//press 2 -> bullet = other bullet
-		//shoot(bullet)
+
+		if (event.type == SDL_KEYDOWN && pressed == false) {
+
+			pressed = true;
+
+			bullet = selectedWeapon()->getComponent<WeaponComponent>()->getBulletType();
+			bullet->getComponent<BulletComponent>()->setBulletDirection(setMouseDirection());
+		}
+	
+		if (event.type == SDL_KEYUP) {
+			pressed = false;
+		}
 		break;
 	}
 
 	return true;
+}
+
+glm::vec2 Player::setMouseDirection() {
+	SDL_GetMouseState(&x, &y);
+	return glm::normalize(glm::vec2(x - originX, -y + originY));
+}
+
+void Player::selectWeapon(int keyboardNumber) {
+	for (int i = 0; i < weaponInventory.size(); i++) {
+		if (i == keyboardNumber - 1) {
+			weaponInventory[i]->setActive(true);
+		}
+		else {
+			weaponInventory[i]->setActive(false);
+		}
+	}
+}
+
+std::shared_ptr<GameObject> Player::selectedWeapon() {
+	for (int i = 0; i < weaponInventory.size(); i++) {
+		if (weaponInventory[i]->getActive()) {
+			return weaponInventory[i];
+		}
+	}
 }
 
 bool Player::getFacing() {

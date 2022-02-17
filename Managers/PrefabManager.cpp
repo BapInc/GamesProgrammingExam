@@ -6,6 +6,7 @@
 #include "../Components/PhysicsComponent.h"
 #include "../AI/NavigationComponent.h"
 #include "../Components/WeaponComponent.h"
+#include "../Components/BulletComponent.h"
 
 
 void PrefabManager::loadGameObjectsFromFile(std::string path, LevelState* state)
@@ -92,6 +93,10 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 		}
 		else if (componentName == "WeaponComponent") {
 			auto weaponComponent = gameObject->addComponent<WeaponComponent>();
+			weaponComponent->setValuesFromJSON(&component.value, state);
+		}
+		else if (componentName == "BulletComponent") {
+			auto bulletComponent = gameObject->addComponent<BulletComponent>();
 		}
 		else if (componentName == "NavigationComponent")
 		{

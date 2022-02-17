@@ -30,7 +30,9 @@ void WeaponComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAlloc
 
 std::shared_ptr<GameObject> WeaponComponent::getBulletType() {
 	bulletType = levelState->loadPrefab(bullet);
-	return levelState->createGameObject(bulletType.get());
+	auto b = levelState->createGameObject(bulletType.get());
+	b->getTransform()->SetPos(gameObject->getTransform()->getPos());
+	return b;
 }
 
 bool WeaponComponent::flipWeapon() {

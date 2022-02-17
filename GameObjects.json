@@ -247,7 +247,7 @@
     },
     "components": {
       "SpriteComponent": {
-        "sprite": "weapon_green_magic_staff.png",
+        "sprite": "coin_anim_f0.png",
         "scale": {
           "x": 1,
           "y": 1

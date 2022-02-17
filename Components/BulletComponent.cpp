@@ -15,9 +15,10 @@ void BulletComponent::setBulletDirection(glm::vec2 mouseDir) {
 }
 
 void BulletComponent::update(float deltaTime) {
-	//gameObject->getTransform()->SetPos(gameObject->getTransform()->getPos() + bulletDirection * speed * deltaTime);
+	// TODO: Save and resuse component
 	gameObject->getComponent<PhysicsComponent>()->moveTo(gameObject->getTransform()->getPos() + bulletDirection * (speed / LevelState::physicsScale) * deltaTime);
 
+	//gameObject->getTransform()->SetPos(gameObject->getTransform()->getPos() + bulletDirection * speed * deltaTime);
 	//if type addforce on json -> addforce()
 	//else if type normalshooting on json -> normalshooting()
 }

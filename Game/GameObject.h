@@ -10,6 +10,7 @@
 // Forward declaration
 class Component;
 class Transform;
+class LevelState;
 
 // GameObject are empty container objects, which contains Components
 class GameObject
@@ -42,6 +43,7 @@ public:
 	std::string getName();
 	const std::vector<std::shared_ptr<Component>>& getComponents();
 	Transform* getTransform();
+	GameObject* clone(glm::vec2 pos, LevelState* state);
 
 private:
 

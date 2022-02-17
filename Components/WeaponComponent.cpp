@@ -2,6 +2,7 @@
 #include "..\Player\Player.h"
 #include <SDL_events.h>
 #include <iostream>
+#include "../Utility/Debug.h"
 #include "../Game/DungeonGame.h"
 #include <cmath>
 # define PI           3.14159265358979323846
@@ -29,10 +30,8 @@ void WeaponComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAlloc
 }
 
 std::shared_ptr<GameObject> WeaponComponent::getBulletType() {
-	bulletType = levelState->loadPrefab(bullet);
-	auto b = levelState->createGameObject(bulletType.get());
-	b->getTransform()->SetPos(gameObject->getTransform()->getPos());
-	return b;
+	bulletType = levelState->loadPrefab(bullet, gameObject->getTransform()->getPos());
+	return bulletType;
 }
 
 bool WeaponComponent::flipWeapon() {
@@ -51,7 +50,7 @@ float& WeaponComponent::getMouseRotation() {
 void WeaponComponent::update(float deltaTime) {
 	auto newPos = player->getTransform()->getPos();
 	if (flipWeapon()) {
-		gameObject->getTransform()->SetPos(newPos + glm::vec2(10,-15));
+		gameObject->getTransform()->SetPos(newPos + glm::vec2(10, -15));
 	}
 	else {
 		gameObject->getTransform()->SetPos(newPos + glm::vec2(-10, -15));

@@ -23,13 +23,11 @@ void Player::setLevel(LevelState& levelState)
 }
 
 void Player::addWeapon() {
-	weapon1 = levelState->loadPrefab("Weapon1");
-	levelState->createGameObject(weapon1.get());
+	weapon1 = levelState->loadPrefab("Weapon1", gameObject->getTransform()->getPos());
 	weapon1->getComponent<WeaponComponent>()->setPlayer(*gameObject);
 	weapon1->getComponent<WeaponComponent>()->setLevel(*levelState);
 
-	weapon2 = levelState->loadPrefab("Weapon2");
-	levelState->createGameObject(weapon2.get());
+	weapon2 = levelState->loadPrefab("Weapon2", gameObject->getTransform()->getPos());
 	weapon2->getComponent<WeaponComponent>()->setPlayer(*gameObject);
 	weapon2->getComponent<WeaponComponent>()->setLevel(*levelState);
 	weapon2->setActive(false);
@@ -73,11 +71,10 @@ bool Player::onKey(SDL_Event& event) {
 		if (event.type == SDL_KEYDOWN && pressed == false) {
 
 			pressed = true;
-
-			bullet = selectedWeapon()->getComponent<WeaponComponent>()->getBulletType();
-			bullet->getComponent<BulletComponent>()->setBulletDirection(setMouseDirection());
+			auto temp = selectedWeapon()->getComponent<WeaponComponent>()->getBulletType();
+			temp->getComponent<BulletComponent>()->setBulletDirection(setMouseDirection());
 		}
-	
+
 		if (event.type == SDL_KEYUP) {
 			pressed = false;
 		}
@@ -124,7 +121,8 @@ void Player::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtA
 
 void Player::update(float deltaTime) {
 
-	auto newPos = gameObject->getTransform()->getPos() + velocity * speed * deltaTime;
-
-	gameObject->getTransform()->SetPos(newPos);
+	auto newPos = gameObject->getTransform()->getPos() + velocity * (speed / LevelState::physicsScale) * deltaTime;
+	//gameObject->getComponent<PhysicsComponent>()->setLinearVelocity(velocity * speed * deltaTime);
+	gameObject->getComponent<PhysicsComponent>()->moveTo(newPos);
+	//gameObject->getTransform()->SetPos(newPos);
 }

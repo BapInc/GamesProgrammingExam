@@ -21,6 +21,8 @@ public:
 
 	void flipSprite(bool flip);
 
+
+	std::shared_ptr<SpriteComponent> clone(GameObject* gameObject);
 private:
 	sre::Sprite sprite;
 };

@@ -40,3 +40,10 @@ void SpriteComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAlloc
 void SpriteComponent::flipSprite(bool flip) {
 	sprite.setFlip({ flip, false });
 }
+
+std::shared_ptr<SpriteComponent> SpriteComponent::clone(GameObject* gameObject)
+{
+	auto clone = std::shared_ptr<SpriteComponent>(new SpriteComponent(*this));
+	clone->gameObject = gameObject;
+	return clone;
+}

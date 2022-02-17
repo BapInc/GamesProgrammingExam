@@ -3,6 +3,8 @@
 #include "../Utility/Debug.h"
 #include "../Components/AudioComponent.h"
 #include "../Components/SpriteAnimationComponent.h"
+#include "../Components/PhysicsComponent.h"
+#include "../AI/NavigationComponent.h"
 #include "../Components/WeaponComponent.h"
 #include "../Components/BulletComponent.h"
 
@@ -69,16 +71,19 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 		}
 		else if (componentName == "SpriteAnimationComponent")
 		{
+			Debug::Log("Adding SpriteAnimationComponent");
 			auto spriteAnimationComponent = gameObject->addComponent<SpriteAnimationComponent>();
 
 		}
 		else if (componentName == "SpriteComponent")
 		{
+			Debug::Log("Adding SpriteComponent");
 			auto spriteComponent = gameObject->addComponent<SpriteComponent>();
 			spriteComponent->setValuesFromJSON(&component.value, state);
 		}
 		else if (componentName == "TopDownCameraComponent")
 		{
+			Debug::Log("Adding TopDownCameraComponent");
 			auto topDownCameraComponent = gameObject->addComponent<TopDownCameraComponent>();
 
 		}
@@ -93,12 +98,26 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 		else if (componentName == "BulletComponent") {
 			auto bulletComponent = gameObject->addComponent<BulletComponent>();
 		}
+		else if (componentName == "NavigationComponent")
+		{
+			Debug::Log("Adding NavigationComponent");
+			auto navigationComponent = gameObject->addComponent<NavigationComponent>();
+			navigationComponent->setValuesFromJSON(&component.value);
+		}
+
+
+		Debug::Log("Loading component: " + std::string(componentName));
 	}
 }
 
-std::shared_ptr<GameObject> PrefabManager::getPrefab(std::string name)
+std::shared_ptr<GameObject> PrefabManager::getPrefab(std::string name, LevelState* state, glm::vec2 pos)
 {
 	auto foundPrefab = prefabs[name];
-	auto prefab = std::make_shared<GameObject>(*foundPrefab);
-	return prefab;
+	auto clone = foundPrefab->clone(pos, state);
+	return state->createGameObject(clone);
+}
+
+void PrefabManager::clearPrefabs()
+{
+	prefabs.clear();
 }

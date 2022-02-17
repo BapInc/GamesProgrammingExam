@@ -38,5 +38,8 @@ private:
 	glm::vec3 scale = { 1,1,1 };
 	glm::vec2 position = { 0,0 };
 	glm::vec3 rotation = { 0,0,0 };
+
+public:
+	Transform* clone(GameObject* gameObject);
 };
 #endif // !TRANSFORM_H

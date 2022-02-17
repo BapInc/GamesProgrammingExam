@@ -20,6 +20,7 @@ public:
 	void addImpulse(glm::vec2 impulse);   // Instantly affects velocity
 
 	void setLinearVelocity(glm::vec2 velocity);
+	void PhysicsComponent::moveTo(glm::vec2 pos);
 
 	glm::vec2 getLinearVelocity();
 
@@ -28,6 +29,8 @@ public:
 	void setSensor(bool enabled);
 
 	void setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, b2World* world);
+	void setWorld(b2World* world);
+	std::shared_ptr<PhysicsComponent> clone(GameObject* gameObject, b2World* world);
 private:
 	b2PolygonShape* polygon = nullptr;
 	b2CircleShape* circle = nullptr;
@@ -37,6 +40,9 @@ private:
 	b2BodyType rbType;
 	std::vector<PhysicsComponent*> collidingBodies;
 	b2World* world = nullptr;
+	float height = 1.0f;
+	float width = 1.0f;
+	float radius = 1.0f;
 	friend class LevelState;
 
 

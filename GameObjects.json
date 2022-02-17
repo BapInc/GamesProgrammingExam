@@ -16,9 +16,9 @@
     "name": "Player",
     "position": { "x": -200.0, "y": 200.0 },
     "transform": {
-      "scale": {"x": 2, "y": 2,"z": 2},
-      "rotation": {"x": 0, "y": 0, "z": 0},
-      "position": {"x": 0, "y": 0}
+      "scale": { "x": 2, "y": 2, "z": 2 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "position": { "x": 0, "y": 0 }
     },
     "components": {
       "SpriteComponent": {
@@ -27,14 +27,13 @@
           "x": 2,
           "y": 2
         }
-
       },
       "PhysicsComponent": {
         "shape": "box",
         "b2BodyType": "b2_dynamicBody",
         "size": {
-          "x": 1.0,
-          "y": 2.0
+          "x": 10.0,
+          "y": 20.0
         },
         "center": {
           "x": 0.5,
@@ -43,13 +42,37 @@
         "density": 1.0
       },
       "Player": {
-        "speed": 100.0,
+        "speed": 300.0,
         "velocity": {
           "x": 0.0,
           "y": 0.0
         }
       }
-
+    }
+  },
+  {
+    "name": "Enemy",
+    "position": { "x": -150.0, "y": 300.0 },
+    "transform": {
+      "scale": { "x": 2, "y": 2, "z": 2 },
+      "rotation": { "x": 0, "y": 0, "z": 0 },
+      "position": { "x": 0, "y": 0 }
+    },
+    "components": {
+      "SpriteComponent": {
+        "sprite": "big_demon_idle_anim_f0.png",
+        "scale": { "x": 2, "y": 2 }
+      },
+      "PhysicsComponent": {
+        "shape": "box",
+        "b2BodyType": "b2_dynamicBody",
+        "size": { "x": 10.0, "y": 20.0 },
+        "center": { "x": 0.5, "y": 0.5 },
+        "density": 1.0
+      },
+      "NavigationComponent": {
+        "movementSpeed": 2.0
+      }
     }
   },
   {
@@ -61,10 +84,7 @@
     "components": {
       "SpriteComponent": {
         "sprite": "ui_heart_full.png",
-        "scale": {
-          "x": 2,
-          "y": 2
-        }
+        "scale": { "x": 2, "y": 2 }
       },
       "PhysicsComponent": {
         "shape": "circle",
@@ -107,23 +127,9 @@
           "x": 1,
           "y": 1
         }
-
-      },
-      "PhysicsComponent": {
-        "shape": "box",
-        "b2BodyType": "b2_dynamicBody",
-        "size": {
-          "x": 1.0,
-          "y": 2.0
-        },
-        "center": {
-          "x": 0.5,
-          "y": 0.5
-        },
-        "density": 1.0
       },
       "WeaponComponent": {
-        "bullet":  "Bullet1"
+        "bullet": "Bullet1"
       }
     }
   },
@@ -156,20 +162,6 @@
           "x": 1,
           "y": 1
         }
-
-      },
-      "PhysicsComponent": {
-        "shape": "box",
-        "b2BodyType": "b2_dynamicBody",
-        "size": {
-          "x": 1.0,
-          "y": 2.0
-        },
-        "center": {
-          "x": 0.5,
-          "y": 0.5
-        },
-        "density": 1.0
       },
       "WeaponComponent": {
         "bullet": "Bullet2"
@@ -205,7 +197,6 @@
           "x": 1,
           "y": 1
         }
-
       },
       "PhysicsComponent": {
         "shape": "box",
@@ -252,7 +243,6 @@
           "x": 1,
           "y": 1
         }
-
       },
       "PhysicsComponent": {
         "shape": "box",

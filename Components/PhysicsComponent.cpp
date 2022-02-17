@@ -60,9 +60,13 @@ void PhysicsComponent::setLinearVelocity(glm::vec2 velocity)
 	body->SetLinearVelocity(v);
 }
 
+
 void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 center, float density)
 {
 	assert(body == nullptr);
+
+	this->radius = radius;
+
 	// do init
 	shapeType = b2Shape::Type::e_circle;
 	b2BodyDef bd;
@@ -77,12 +81,15 @@ void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 cente
 	fxD.density = density;
 	fixture = body->CreateFixture(&fxD);
 
-	//BirdGame::instance->registerPhysicsComponent(this);
 }
 
 void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center, float density)
 {
 	assert(body == nullptr);
+
+	width = size.x;
+	height = size.y;
+
 	// do init
 	shapeType = b2Shape::Type::e_polygon;
 	b2BodyDef bd;
@@ -96,9 +103,49 @@ void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center
 	fxD.shape = polygon;
 	fxD.density = density;
 	fixture = body->CreateFixture(&fxD);
+}
 
-	//TODO: Register physics components
-	//BirdGame::instance->registerPhysicsComponent(this);
+
+std::shared_ptr<PhysicsComponent> PhysicsComponent::clone(GameObject* gameObject, b2World* world)
+{
+	auto clone = std::make_shared<PhysicsComponent>(gameObject);
+
+	clone->gameObject = gameObject;
+	clone->setWorld(world);
+
+	b2FixtureDef fxD;
+
+	if (polygon != nullptr)
+	{
+		clone->polygon = new b2PolygonShape(*polygon);
+		b2BlockAllocator* allocator = new b2BlockAllocator();
+		allocator->Allocate(sizeof(polygon));
+
+		clone->polygon = new b2PolygonShape(*polygon);
+		fxD.shape = clone->polygon;
+		clone->shapeType = b2Shape::Type::e_polygon;
+	}
+	else if (circle != nullptr) {
+		clone->circle = new b2CircleShape(*circle);
+		fxD.shape = clone->circle;
+		clone->shapeType = b2Shape::Type::e_circle;
+	}
+
+	//clone->polygon = nullptr;
+
+	b2BodyDef bd;
+	bd.type = b2BodyType::b2_dynamicBody;
+	bd.position = b2Vec2(clone->gameObject->getTransform()->getPos().x / LevelState::physicsScale, clone->gameObject->getTransform()->getPos().y / LevelState::physicsScale);
+
+	clone->rbType = b2BodyType::b2_dynamicBody;
+	clone->body = clone->world->CreateBody(&bd);
+	//clone->circle = new b2CircleShape();
+	//clone->circle->m_radius = 0.1f;
+	clone->body->SetFixedRotation(true);
+	fxD.density = 1;
+
+	clone->fixture = clone->body->CreateFixture(&fxD);
+	return clone;
 }
 
 bool PhysicsComponent::isSensor()
@@ -110,6 +157,7 @@ void PhysicsComponent::setSensor(bool enabled)
 {
 	fixture->SetSensor(enabled);
 }
+
 
 void PhysicsComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, b2World* world)
 {
@@ -143,8 +191,8 @@ void PhysicsComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllo
 		}
 
 		glm::vec2 size = { 0,0 };
-		size.x = value->operator[]("size").GetObject()["x"].GetFloat();
-		size.y = value->operator[]("size").GetObject()["y"].GetFloat();
+		size.x = value->operator[]("size").GetObject()["x"].GetFloat() / 100;
+		size.y = value->operator[]("size").GetObject()["y"].GetFloat() / 100;
 
 		initBox(type, size, center, density);
 	}
@@ -164,8 +212,19 @@ void PhysicsComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllo
 		{
 			type = b2BodyType::b2_staticBody;
 		}
-		float radius = value->operator[]("radius").GetFloat();
+		float radius = value->operator[]("radius").GetFloat() / 100;
 		initCircle(type, radius, center, density);
 	}
+
 }
+
+void PhysicsComponent::moveTo(glm::vec2 pos) {
+	glm::vec2 delta = pos - gameObject->getTransform()->getPos();
+	setLinearVelocity(delta * (1 / LevelState::timeStep));
+}
+
+void PhysicsComponent::setWorld(b2World* world) {
+	this->world = world;
+}
+
 

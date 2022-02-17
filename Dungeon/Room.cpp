@@ -12,7 +12,7 @@ Room::Room(int width, int height, glm::vec2 pos, glm::vec2 scale, RoomType type)
 	initialPos = pos;
 	//TODO: Make this 4 | 2 | 1 positions accordingly to the width and height. 
 	centerPos = glm::vec2(pos.x + (width / 2), pos.y + (height / 2));
-	centerPosScaled = glm::vec2((pos.x + (width / 2)) * scale.x , (pos.y + (height / 2)) * scale.y );
+	centerPosScaled = glm::vec2((pos.x + (width / 2)) * scale.x, (pos.y + (height / 2)) * scale.y);
 
 	roomType = type;
 

@@ -16,7 +16,9 @@
 class AudioManager
 {
 public:
+	~AudioManager();
 	AudioManager();
+
 
 	void update();
 

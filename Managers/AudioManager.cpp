@@ -5,6 +5,15 @@
 FMOD_RESULT F_CALLBACK oneshotStoppedCallback(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE* eventInstance, void* parameters);
 
 
+AudioManager::~AudioManager()
+{
+	if (fmodSystem != nullptr)
+	{
+		fmodSystem->unloadAll();
+		fmodSystem->release();
+	}
+}
+
 AudioManager::AudioManager()
 {
 	Debug::Log("Initializing FMOD...");

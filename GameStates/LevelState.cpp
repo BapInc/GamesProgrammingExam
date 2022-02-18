@@ -120,7 +120,8 @@ void LevelState::render()
 	ImGui::SetNextWindowSize(ImVec2(400, 100), ImGuiSetCond_Always);
 	ImGui::Begin("Player");
 	//ImGui::Text("Player pos: x: %02d, y: %02d", enemyPos.x, enemyPos.y);
-	ImGui::Text("I am text");
+	auto goCount = "Scene objects: " + std::to_string(sceneObjects.size());
+	ImGui::Text(goCount.c_str());
 	ImGui::End();
 }
 

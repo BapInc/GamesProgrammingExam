@@ -104,7 +104,6 @@ GameObject* GameObject::clone(glm::vec2 pos, LevelState* state)
 		if (sprite != nullptr) {
 			auto spriteClone = std::shared_ptr<SpriteComponent>(sprite->clone(cloneGO));
 			cloneGO->components.push_back(spriteClone);
-
 			continue;
 		}
 
@@ -116,7 +115,6 @@ GameObject* GameObject::clone(glm::vec2 pos, LevelState* state)
 		if (phys != nullptr) {
 			auto physComp = std::shared_ptr<PhysicsComponent>(phys->clone(cloneGO, state->getPhysicsWorld()));
 			cloneGO->components.push_back(physComp);
-
 			continue;
 		}
 		if (player != nullptr) {

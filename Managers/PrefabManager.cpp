@@ -103,10 +103,7 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 		}
 		else if (componentName == "GranadeComponent") {
 			auto granadeComponent = gameObject->addComponent<GranadeComponent>();
-			Debug::Log("POOPY GRANADA", ALERT);
 		}
-
-		Debug::Log("Loading component: " + std::string(componentName));
 	}
 }
 

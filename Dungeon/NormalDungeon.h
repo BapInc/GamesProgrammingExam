@@ -58,6 +58,9 @@ private:
 	int bossRoomWidth;
 	int bossRoomHeight;
 
+	int amountOfFloorPrefabs;
+	int amountOfWallPrefabs;
+
 	char parserToken = '_';
 };
 

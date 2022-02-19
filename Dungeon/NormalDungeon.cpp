@@ -25,6 +25,9 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 
 	scaleMultiplier = 4.0f;
 
+	amountOfFloorPrefabs = 8;
+	amountOfWallPrefabs = 3;
+
 	if (minRoomHeight > maxRoomHeight)
 		Debug::Log("Min Room Height is bigger than Max Room height", WARNING);
 
@@ -225,12 +228,12 @@ void NormalDungeon::createFloor(int x, int y)
 		return;
 
 	std::string spriteName = "floorTile";
+	int random = rand() % amountOfFloorPrefabs;
+	random += 1;
 
-	
-	std::shared_ptr<GameObject> temp = levelState->loadPrefab("floorTile1", glm::vec2(0, 0));
+	std::shared_ptr<GameObject> temp = levelState->loadPrefab(spriteName + std::to_string(random), glm::vec2(0, 0));
+	temp->setName(spriteName);
 
-	std::string tempString = "floorTile";
-	temp->setName(tempString);
 	dungeonMap[x][y] = temp.get();
 	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (tileSize.x * scaleMultiplier),
 		(y) * (tileSize.y * scaleMultiplier)));
@@ -242,10 +245,13 @@ void NormalDungeon::createWall(int x, int y)
 	if (dungeonMap[x][y] != nullptr)
 		return;
 
-	std::shared_ptr<GameObject> temp = levelState->loadPrefab("wallTile1", glm::vec2(0, 0));
+	std::string spriteName = "wallTile";
+	int random = rand() % amountOfWallPrefabs;
+	random += 1;
 
-	std::string tempString = "wallTile";
-	temp->setName(tempString);
+	std::shared_ptr<GameObject> temp = levelState->loadPrefab(spriteName + std::to_string(random), glm::vec2(0, 0));
+
+	temp->setName(spriteName);
 	dungeonMap[x][y] = temp.get();
 	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (tileSize.x * scaleMultiplier),
 		(y) * (tileSize.y * scaleMultiplier)));

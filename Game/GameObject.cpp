@@ -7,7 +7,7 @@
 #include "../Player/Player.h"
 #include "../Components/WeaponComponent.h"
 #include "../Components/BulletComponent.h"
-#include "../Components/GranadeComponent.h"
+#include "../Components/GrenadeComponent.h"
 
 GameObject::~GameObject()
 {
@@ -33,6 +33,13 @@ bool GameObject::removeComponent(std::shared_ptr<Component> component)
 		components.erase(comp);
 	}
 	return false;
+}
+
+bool GameObject::getShouldDestroy() {
+	return shouldDestroy;
+}
+void GameObject::setShouldDestroy(bool destroy) {
+	shouldDestroy = destroy;
 }
 
 std::string GameObject::getTag() const
@@ -99,7 +106,7 @@ GameObject* GameObject::clone(glm::vec2 pos, LevelState* state)
 		auto player = std::dynamic_pointer_cast<Player>(component);
 		auto weapon = std::dynamic_pointer_cast<WeaponComponent>(component);
 		auto bullet = std::dynamic_pointer_cast<BulletComponent>(component);
-		auto grenade = std::dynamic_pointer_cast<GranadeComponent>(component);
+		auto grenade = std::dynamic_pointer_cast<GrenadeComponent>(component);
 
 		if (sprite != nullptr) {
 			auto spriteClone = std::shared_ptr<SpriteComponent>(sprite->clone(cloneGO));
@@ -125,7 +132,7 @@ GameObject* GameObject::clone(glm::vec2 pos, LevelState* state)
 			continue;
 		}
 		if (grenade != nullptr) {
-			auto grenadeComponent = std::shared_ptr<GranadeComponent>(new GranadeComponent(*grenade));
+			auto grenadeComponent = std::shared_ptr<GrenadeComponent>(new GrenadeComponent(*grenade));
 			cloneGO->components.push_back(grenadeComponent);
 			continue;
 		}

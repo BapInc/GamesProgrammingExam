@@ -60,7 +60,6 @@ void PhysicsComponent::setLinearVelocity(glm::vec2 velocity)
 	body->SetLinearVelocity(v);
 }
 
-
 void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 center, float density)
 {
 	assert(body == nullptr);

@@ -18,11 +18,13 @@ public:
 
 	virtual void shoot(float deltaTime);
 	
+	glm::vec2 bulletDirection;
+	float speed;
+	LevelState* levelState;
+	int lifetime;
+
 private:
 
-	glm::vec2 bulletDirection;
 	std::shared_ptr<PhysicsComponent> physicsComponent;
-	float speed = 500.0f;
-	LevelState* levelState;
 };
 #endif

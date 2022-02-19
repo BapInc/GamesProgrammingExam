@@ -35,7 +35,8 @@ public:
 
 	void renderSprite(sre::SpriteBatch::SpriteBatchBuilder& spriteBatchBuilder);
 	void update(float deltaTime);
-
+	bool getShouldDestroy();
+	void setShouldDestroy(bool destroy);
 	void setName(std::string& name);
 	bool getActive();
 	void setActive(bool setActive);

@@ -8,6 +8,8 @@
 BulletComponent::BulletComponent(GameObject* gameObject) : Component(gameObject)
 {
 	this->gameObject = gameObject;
+	lifetime = 30;
+	speed = 500.0f;
 	physicsComponent = gameObject->getComponent<PhysicsComponent>();
 }
 
@@ -23,13 +25,13 @@ void BulletComponent::setLevel(LevelState& levelState)
 void BulletComponent::shoot(float deltaTime)
 {
 	gameObject->getComponent<PhysicsComponent>()->moveTo(gameObject->getTransform()->getPos() + bulletDirection * (speed / LevelState::physicsScale) * deltaTime);
+	lifetime -= deltaTime;
+	if (lifetime <= 0) {
+		gameObject->setShouldDestroy(true);
+	}
 }
 
 void BulletComponent::update(float deltaTime) {
-	// TODO: Save and resuse component
 	shoot(deltaTime);
-	//gameObject->getTransform()->SetPos(gameObject->getTransform()->getPos() + bulletDirection * speed * deltaTime);
-	//if type addforce on json -> addforce()
-	//else if type normalshooting on json -> normalshooting()
 }
 

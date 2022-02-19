@@ -48,7 +48,7 @@ void LevelState::start()
 	// ======== EXAMPLE =================
 	// ||		   AI				   ||
 	// ======== EXAMPLE =================
-	for (int i = 0; i < 4; i++) {
+	/*for (int i = 0; i < 4; i++) {
 
 		// Set pos does nothing because of the way physicscomponents are instantiated
 		auto enemyPos = glm::vec2((dungeon->getStartRoomPos().x + ((i + 10) * i)), dungeon->getStartRoomPos().y);
@@ -57,7 +57,7 @@ void LevelState::start()
 		auto enemyGO = createGameObject(enemy.get());
 		auto nav = enemyGO->getComponent<NavigationComponent>();
 		nav->activateNavigation();
-	}
+	}*/
 
 
 #ifdef _DEBUG
@@ -79,6 +79,7 @@ std::shared_ptr<GameObject> LevelState::loadPrefab(std::string prefab, glm::vec2
 void LevelState::update(float deltaTime)
 {
 	updatePhysics();
+
 	for (auto& obj : sceneObjects)
 	{
 		if (obj->getActive()) {
@@ -86,6 +87,13 @@ void LevelState::update(float deltaTime)
 		}
 	}
 
+	for (int i = 0; i < sceneObjects.size(); i++) {
+		if (sceneObjects[i]->getShouldDestroy()) {
+			auto physicsComponent = sceneObjects[i]->getComponent<PhysicsComponent>();
+			physicsComponents.erase(physicsComponent->fixture);
+			sceneObjects.erase(sceneObjects.begin() + i);
+		}
+	}
 }
 
 void LevelState::render()
@@ -262,14 +270,6 @@ std::shared_ptr<GameObject> LevelState::createGameObject(std::shared_ptr<GameObj
 	}
 	sceneObjects.push_back(object);
 	return object;
-}
-
-void LevelState::destroy(GameObject* gameObject) {
-	for (int i = 0; i < sceneObjects.size(); i++) {
-		if (sceneObjects[i].get() == gameObject) {
-			sceneObjects.erase(sceneObjects.begin() + i);
-		}
-	}
 }
 
 b2World* LevelState::getPhysicsWorld()

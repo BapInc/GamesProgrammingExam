@@ -7,7 +7,7 @@
 #include "../AI/NavigationComponent.h"
 #include "../Components/WeaponComponent.h"
 #include "../Components/BulletComponent.h"
-#include "../Components/GranadeComponent.h"
+#include "../Components/GrenadeComponent.h"
 
 
 void PrefabManager::loadGameObjectsFromFile(std::string path, LevelState* state)
@@ -101,9 +101,8 @@ void PrefabManager::addComponents(rapidjson::Value& go, std::shared_ptr<GameObje
 			auto navigationComponent = gameObject->addComponent<NavigationComponent>();
 			navigationComponent->setValuesFromJSON(&component.value);
 		}
-		else if (componentName == "GranadeComponent") {
-			auto granadeComponent = gameObject->addComponent<GranadeComponent>();
-			Debug::Log("POOPY GRANADA", ALERT);
+		else if (componentName == "GrenadeComponent") {
+			auto grenadeComponent = gameObject->addComponent<GrenadeComponent>();
 		}
 
 		Debug::Log("Loading component: " + std::string(componentName));

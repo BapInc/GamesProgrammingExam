@@ -40,7 +40,6 @@ public:
 	std::shared_ptr<GameObject> LevelState::createGameObject();
 	std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object);
 	std::shared_ptr<GameObject> LevelState::createGameObject(std::shared_ptr<GameObject> object);
-	void destroy(GameObject* gameObject);
 	b2World* getPhysicsWorld();
 	float getPhysicsScale();
 	float getTimeScale();

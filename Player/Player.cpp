@@ -75,6 +75,7 @@ bool Player::onKey(SDL_Event& event) {
 			auto temp = selectedWeapon()->getComponent<WeaponComponent>()->getBulletType();
 
 			temp->getComponent<BulletComponent>()->setBulletDirection(setMouseDirection());
+			temp->getComponent<BulletComponent>()->setLevel(*levelState);
 		}
 
 		if (event.type == SDL_KEYUP) {

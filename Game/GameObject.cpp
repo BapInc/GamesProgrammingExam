@@ -35,6 +35,13 @@ bool GameObject::removeComponent(std::shared_ptr<Component> component)
 	return false;
 }
 
+bool GameObject::getShouldDestroy() {
+	return shouldDestroy;
+}
+void GameObject::setShouldDestroy(bool destroy) {
+	shouldDestroy = destroy;
+}
+
 std::string GameObject::getTag() const
 {
 	return tag;

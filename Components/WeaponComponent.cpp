@@ -40,8 +40,26 @@ bool WeaponComponent::flipWeapon() {
 
 float& WeaponComponent::getMouseRotation() {
 	SDL_GetMouseState(&x, &y);
+
 	radians = std::atan2(x - originX, -y + originY);
 	angle = -(radians * 180 / PI);
+
+	if (flipWeapon()) {
+		if (x < originX && y > originY) {
+			angle = -180;
+		}
+		else if (x < originX && y < originY) {
+			angle = 0;
+		}
+	}
+	else {
+		if (x > originX && y > originY) {
+			angle = -180;
+		}
+		else if (x > originX && y < originY) {
+			angle = 0;
+		}
+	}
 
 	return angle;
 }

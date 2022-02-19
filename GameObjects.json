@@ -181,12 +181,9 @@
         }
       },
       "PhysicsComponent": {
-        "shape": "box",
+        "shape": "circle",
         "b2BodyType": "b2_dynamicBody",
-        "size": {
-          "x": 5.0,
-          "y": 5.0
-        },
+        "radius": 7.0,
         "center": {
           "x": 0.5,
           "y": 0.5
@@ -236,6 +233,44 @@
         "density": 1.0
       },
       "BulletComponent": {}
+    }
+  },
+  {
+    "name": "Explosive",
+    "transform": {
+      "scale": {
+        "x": 2,
+        "y": 2,
+        "z": 2
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "position": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "components": {
+      "SpriteComponent": {
+        "sprite": "flask_big_red.png",
+        "scale": {
+          "x": 4,
+          "y": 4
+        }
+      },
+      "PhysicsComponent": {
+        "shape": "circle",
+        "b2BodyType": "b2_dynamicBody",
+        "radius": 30.0,
+        "center": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "density": 1.0
+      }
     }
   }
 ]

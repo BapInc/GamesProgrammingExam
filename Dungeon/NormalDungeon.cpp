@@ -73,8 +73,6 @@ void NormalDungeon::generateRooms()
 
 	do
 	{
-		//Debug::Log("MAP XPOS: " + std::to_string(randX) + "| Map YPOS: " + std::to_string(randY));
-
 		//Check if empty, if not empty go back
 		int width = rand() % (maxRoomWidth - minRoomWidth + 1) + minRoomWidth;
 		int height = rand() % (maxRoomHeight - minRoomHeight + 1) + minRoomHeight;
@@ -106,6 +104,8 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 	int randX = rand() % mapWidth;
 	int randY = rand() % mapHeight;
 
+	int minOutOfBounds = 1;
+
 	//If out of bounds reset || This can be replaced so randX and randY are smaller than mapWidth or height also needs a difference so it's not too close to borders for walls
 	if (randX + width > mapWidth || randY + height > mapHeight)
 	{
@@ -116,12 +116,15 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 	{
 		for (int j = -minDistanceBetweenRooms; j < height + minDistanceBetweenRooms; j++)
 		{
-			//IF OUT OF BOUNDS CONTINUE
-			if (i + randX < 0
-				|| j + randY < 0
-				|| i + randX >= mapWidth
-				|| j + randY >= mapHeight)
-				continue;
+			//If out of bounds go to next iteration
+			if (i + randX < minOutOfBounds
+				|| j + randY < minOutOfBounds
+				|| i + randX >= mapWidth - minOutOfBounds
+				|| j + randY >= mapHeight - minOutOfBounds)
+			{
+				breakout = true;
+				break;
+			}
 
 			//If there's already a tile in the calculated area, reset while loop
 			if (dungeonMap[randX + i][randY + j] != nullptr)
@@ -141,7 +144,7 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 		return false;
 	}
 
-	//For Loops are done again, just so there's no need to create and destroy object in memory
+	//For Loops are done again, just so there's no need to create and destroy objects in memory
 	//Loops width and height and adds floor tiles and its attributes
 	for (size_t i = 0; i < width; i++)
 	{
@@ -151,16 +154,12 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 		}
 	}
 
-	//If room is generated succesfully
+	//Rooom created successfully
 	auto room = std::shared_ptr<Room>(new Room(width, height, glm::vec2(randX, randY), tileSize * scaleMultiplier, type));
 	rooms.push_back(room);
 
 	switch (type)
 	{
-	case CUSTOMSIZE:
-
-		break;
-
 	case RANDOMROOM:
 
 		break;
@@ -221,6 +220,9 @@ void NormalDungeon::findVisibleRooms()
 
 void NormalDungeon::createFloor(int x, int y)
 {
+	if (dungeonMap[x][y] != nullptr)
+		return;
+
 	//TODO: Check if there's a tile in that spot of the map
 	auto obj = new GameObject();
 	std::string name = "floorTile";
@@ -233,7 +235,7 @@ void NormalDungeon::createFloor(int x, int y)
 
 	dungeonMap[x][y] = obj;
 	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (tileSize.x * scaleMultiplier),
-											(y) * (tileSize.y * scaleMultiplier)));
+		(y) * (tileSize.y * scaleMultiplier)));
 
 	levelState->createGameObject(dungeonMap[x][y]);
 }
@@ -241,6 +243,9 @@ void NormalDungeon::createFloor(int x, int y)
 void NormalDungeon::createWall(int x, int y)
 {
 	//TODO: Check if there's a tile in that spot of the map
+	if (dungeonMap[x][y] != nullptr)
+		return;
+	
 	auto obj = new GameObject();
 	std::string name = "wallTile";
 	obj->setName(name);

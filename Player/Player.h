@@ -14,17 +14,19 @@ public:
 	explicit Player(GameObject* gameObject);
 
 public:
-	void setLevel(LevelState& levelState);
-
+	void start();
 	bool onKey(SDL_Event& event) override;
 	void update(float deltaTime) override;
 	void setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, GameState* state);
-	bool getFacing();
+	void setLevel(LevelState& levelState);
 	void addWeapon();
+	bool getFacing();
 	void selectWeapon(int keyboardNumber);
+	void loadSprites();
+	void updateAnimations(float deltaTime);
+	void setSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent);
 	std::shared_ptr<GameObject> Player::selectedWeapon();
 	glm::vec2 setMouseDirection();
-	void setSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent);
 
 private:
 	//MoveCommand* moveCommand;
@@ -44,6 +46,15 @@ private:
 	glm::vec2 velocity;
 	bool facingRight = true;
 	bool pressed = false;
+
+	//Animations
+	std::vector<char*> idleAnimations;
+	std::vector<char*> runningAnimations;
+	sre::Sprite currentSprite;
+	glm::vec2 scale;
+	float animationTime = 0.100f;
+	float time = 0;
+	int spriteIndex = 0;
 
 	//Mouse coordinates
 	int x, y;

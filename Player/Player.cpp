@@ -12,7 +12,6 @@ Player::Player(GameObject* gameObject) : Component(gameObject)
 {
 	this->gameObject = gameObject;
 	spriteComponent = gameObject->getComponent<SpriteComponent>();
-	physicsComponent = gameObject->getComponent<PhysicsComponent>();
 	originX = DungeonGame::getInstance()->getWindowSize().x / 2;
 	originY = DungeonGame::getInstance()->getWindowSize().y / 2;
 	//moveCommand = NULL;
@@ -21,6 +20,11 @@ Player::Player(GameObject* gameObject) : Component(gameObject)
 void Player::setLevel(LevelState& levelState)
 {
 	this->levelState = &levelState;
+}
+
+void Player::start() {
+	addWeapon();
+	loadSprites();
 }
 
 void Player::addWeapon() {
@@ -37,6 +41,29 @@ void Player::addWeapon() {
 	weaponInventory.push_back(weapon2);
 }
 
+void Player::loadSprites() {
+
+	//Idle Animations
+	char* idle1 = "lizard_f_idle_anim_f0.png";
+	char* idle2 = "lizard_f_idle_anim_f1.png";
+	char* idle3 = "lizard_f_idle_anim_f2.png";
+	char* idle4 = "lizard_f_idle_anim_f3.png";
+	idleAnimations.push_back(idle1);
+	idleAnimations.push_back(idle2);
+	idleAnimations.push_back(idle3);
+	idleAnimations.push_back(idle4);
+
+	//Running Animations
+	char* run1 = "lizard_f_run_anim_f0.png";
+	char* run2 = "lizard_f_run_anim_f1.png";
+	char* run3 = "lizard_f_run_anim_f2.png";
+	char* run4 = "lizard_f_run_anim_f3.png";
+	runningAnimations.push_back(run1);
+	runningAnimations.push_back(run2);
+	runningAnimations.push_back(run3);
+	runningAnimations.push_back(run4);
+}
+
 bool Player::onKey(SDL_Event& event) {
 	bool temp = true;
 	switch (event.key.keysym.sym) {
@@ -50,14 +77,12 @@ bool Player::onKey(SDL_Event& event) {
 	case SDLK_a:
 		velocity.x = event.type == SDL_KEYDOWN ? -1 : 0;
 		if (getFacing()) {
-			spriteComponent->flipSprite(true);
 			facingRight = false;
 		}
 		break;
 	case SDLK_d:
 		velocity.x = event.type == SDL_KEYDOWN ? 1 : 0;
 		if (!getFacing()) {
-			spriteComponent->flipSprite(false);
 			facingRight = true;
 		}
 		break;
@@ -85,6 +110,25 @@ bool Player::onKey(SDL_Event& event) {
 	}
 
 	return true;
+}
+
+void Player::updateAnimations(float deltaTime) {
+
+	time += deltaTime;
+	if (time > animationTime) {
+		time = fmod(time, animationTime);
+		if (velocity == glm::vec2(0.0f)) {
+				spriteIndex = (spriteIndex + 1) % idleAnimations.size();
+				currentSprite = levelState->getSprite(idleAnimations[spriteIndex]);
+		}
+		else {
+			spriteIndex = (spriteIndex + 1) % runningAnimations.size();
+			currentSprite = levelState->getSprite(runningAnimations[spriteIndex]);
+		}
+		currentSprite.setScale(gameObject->getTransform()->getScale());
+		spriteComponent->setSprite(currentSprite);
+		spriteComponent->flipSprite(!getFacing());
+	}
 }
 
 glm::vec2 Player::setMouseDirection() {
@@ -130,7 +174,6 @@ void Player::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtA
 void Player::update(float deltaTime) {
 
 	auto newPos = gameObject->getTransform()->getPos() + velocity * (speed / LevelState::physicsScale) * deltaTime;
-	//gameObject->getComponent<PhysicsComponent>()->setLinearVelocity(velocity * speed * deltaTime);
 	gameObject->getComponent<PhysicsComponent>()->moveTo(newPos);
-	//gameObject->getTransform()->SetPos(newPos);
+	updateAnimations(deltaTime);
 }

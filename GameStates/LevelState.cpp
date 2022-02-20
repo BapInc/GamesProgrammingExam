@@ -40,7 +40,7 @@ void LevelState::start()
 	player = loadPrefab("Player", dungeon->getStartRoomPos());
 	player->getComponent<Player>()->setLevel(*this);
 	camera->setFollowObject(player);
-	player->getComponent<Player>()->addWeapon();
+	player->getComponent<Player>()->start();
 	player->transform->SetPos(dungeon->getStartRoomPos());
 
 	//player->transform->SetPos(dungeon->getStartRoomPos());

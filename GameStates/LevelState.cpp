@@ -29,10 +29,10 @@ void LevelState::start()
 	// || Add Component and play audio ||
 	// ======== EXAMPLE =================
 	auto camAudio = camObj->addComponent<AudioComponent>();
-	camAudio->addSound("music", "event:/music/BackgroundMusic");
-	camAudio->addSound("shoot", "event:/music/Shoot");
-	camAudio->addSound("explosion", "event:/music/Explosion");
-	camAudio->addSound("run", "event:/music/Run");
+	camAudio->addSound("music", "event:/BackgroundMusic");
+	camAudio->addSound("shoot", "event:/Shot");
+	camAudio->addSound("explosion", "event:/Explosion");
+	camAudio->addSound("run", "event:/Run");
 	camAudio->playSound("music");
 	prefabManager = std::make_shared<PrefabManager>();
 	prefabManager->loadGameObjectsFromFile("./GameObjects.json", this);

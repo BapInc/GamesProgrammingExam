@@ -131,6 +131,9 @@ void Player::updateAnimations(float deltaTime) {
 		else {
 			spriteIndex = (spriteIndex + 1) % runningAnimations.size();
 			currentSprite = levelState->getSprite(runningAnimations[spriteIndex]);
+			if (spriteIndex % 2 == 0) {
+				audio->playSound("run");
+			}
 		}
 		currentSprite.setScale(gameObject->getTransform()->getScale());
 		spriteComponent->setSprite(currentSprite);

@@ -68,7 +68,7 @@ void NormalDungeon::generateRooms()
 
 	//TODO: Check if max possible tiles calculation is working currectly when walls are being generated
 	//Max Room tiles and counting walls (Not corridors)
-	int maxPossibleTiles = maxRoomHeight * maxRoomWidth * maxAmountOfRooms + ((maxRoomWidth * 2 ) + (maxRoomHeight * 2) + 4) * maxAmountOfRooms;
+	int maxPossibleTiles = maxRoomHeight * maxRoomWidth * maxAmountOfRooms + ((maxRoomWidth * 2) + (maxRoomHeight * 2) + 4) * maxAmountOfRooms;
 	int mapTilesCount = mapWidth * mapHeight;
 	Debug::Log("MAX Tiles: " + std::to_string(maxPossibleTiles) + " | Map Tiles: " + std::to_string(mapTilesCount));
 
@@ -96,7 +96,7 @@ void NormalDungeon::generateRooms()
 			Debug::Log("Map Size is too small, not all rooms generated", ALERT);
 			break;
 		}
-			
+
 	} while (rooms.size() != amountOfRooms);
 }
 
@@ -169,7 +169,7 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 		break;
 	case STARTROOM:
 
-		if(startRoom != NULL)
+		if (startRoom != NULL)
 			Debug::Log("More than one startRoom instance", ALERT);
 		else
 			startRoom = room;
@@ -257,7 +257,7 @@ void NormalDungeon::createWall(int x, int y)
 
 	auto pC = temp.get()->addComponent<PhysicsComponent>();
 	pC->setWorld(levelState->getPhysicsWorld());
-	pC->initBox(b2_staticBody, glm::vec2(0.1f,0.1f), glm::vec2(0.5f, 0.5f), 1.0f);
+	pC->initBox(b2_staticBody, glm::vec2(0.3f, 0.3f), temp->getTransform()->getPos(), 1.0f);
 	levelState->addPhysicsComponent(pC);
 }
 
@@ -413,10 +413,10 @@ void NormalDungeon::generateWalls()
 		{
 			if (dungeonMap[j][i] == NULL)
 				continue;
-			
+
 			if (dungeonMap[j][i]->getName() != "floorTile")
 				continue;
-			
+
 			//Rows
 			for (int r = -1; r < 2; r++)
 			{
@@ -442,7 +442,7 @@ void NormalDungeon::generateWalls()
 
 float NormalDungeon::CalculateDistance(glm::ivec2& v, glm::ivec2& w)
 {
-	return abs(sqrt(pow(v.x - w.x, 2) + pow(v.y - w.y, 2)));	
+	return abs(sqrt(pow(v.x - w.x, 2) + pow(v.y - w.y, 2)));
 }
 
 void NormalDungeon::swap(float& x, float& y)

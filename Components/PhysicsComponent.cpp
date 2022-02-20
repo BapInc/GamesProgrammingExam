@@ -72,7 +72,7 @@ void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 cente
 	b2BodyDef bd;
 	bd.type = type;
 	rbType = type;
-	bd.position = b2Vec2(center.x, center.y);
+	bd.position = b2Vec2(center.x / LevelState::physicsScale, center.y / LevelState::physicsScale);
 	body = world->CreateBody(&bd);
 	circle = new b2CircleShape();
 	circle->m_radius = radius;
@@ -95,7 +95,7 @@ void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center
 	b2BodyDef bd;
 	bd.type = type;
 	rbType = type;
-	bd.position = b2Vec2(center.x, center.y);
+	bd.position = b2Vec2(center.x / LevelState::physicsScale, center.y / LevelState::physicsScale);
 	body = world->CreateBody(&bd);
 	polygon = new b2PolygonShape();
 	polygon->SetAsBox(size.x, size.y, { 0,0 }, 0);

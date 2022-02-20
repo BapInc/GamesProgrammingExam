@@ -48,17 +48,16 @@ void LevelState::start()
 	// ======== EXAMPLE =================
 	// ||		   AI				   ||
 	// ======== EXAMPLE =================
-	for (int i = 0; i < 4; i++) {
+	//for (int i = 0; i < 4; i++) {
 
-		// Set pos does nothing because of the way physicscomponents are instantiated
-		auto enemyPos = glm::vec2((dungeon->getStartRoomPos().x + ((i + 10) * i)), dungeon->getStartRoomPos().y);
-		//auto enemyPos = glm::vec2(-200 /, 200);
-		auto enemy = prefabManager->getPrefab("Enemy", this, enemyPos);
-		auto enemyGO = createGameObject(enemy.get());
-		auto nav = enemyGO->getComponent<NavigationComponent>();
-		nav->setLevel(*this);
-		nav->activateNavigation();
-	}
+	//	// Set pos does nothing because of the way physicscomponents are instantiated
+	//	auto enemyPos = glm::vec2((dungeon->getStartRoomPos().x + ((i + 10) * i)), dungeon->getStartRoomPos().y);
+	//	auto enemy = prefabManager->getPrefab("Enemy", this, enemyPos);
+	//	auto enemyGO = createGameObject(enemy.get());
+	//	auto nav = enemyGO->getComponent<NavigationComponent>();
+	//	nav->setLevel(*this);
+	//	nav->activateNavigation();
+	//}
 
 
 #ifdef _DEBUG
@@ -203,6 +202,15 @@ void LevelState::EndContact(b2Contact* contact)
 
 void LevelState::generateNewDungeon()
 {
+}
+
+void LevelState::generateEnemy(glm::ivec2& pos)
+{
+	auto enemy = prefabManager->getPrefab("Enemy", this, pos);
+	auto enemyGO = createGameObject(enemy.get());
+	auto nav = enemyGO->getComponent<NavigationComponent>();
+	nav->setLevel(*this);
+	nav->activateNavigation();
 }
 
 void LevelState::handleContact(b2Contact* contact, bool begin)

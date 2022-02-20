@@ -20,12 +20,12 @@ Room::Room(int width, int height, glm::vec2 pos, glm::vec2 scale, RoomType type)
 	amountOfRooms += 1;
 }
 
-void Room::initialiseRoom()
+glm::ivec2 Room::generateEnemy()
 {
-}
-
-void Room::generateContent()
-{
+	//gets random position in the room
+	int rands = rand() % tiles.size();
+	glm::vec2 temp = tiles[rands] * scale;
+	return temp;
 }
 
 void Room::addRoomSeen(std::shared_ptr<Room>& room, float& distance)
@@ -58,6 +58,12 @@ void Room::sortRoomsSeen()
 		if (swapped == false)
 			break;
 	}
+}
+
+void Room::setTiles(std::vector<glm::vec2>& tilesContainer, glm::vec2 scale)
+{
+	tiles = tilesContainer;
+	this->scale = scale;
 }
 
 void Room::swap(int i, int j)

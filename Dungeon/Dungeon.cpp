@@ -9,6 +9,7 @@ void Dungeon::generateDungeon()
 	generateRooms();
 	generateRoomConnections();
 	generateWalls();
+	generateContent();
 }
 
 glm::ivec2 Dungeon::getStartRoomPos()

@@ -15,14 +15,14 @@ class Room
 public:
 	Room(int width, int height, glm::vec2 pos, glm::vec2 scale, RoomType type = RANDOMROOM);
 
-	void initialiseRoom();
-	void generateContent();
+	glm::ivec2 generateEnemy();
 
 public:
 
 	void addRoomSeen(std::shared_ptr<Room>& room, float& distance);
 	void addRoomConnected(std::shared_ptr<Room>& room);
 	void sortRoomsSeen();
+	void setTiles(std::vector<glm::vec2>& tilesContainer, glm::vec2 scale);
 private:
 	void swap(int i, int j);
 public:
@@ -43,6 +43,7 @@ private:
 	int height;
 	int roomNumber;
 	static int amountOfRooms;
+	glm::vec2 scale;
 	glm::vec2 initialPos;
 	glm::ivec2 centerPos;
 	glm::ivec2 centerPosScaled;
@@ -55,5 +56,6 @@ private:
 	//TODO: Maybe use if sort isn't used and to shift objects around
 	std::vector<std::shared_ptr<Room>> closestRooms;
 	RoomType roomType;
+	std::vector<glm::vec2> tiles;
 };
 #endif

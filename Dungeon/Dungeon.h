@@ -23,6 +23,7 @@ protected:
 	virtual void generateRooms() {};
 	virtual void generateRoomConnections() {};
 	virtual void generateWalls() {};
+	virtual void generateContent() {};
 	
 public:
 

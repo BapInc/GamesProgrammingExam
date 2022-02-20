@@ -28,6 +28,9 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 	amountOfFloorPrefabs = 8;
 	amountOfWallPrefabs = 3;
 
+	minAmountOfEnemies = 1;
+	maxAmountOfEnemies = 3;
+
 	if (minRoomHeight > maxRoomHeight)
 		Debug::Log("Min Room Height is bigger than Max Room height", WARNING);
 
@@ -150,17 +153,21 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 
 	//For Loops are done again, just so there's no need to create and destroy objects in memory
 	//Loops width and height and adds floor tiles and its attributes
+	std::vector<glm::vec2> tempVector;
 	for (size_t i = 0; i < width; i++)
 	{
 		for (size_t j = 0; j < height; j++)
 		{
 			createFloor(randX + i, randY + j);
+			tempVector.push_back(glm::vec2(randX + i, randY + j));
+			
 		}
 	}
 
 	//Rooom created successfully
 	auto room = std::shared_ptr<Room>(new Room(width, height, glm::vec2(randX, randY), tileSize * scaleMultiplier, type));
 	rooms.push_back(room);
+	room->setTiles(tempVector, tileSize * scaleMultiplier);
 
 	switch (type)
 	{
@@ -436,6 +443,31 @@ void NormalDungeon::generateWalls()
 						createWall(j + r, i + c);
 				}
 			}
+		}
+	}
+}
+
+void NormalDungeon::generateContent()
+{
+	generateEnemies();
+}
+
+void NormalDungeon::generateEnemies()
+{
+
+	for (size_t i = 0; i < rooms.size(); i++)
+	{
+		if (rooms[i]->getType() != RANDOMROOM)
+			continue;
+
+		int temp = rand() % (maxAmountOfEnemies - minAmountOfEnemies + 1) + minAmountOfEnemies;
+		
+		for (size_t j = 0; j < temp; j++)
+		{
+			glm::ivec2 tempPos = rooms[i]->generateEnemy();
+			
+			
+			levelState->generateEnemy(tempPos);
 		}
 	}
 }

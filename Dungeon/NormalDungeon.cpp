@@ -1,6 +1,7 @@
 #include "NormalDungeon.h"
 #include "../Utility/Debug.h"
 #include "../Components/SpriteComponent.h"
+#include "../Managers/PrefabManager.h"
 #include <algorithm>
 #include <iostream>
 #include <cmath>
@@ -14,15 +15,18 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 	minAmountOfRooms = 5;
 	maxAmountOfRooms = 10;
 
-	minRoomWidth = 5;
-	minRoomHeight = 5;
-	maxRoomHeight = 10;
-	maxRoomWidth = 10;
+	minRoomWidth = 10;
+	minRoomHeight = 10;
+	maxRoomHeight = 14;
+	maxRoomWidth = 14;
 
-	startRoomWidth = 3;
-	startRoomHeight = 3;
+	startRoomWidth = 5;
+	startRoomHeight = 5;
 
 	scaleMultiplier = 4.0f;
+
+	amountOfFloorPrefabs = 8;
+	amountOfWallPrefabs = 3;
 
 	if (minRoomHeight > maxRoomHeight)
 		Debug::Log("Min Room Height is bigger than Max Room height", WARNING);
@@ -32,8 +36,8 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 
 	roomVisibilityDistance = 100;
 
-	mapWidth = 70;
-	mapHeight = 70;
+	mapWidth = 100;
+	mapHeight = 100;
 
 	maxIterations = 100;
 
@@ -64,7 +68,7 @@ void NormalDungeon::generateRooms()
 
 	//TODO: Check if max possible tiles calculation is working currectly when walls are being generated
 	//Max Room tiles and counting walls (Not corridors)
-	int maxPossibleTiles = maxRoomHeight * maxRoomWidth * maxAmountOfRooms + ((maxRoomWidth * 2 ) + (maxRoomHeight * 2) + 4) * maxAmountOfRooms;
+	int maxPossibleTiles = maxRoomHeight * maxRoomWidth * maxAmountOfRooms + ((maxRoomWidth * 2) + (maxRoomHeight * 2) + 4) * maxAmountOfRooms;
 	int mapTilesCount = mapWidth * mapHeight;
 	Debug::Log("MAX Tiles: " + std::to_string(maxPossibleTiles) + " | Map Tiles: " + std::to_string(mapTilesCount));
 
@@ -73,8 +77,6 @@ void NormalDungeon::generateRooms()
 
 	do
 	{
-		//Debug::Log("MAP XPOS: " + std::to_string(randX) + "| Map YPOS: " + std::to_string(randY));
-
 		//Check if empty, if not empty go back
 		int width = rand() % (maxRoomWidth - minRoomWidth + 1) + minRoomWidth;
 		int height = rand() % (maxRoomHeight - minRoomHeight + 1) + minRoomHeight;
@@ -94,7 +96,7 @@ void NormalDungeon::generateRooms()
 			Debug::Log("Map Size is too small, not all rooms generated", ALERT);
 			break;
 		}
-			
+
 	} while (rooms.size() != amountOfRooms);
 }
 
@@ -106,6 +108,8 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 	int randX = rand() % mapWidth;
 	int randY = rand() % mapHeight;
 
+	int minOutOfBounds = 1;
+
 	//If out of bounds reset || This can be replaced so randX and randY are smaller than mapWidth or height also needs a difference so it's not too close to borders for walls
 	if (randX + width > mapWidth || randY + height > mapHeight)
 	{
@@ -116,12 +120,15 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 	{
 		for (int j = -minDistanceBetweenRooms; j < height + minDistanceBetweenRooms; j++)
 		{
-			//IF OUT OF BOUNDS CONTINUE
-			if (i + randX < 0
-				|| j + randY < 0
-				|| i + randX >= mapWidth
-				|| j + randY >= mapHeight)
-				continue;
+			//If out of bounds go to next iteration
+			if (i + randX < minOutOfBounds
+				|| j + randY < minOutOfBounds
+				|| i + randX >= mapWidth - minOutOfBounds
+				|| j + randY >= mapHeight - minOutOfBounds)
+			{
+				breakout = true;
+				break;
+			}
 
 			//If there's already a tile in the calculated area, reset while loop
 			if (dungeonMap[randX + i][randY + j] != nullptr)
@@ -141,7 +148,7 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 		return false;
 	}
 
-	//For Loops are done again, just so there's no need to create and destroy object in memory
+	//For Loops are done again, just so there's no need to create and destroy objects in memory
 	//Loops width and height and adds floor tiles and its attributes
 	for (size_t i = 0; i < width; i++)
 	{
@@ -151,22 +158,18 @@ bool NormalDungeon::generateRoom(int& width, int& height, RoomType type)
 		}
 	}
 
-	//If room is generated succesfully
+	//Rooom created successfully
 	auto room = std::shared_ptr<Room>(new Room(width, height, glm::vec2(randX, randY), tileSize * scaleMultiplier, type));
 	rooms.push_back(room);
 
 	switch (type)
 	{
-	case CUSTOMSIZE:
-
-		break;
-
 	case RANDOMROOM:
 
 		break;
 	case STARTROOM:
 
-		if(startRoom != NULL)
+		if (startRoom != NULL)
 			Debug::Log("More than one startRoom instance", ALERT);
 		else
 			startRoom = room;
@@ -221,39 +224,41 @@ void NormalDungeon::findVisibleRooms()
 
 void NormalDungeon::createFloor(int x, int y)
 {
-	//TODO: Check if there's a tile in that spot of the map
-	auto obj = new GameObject();
-	std::string name = "floorTile";
-	obj->setName(name);
-	auto spC = obj->addComponent<SpriteComponent>();
-	//TODO: Use prefab manager and randomize tiles
-	auto sprit = levelState->getSprite("floor_1.png"); // spriteAtlas->get("floor_1.png");
-	sprit.setScale({ scaleMultiplier,scaleMultiplier });
-	spC->setSprite(sprit);
+	if (dungeonMap[x][y] != nullptr)
+		return;
 
-	dungeonMap[x][y] = obj;
+	std::string spriteName = "floorTile";
+	int random = rand() % amountOfFloorPrefabs;
+	random += 1;
+
+	std::shared_ptr<GameObject> temp = levelState->loadPrefab(spriteName + std::to_string(random), glm::vec2(0, 0));
+	temp->setName(spriteName);
+
+	dungeonMap[x][y] = temp.get();
 	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (tileSize.x * scaleMultiplier),
-											(y) * (tileSize.y * scaleMultiplier)));
-
-	levelState->createGameObject(dungeonMap[x][y]);
+		(y) * (tileSize.y * scaleMultiplier)));
 }
 
 void NormalDungeon::createWall(int x, int y)
 {
 	//TODO: Check if there's a tile in that spot of the map
-	auto obj = new GameObject();
-	std::string name = "wallTile";
-	obj->setName(name);
-	auto spC = obj->addComponent<SpriteComponent>();
-	//TODO: Use prefab manager and randomize tiles
-	auto sprit = levelState->getSprite("wall_mid.png"); // spriteAtlas->get("floor_1.png");
-	sprit.setScale({ scaleMultiplier,scaleMultiplier });
-	spC->setSprite(sprit);
+	if (dungeonMap[x][y] != nullptr)
+		return;
 
-	dungeonMap[x][y] = obj;
+	std::string spriteName = "wallTile";
+	int random = rand() % amountOfWallPrefabs;
+	random += 1;
+
+	std::shared_ptr<GameObject> temp = levelState->loadPrefab(spriteName + std::to_string(random), glm::vec2(0, 0));
+	temp->setName(spriteName);
+	dungeonMap[x][y] = temp.get();
 	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (tileSize.x * scaleMultiplier),
 		(y) * (tileSize.y * scaleMultiplier)));
-	levelState->createGameObject(dungeonMap[x][y]);
+
+	auto pC = temp.get()->addComponent<PhysicsComponent>();
+	pC->setWorld(levelState->getPhysicsWorld());
+	pC->initBox(b2_staticBody, glm::vec2(0.3f, 0.3f), temp->getTransform()->getPos(), 1.0f);
+	levelState->addPhysicsComponent(pC);
 }
 
 void NormalDungeon::connectRooms()
@@ -408,10 +413,10 @@ void NormalDungeon::generateWalls()
 		{
 			if (dungeonMap[j][i] == NULL)
 				continue;
-			
+
 			if (dungeonMap[j][i]->getName() != "floorTile")
 				continue;
-			
+
 			//Rows
 			for (int r = -1; r < 2; r++)
 			{
@@ -437,7 +442,7 @@ void NormalDungeon::generateWalls()
 
 float NormalDungeon::CalculateDistance(glm::ivec2& v, glm::ivec2& w)
 {
-	return abs(sqrt(pow(v.x - w.x, 2) + pow(v.y - w.y, 2)));	
+	return abs(sqrt(pow(v.x - w.x, 2) + pow(v.y - w.y, 2)));
 }
 
 void NormalDungeon::swap(float& x, float& y)

@@ -7,13 +7,13 @@
 
 enum RoomType
 {
-	CUSTOMSIZE, RANDOMROOM, STARTROOM, BOSSROOM, REWARDSROOM
+	RANDOMROOM, STARTROOM, BOSSROOM, REWARDSROOM
 };
 
 class Room
 {
 public:
-	Room(int width, int height, glm::vec2 pos, glm::vec2 scale, RoomType type = CUSTOMSIZE);
+	Room(int width, int height, glm::vec2 pos, glm::vec2 scale, RoomType type = RANDOMROOM);
 
 	void initialiseRoom();
 	void generateContent();

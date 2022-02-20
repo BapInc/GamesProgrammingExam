@@ -197,9 +197,9 @@
     "name": "Bullet2",
     "transform": {
       "scale": {
-        "x": 2,
-        "y": 2,
-        "z": 2
+        "x": 5,
+        "y": 5,
+        "z": 5
       },
       "rotation": {
         "x": 0,
@@ -271,6 +271,143 @@
         },
         "density": 1.0
       }
+    }
+  },
+  {
+    "name": "floorTile1",
+    "components": {
+      "SpriteComponent": {
+        "sprite": "floor_1.png",
+        "scale": {
+          "x": 4,
+          "y": 4
+        }
+      }
+      
+    }
+  },
+  {
+    "name": "floorTile2",
+    "components": {
+      "SpriteComponent": {
+        "sprite": "floor_2.png",
+        "scale": {
+          "x": 4,
+          "y": 4
+        }
+      }
+      
+    }
+  },
+  {
+    "name": "floorTile3",
+    "components": {
+      "SpriteComponent": {
+        "sprite": "floor_3.png",
+        "scale": {
+          "x": 4,
+          "y": 4
+        }
+      }
+    }
+  },
+  {
+    "name": "floorTile4",
+    "components": {
+      "SpriteComponent": {
+        "sprite": "floor_4.png",
+        "scale": {
+          "x": 4,
+          "y": 4
+        }
+      }
+    }
+  },
+  {
+    "name": "floorTile5",
+    "components": {
+      "SpriteComponent": {
+        "sprite": "floor_5.png",
+        "scale": {
+          "x": 4,
+          "y": 4
+        }
+      }
+    }
+  },
+  {
+    "name": "floorTile6",
+    "components": {
+      "SpriteComponent": {
+        "sprite": "floor_6.png",
+        "scale": {
+          "x": 4,
+          "y": 4
+        }
+      }
+    }
+  },
+  {
+    "name": "floorTile7",
+    "components": {
+      "SpriteComponent": {
+        "sprite": "floor_7.png",
+        "scale": {
+          "x": 4,
+          "y": 4
+        }
+      }
+    }
+  },
+  {
+    "name": "floorTile8",
+    "components": {
+      "SpriteComponent": {
+        "sprite": "floor_8.png",
+        "scale": {
+          "x": 4,
+          "y": 4
+        }
+      }
+    }
+  },
+  {
+    "name": "wallTile1",
+    "components": {
+      "SpriteComponent": {
+        "sprite": "wall_mid.png",
+        "scale": {
+          "x": 4,
+          "y": 4
+        }
+      }
+      
+    }
+  },
+  {
+    "name": "wallTile2",
+    "components": {
+      "SpriteComponent": {
+        "sprite": "wall_hole_1.png",
+        "scale": {
+          "x": 4,
+          "y": 4
+        }
+      }
+      
+    }
+  },
+  {
+    "name": "wallTile3",
+    "components": {
+      "SpriteComponent": {
+        "sprite": "wall_hole_2.png",
+        "scale": {
+          "x": 4,
+          "y": 4
+        }
+      }
+      
     }
   }
 ]

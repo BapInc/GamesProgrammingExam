@@ -18,8 +18,6 @@ void LevelState::start()
 {
 	initPhysics();
 	loadSpriteSheet("spritesheet.json", "spritesheet.png");
-	dungeon = new NormalDungeon(*this);
-	dungeon->generateDungeon();
 
 	auto camObj = createGameObject();
 	camObj->name = "Camera";
@@ -36,6 +34,8 @@ void LevelState::start()
 	prefabManager = std::make_shared<PrefabManager>();
 	prefabManager->loadGameObjectsFromFile("./GameObjects.json", this);
 
+	dungeon = new NormalDungeon(*this);
+	dungeon->generateDungeon();
 	//PLAYER
 	player = loadPrefab("Player", dungeon->getStartRoomPos());
 	player->getComponent<Player>()->setLevel(*this);
@@ -249,6 +249,11 @@ std::shared_ptr<GameObject> LevelState::createGameObject()
 	}
 	sceneObjects.push_back(obj);
 	return obj;
+}
+
+void LevelState::addPhysicsComponent(std::shared_ptr<PhysicsComponent>& pc)
+{
+	physicsComponents[pc.get()->fixture] = pc.get();
 }
 
 std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object)

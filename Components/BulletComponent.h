@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "../Components/Component.h"
+#include "../Components/AudioComponent.h"
 #include "../Game/GameObject.h"
 
 class BulletComponent : public Component
@@ -16,11 +17,14 @@ public:
 
 	void setLevel(LevelState& levelState);
 
+	void setAudio(AudioComponent& audio);
+
 	virtual void shoot(float deltaTime);
 	
+	LevelState* levelState;
+	AudioComponent* audio;
 	glm::vec2 bulletDirection;
 	float speed;
-	LevelState* levelState;
 	int lifetime;
 
 private:

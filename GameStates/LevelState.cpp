@@ -31,14 +31,18 @@ void LevelState::start()
 	// || Add Component and play audio ||
 	// ======== EXAMPLE =================
 	auto camAudio = camObj->addComponent<AudioComponent>();
-	camAudio->addSound("music", "event:/music/music_main_menu00");
-	//camAudio->playSound("music");
+	camAudio->addSound("music", "event:/music/BackgroundMusic");
+	camAudio->addSound("shoot", "event:/music/Shoot");
+	camAudio->addSound("explosion", "event:/music/Explosion");
+	camAudio->addSound("run", "event:/music/Run");
+	camAudio->playSound("music");
 	prefabManager = std::make_shared<PrefabManager>();
 	prefabManager->loadGameObjectsFromFile("./GameObjects.json", this);
 
 	//PLAYER
 	player = loadPrefab("Player", dungeon->getStartRoomPos());
 	player->getComponent<Player>()->setLevel(*this);
+	player->getComponent<Player>()->setAudio(*camAudio);
 	camera->setFollowObject(player);
 	player->getComponent<Player>()->start();
 	player->transform->SetPos(dungeon->getStartRoomPos());

@@ -96,9 +96,9 @@
     "name": "Weapon1",
     "transform": {
       "scale": {
-        "x": 2,
-        "y": 2,
-        "z": 2
+        "x": 1,
+        "y": 1,
+        "z": 1
       },
       "rotation": {
         "x": 0,
@@ -127,9 +127,9 @@
     "name": "Weapon2",
     "transform": {
       "scale": {
-        "x": 2,
-        "y": 2,
-        "z": 2
+        "x": 1,
+        "y": 1,
+        "z": 1
       },
       "rotation": {
         "x": 0,
@@ -158,9 +158,9 @@
     "name": "Bullet1",
     "transform": {
       "scale": {
-        "x": 2,
-        "y": 2,
-        "z": 2
+        "x": 1,
+        "y": 1,
+        "z": 1
       },
       "rotation": {
         "x": 0,
@@ -197,9 +197,9 @@
     "name": "Bullet2",
     "transform": {
       "scale": {
-        "x": 2,
-        "y": 2,
-        "z": 2
+        "x": 1,
+        "y": 1,
+        "z": 1
       },
       "rotation": {
         "x": 0,
@@ -239,9 +239,9 @@
     "name": "Explosive",
     "transform": {
       "scale": {
-        "x": 2,
-        "y": 2,
-        "z": 2
+        "x": 10,
+        "y": 10,
+        "z": 10
       },
       "rotation": {
         "x": 0,
@@ -257,8 +257,8 @@
       "SpriteComponent": {
         "sprite": "flask_big_red.png",
         "scale": {
-          "x": 4,
-          "y": 4
+          "x": 10,
+          "y": 10
         }
       },
       "PhysicsComponent": {

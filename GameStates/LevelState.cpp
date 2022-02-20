@@ -168,7 +168,7 @@ void LevelState::updatePhysics()
 	const int positionIterations = 2;
 	const int velocityIterations = 6;
 	world->Step(timeStep, velocityIterations, positionIterations);
-
+	std::cout << "SIZE PC: " + std::to_string(physicsComponents.size()) << std::endl;
 	for (auto phys : physicsComponents)
 	{
 		if (phys.second->rbType == b2_staticBody) continue;
@@ -240,6 +240,13 @@ std::shared_ptr<GameObject> LevelState::createGameObject()
 	}
 	sceneObjects.push_back(obj);
 	return obj;
+}
+
+void LevelState::addPhysicsComponent(std::shared_ptr<PhysicsComponent>& pc)
+{
+	std::cout << "SIZE BEFORE: " + std::to_string(physicsComponents.size()) << std::endl;
+	physicsComponents[pc.get()->fixture] = pc.get();
+	std::cout << "SIZE AFTER: " + std::to_string(physicsComponents.size()) << std::endl;
 }
 
 std::shared_ptr<GameObject> LevelState::createGameObject(GameObject* object)

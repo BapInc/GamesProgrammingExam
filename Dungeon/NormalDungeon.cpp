@@ -250,11 +250,15 @@ void NormalDungeon::createWall(int x, int y)
 	random += 1;
 
 	std::shared_ptr<GameObject> temp = levelState->loadPrefab(spriteName + std::to_string(random), glm::vec2(0, 0));
-
 	temp->setName(spriteName);
 	dungeonMap[x][y] = temp.get();
 	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (tileSize.x * scaleMultiplier),
 		(y) * (tileSize.y * scaleMultiplier)));
+
+	auto pC = temp.get()->addComponent<PhysicsComponent>();
+	pC->setWorld(levelState->getPhysicsWorld());
+	pC->initBox(b2_staticBody, glm::vec2(0.1f,0.1f), glm::vec2(0.5f, 0.5f), 1.0f);
+	levelState->addPhysicsComponent(pC);
 }
 
 void NormalDungeon::connectRooms()

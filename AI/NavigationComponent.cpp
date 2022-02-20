@@ -11,8 +11,10 @@ NavigationComponent::NavigationComponent(GameObject* gameObject)
 
 void NavigationComponent::update(float deltaTime)
 {
-	if (!isPaused && hasPath)
+	if (!isPaused && hasPath) {
 		moveToDestination(deltaTime);
+		updateAnimations(deltaTime);
+	}
 	else if (!isPaused)
 		setRandomDestination(200);
 }
@@ -44,6 +46,12 @@ void NavigationComponent::moveToDestination(float deltaTime)
 	}
 	auto pos = gameObject->getTransform()->getPos();
 	auto dir = glm::normalize(destination - pos);
+	if (dir.x > 0) {
+		facingRight = true;
+	}
+	else {
+		facingRight = false;
+	}
 	// length 2 returns the squared length 
 	auto distance = glm::length2(pos - destination);
 	if (distance <= 1)
@@ -55,8 +63,39 @@ void NavigationComponent::moveToDestination(float deltaTime)
 void NavigationComponent::activateNavigation() {
 	srand(time(NULL));
 	physicsComponent = gameObject->getComponent<PhysicsComponent>();
+	spriteComponent = gameObject->getComponent<SpriteComponent>();
 	initialPosition = gameObject->getTransform()->getPos();
 	isPaused = false;
+	loadSprites();
+}
+
+void NavigationComponent::setLevel(LevelState& levelState)
+{
+	this->levelState = &levelState;
+}
+
+void NavigationComponent::loadSprites() {
+	//Running Animations
+	char* run1 = "big_demon_run_anim_f0.png";
+	char* run2 = "big_demon_run_anim_f1.png";
+	char* run3 = "big_demon_run_anim_f2.png";
+	char* run4 = "big_demon_run_anim_f3.png";
+	runningAnimations.push_back(run1);
+	runningAnimations.push_back(run2);
+	runningAnimations.push_back(run3);
+	runningAnimations.push_back(run4);
+}
+
+void NavigationComponent::updateAnimations(float deltaTime) {
+	animTime += deltaTime;
+	if (animTime > animationTime) {
+		animTime = fmod(animTime, animationTime);
+		spriteIndex = (spriteIndex + 1) % runningAnimations.size();
+		currentSprite = levelState->getSprite(runningAnimations[spriteIndex]);
+		currentSprite.setScale(gameObject->getTransform()->getScale());
+		spriteComponent->setSprite(currentSprite);
+		spriteComponent->flipSprite(!facingRight);
+	}
 }
 
 void NavigationComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value)

@@ -48,7 +48,7 @@ void LevelState::start()
 	// ======== EXAMPLE =================
 	// ||		   AI				   ||
 	// ======== EXAMPLE =================
-	/*for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++) {
 
 		// Set pos does nothing because of the way physicscomponents are instantiated
 		auto enemyPos = glm::vec2((dungeon->getStartRoomPos().x + ((i + 10) * i)), dungeon->getStartRoomPos().y);
@@ -56,8 +56,9 @@ void LevelState::start()
 		auto enemy = prefabManager->getPrefab("Enemy", this, enemyPos);
 		auto enemyGO = createGameObject(enemy.get());
 		auto nav = enemyGO->getComponent<NavigationComponent>();
+		nav->setLevel(*this);
 		nav->activateNavigation();
-	}*/
+	}
 
 
 #ifdef _DEBUG

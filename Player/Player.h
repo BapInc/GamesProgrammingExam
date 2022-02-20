@@ -5,6 +5,7 @@
 #include "../Commands/MoveCommand.h"
 #include "../Components/SpriteComponent.h"
 #include "../GameStates/LevelState.h"
+#include "../Components/AudioComponent.h"
 
 class Player : public Component
 {
@@ -19,6 +20,7 @@ public:
 	void update(float deltaTime) override;
 	void setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, GameState* state);
 	void setLevel(LevelState& levelState);
+	void setAudio(AudioComponent& audio);
 	void addWeapon();
 	bool getFacing();
 	void selectWeapon(int keyboardNumber);
@@ -34,6 +36,7 @@ private:
 	std::shared_ptr<SpriteComponent> spriteComponent;
 	std::shared_ptr<PhysicsComponent> physicsComponent;
 	LevelState* levelState;
+	AudioComponent* audio;
 
 	//Weapons
 	std::vector<std::shared_ptr<GameObject>> weaponInventory;

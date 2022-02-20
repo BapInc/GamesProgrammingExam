@@ -22,6 +22,11 @@ void BulletComponent::setLevel(LevelState& levelState)
 	this->levelState = &levelState;
 }
 
+void BulletComponent::setAudio(AudioComponent& audio)
+{
+	this->audio = &audio;
+}
+
 void BulletComponent::shoot(float deltaTime)
 {
 	gameObject->getComponent<PhysicsComponent>()->moveTo(gameObject->getTransform()->getPos() + bulletDirection * (speed / LevelState::physicsScale) * deltaTime);

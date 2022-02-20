@@ -22,6 +22,11 @@ void Player::setLevel(LevelState& levelState)
 	this->levelState = &levelState;
 }
 
+void Player::setAudio(AudioComponent& audio)
+{
+	this->audio = &audio;
+}
+
 void Player::start() {
 	addWeapon();
 	loadSprites();
@@ -97,10 +102,12 @@ bool Player::onKey(SDL_Event& event) {
 		if (event.type == SDL_KEYDOWN && pressed == false) {
 
 			pressed = true;
+			audio->playSound("shoot");
 			auto temp = selectedWeapon()->getComponent<WeaponComponent>()->getBulletType();
 
 			temp->getComponent<BulletComponent>()->setBulletDirection(setMouseDirection());
 			temp->getComponent<BulletComponent>()->setLevel(*levelState);
+			temp->getComponent<BulletComponent>()->setAudio(*audio);
 		}
 
 		if (event.type == SDL_KEYUP) {

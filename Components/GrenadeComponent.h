@@ -9,9 +9,15 @@ public:
 	explicit GrenadeComponent(GameObject* gameObject);
 	void shoot(float deltaTime) override;
 	void explosion(float deltaTime);
-	void exploded(std::shared_ptr<GameObject> gameObject, float deltaTime);
+	void updateAnimation(float deltaTime);
 
 private:
 	std::shared_ptr<GameObject> explosive;
+	std::vector<char*> grenadeAnimations;
+	sre::Sprite currentSprite;
+	glm::vec2 scale;
+	float animationTime = 0.100f;
+	float time = 0;
+	int spriteIndex = 0;
 };
 #endif

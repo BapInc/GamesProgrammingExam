@@ -193,8 +193,7 @@ void LevelState::EndContact(b2Contact* contact)
 void LevelState::generateEnemy(glm::ivec2& pos)
 {
 	auto enemy = prefabManager->getPrefab("Enemy", this, pos);
-	auto enemyGO = createGameObject(enemy.get());
-	auto nav = enemyGO->getComponent<NavigationComponent>();
+	auto nav = enemy->getComponent<NavigationComponent>();
 	nav->setLevel(*this);
 	nav->activateNavigation();
 }

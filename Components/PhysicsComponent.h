@@ -31,6 +31,7 @@ public:
 	void setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value, b2World* world);
 	void setWorld(b2World* world);
 	std::shared_ptr<PhysicsComponent> clone(GameObject* gameObject, b2World* world);
+	void setPos(glm::vec2 pos);
 private:
 	b2PolygonShape* polygon = nullptr;
 	b2CircleShape* circle = nullptr;
@@ -40,7 +41,7 @@ private:
 	b2BodyType rbType;
 	std::vector<PhysicsComponent*> collidingBodies;
 	b2World* world = nullptr;
-	float radius= 1.0f;
+	float radius = 1.0f;
 	float height = 1.0f;
 	float width = 1.0f;
 	friend class LevelState;

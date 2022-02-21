@@ -147,6 +147,11 @@ std::shared_ptr<PhysicsComponent> PhysicsComponent::clone(GameObject* gameObject
 	return clone;
 }
 
+void PhysicsComponent::setPos(glm::vec2 pos)
+{
+	body->SetTransform({ pos.x / LevelState::physicsScale, pos.y / LevelState::physicsScale }, body->GetAngle());
+}
+
 bool PhysicsComponent::isSensor()
 {
 	return fixture->IsSensor();

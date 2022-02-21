@@ -47,6 +47,11 @@ std::string GameObject::getTag() const
 	return tag;
 }
 
+std::string GameObject::setTag(std::string tag) const
+{
+	return tag = tag;
+}
+
 std::string GameObject::getName()
 {
 	return name;

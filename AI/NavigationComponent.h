@@ -25,11 +25,14 @@ public:
 	void setLevel(LevelState& levelState);
 	void loadSprites();
 	void updateAnimations(float deltaTime);
+	void onCollisionStart(PhysicsComponent* comp) override;
+	void takeDamage(int damage);
 	std::shared_ptr<NavigationComponent> clone(GameObject* gameObject);
 
 
 
 private:
+	int health = 100;
 	bool hasPath = false;
 	bool isPaused = true;
 	float movementSpeed = 10.0f;

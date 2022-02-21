@@ -6,6 +6,7 @@
 GrenadeComponent::GrenadeComponent(GameObject* gameObject) : BulletComponent(gameObject)
 {
 	this->gameObject = gameObject;
+	gameObject->setTag("Grenade");
 	speed = 500.0f;
 	lifetime = 100;
 
@@ -41,6 +42,11 @@ void GrenadeComponent::shoot(float deltaTime)
 		explosion(deltaTime);
 		updateAnimation(deltaTime);
 	}
+}
+
+void GrenadeComponent::onCollisionStart(PhysicsComponent* comp)
+{
+
 }
 
 void GrenadeComponent::updateAnimation(float deltaTime) {

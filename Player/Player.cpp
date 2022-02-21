@@ -11,9 +11,11 @@
 Player::Player(GameObject* gameObject) : Component(gameObject)
 {
 	this->gameObject = gameObject;
+	gameObject->setTag("Player");
 	spriteComponent = gameObject->getComponent<SpriteComponent>();
 	originX = DungeonGame::getInstance()->getWindowSize().x / 2;
 	originY = DungeonGame::getInstance()->getWindowSize().y / 2;
+	force = glm::vec2(2,2);
 	//moveCommand = NULL;
 }
 
@@ -148,17 +150,25 @@ glm::vec2 Player::setMouseDirection() {
 
 void Player::onCollisionStart(PhysicsComponent* comp)
 {
-	if (comp->getGameObject()->getTag() == "Enemy")
-	{
-		//Take Damage
-		//Take Knockback
-	}
-	if (comp->getGameObject()->getTag() == "Grenade")
-	{
-		//Take Damage
-		//Take Knockback
-	}
 
+	if (comp->getGameObject()->getName() == "Enemy")
+	{
+		takeDamage(5);
+		gameObject->getComponent<PhysicsComponent>()->addImpulse(-velocity * force);
+	}
+	if (comp->getGameObject()->getName() == "Explosive")
+	{
+		takeDamage(8);
+		gameObject->getComponent<PhysicsComponent>()->addImpulse(-velocity * force);
+	}
+}
+
+void Player::takeDamage(int damage) {
+	health -= damage;
+}
+
+int Player::getHealth() {
+	return health;
 }
 
 void Player::setSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent)

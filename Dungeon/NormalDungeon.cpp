@@ -64,12 +64,12 @@ void NormalDungeon::generateRooms()
 	//Get random position
 	int temp = 0;
 
-	//TODO: Stop hardcoding the value 50
-	int maxTiles = (mapHeight * maxRoomHeight) / 50; //50 being the percentage of how much the rooms can fill (Not counting walls nor corridors) 
+	//50 being the percentage of how much the rooms can fill (Not counting walls nor corridors) 
+	maxRoomFill = 50.0f;
+	int maxTiles = (mapHeight * maxRoomHeight) / 50; 
 
 	int isWithoutRoom = 0;
 
-	//TODO: Check if max possible tiles calculation is working currectly when walls are being generated
 	//Max Room tiles and counting walls (Not corridors)
 	int maxPossibleTiles = maxRoomHeight * maxRoomWidth * maxAmountOfRooms + ((maxRoomWidth * 2) + (maxRoomHeight * 2) + 4) * maxAmountOfRooms;
 	int mapTilesCount = mapWidth * mapHeight;
@@ -229,45 +229,6 @@ void NormalDungeon::findVisibleRooms()
 	}
 }
 
-void NormalDungeon::createFloor(int x, int y)
-{
-	if (dungeonMap[x][y] != nullptr)
-		return;
-
-	std::string spriteName = "floorTile";
-	int random = rand() % amountOfFloorPrefabs;
-	random += 1;
-
-	std::shared_ptr<GameObject> temp = levelState->loadPrefab(spriteName + std::to_string(random), glm::vec2(0, 0));
-	temp->setName(spriteName);
-
-	dungeonMap[x][y] = temp.get();
-	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (tileSize.x * scaleMultiplier),
-		(y) * (tileSize.y * scaleMultiplier)));
-}
-
-void NormalDungeon::createWall(int x, int y)
-{
-	//TODO: Check if there's a tile in that spot of the map
-	if (dungeonMap[x][y] != nullptr)
-		return;
-
-	std::string spriteName = "wallTile";
-	int random = rand() % amountOfWallPrefabs;
-	random += 1;
-
-	std::shared_ptr<GameObject> temp = levelState->loadPrefab(spriteName + std::to_string(random), glm::vec2(0, 0));
-	temp->setName(spriteName);
-	dungeonMap[x][y] = temp.get();
-	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (tileSize.x * scaleMultiplier),
-		(y) * (tileSize.y * scaleMultiplier)));
-
-	auto pC = temp.get()->addComponent<PhysicsComponent>();
-	pC->setWorld(levelState->getPhysicsWorld());
-	pC->initBox(b2_staticBody, glm::vec2(0.3f, 0.3f), temp->getTransform()->getPos(), 1.0f);
-	levelState->addPhysicsComponent(pC);
-}
-
 void NormalDungeon::connectRooms()
 {
 	std::vector<float> keys;
@@ -305,7 +266,6 @@ void NormalDungeon::connectRooms()
 			}
 		}
 
-		//TODO: Sort and Chose the cheapest cost and do it, no need to check if there are equal costs.
 		sortCosts(keys);
 
 		glm::ivec2 connectRooms;
@@ -319,7 +279,6 @@ void NormalDungeon::connectRooms()
 				costs.erase(keys[0]);
 				keys.erase(keys.begin());
 				isRoomInCycle = true;
-
 			}
 			else
 			{
@@ -353,12 +312,11 @@ void NormalDungeon::connectRooms()
 	}
 }
 
+//Generate each corridor connection between two rooms
 void NormalDungeon::generateCorridor(int roomOne, int roomTwo)
 {
 	//Randomize if it starts on y or x. 
 	int randomDir = rand() % 2;
-
-	//TODO: Preferably corridors should go right or left depending if they encounter any other corridors
 
 	//for loop for each axis
 	int secondDir;
@@ -369,6 +327,7 @@ void NormalDungeon::generateCorridor(int roomOne, int roomTwo)
 	generateCorridorAxis(true, randomDir, roomOne, roomTwo, tempDistance, rooms[roomOne]->getCenterPos());
 }
 
+//Generate corridors on both axis
 void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int roomTwo, glm::ivec2& distance, glm::ivec2 startPos)
 {
 	int tileDistance = 0;
@@ -412,6 +371,7 @@ void NormalDungeon::generateCorridorAxis(bool first, int axis, int roomOne, int 
 		generateCorridorAxis(false, axis, roomOne, roomTwo, distance, pos);
 }
 
+//Generate walls surrounnding the floorTiles
 void NormalDungeon::generateWalls()
 {
 	for (size_t i = 0; i < mapHeight; i++)
@@ -452,9 +412,9 @@ void NormalDungeon::generateContent()
 	generateEnemies();
 }
 
+//Gennerate enemies for each random room
 void NormalDungeon::generateEnemies()
 {
-
 	for (size_t i = 0; i < rooms.size(); i++)
 	{
 		if (rooms[i]->getType() != RANDOMROOM)
@@ -470,6 +430,44 @@ void NormalDungeon::generateEnemies()
 			levelState->generateEnemy(tempPos);
 		}
 	}
+}
+
+void NormalDungeon::createFloor(int x, int y)
+{
+	if (dungeonMap[x][y] != nullptr)
+		return;
+
+	std::string spriteName = "floorTile";
+	int random = rand() % amountOfFloorPrefabs;
+	random += 1;
+
+	std::shared_ptr<GameObject> temp = levelState->loadPrefab(spriteName + std::to_string(random), glm::vec2(0, 0));
+	temp->setName(spriteName);
+
+	dungeonMap[x][y] = temp.get();
+	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (tileSize.x * scaleMultiplier),
+		(y) * (tileSize.y * scaleMultiplier)));
+}
+
+void NormalDungeon::createWall(int x, int y)
+{
+	if (dungeonMap[x][y] != nullptr)
+		return;
+
+	std::string spriteName = "wallTile";
+	int random = rand() % amountOfWallPrefabs;
+	random += 1;
+
+	std::shared_ptr<GameObject> temp = levelState->loadPrefab(spriteName + std::to_string(random), glm::vec2(0, 0));
+	temp->setName(spriteName);
+	dungeonMap[x][y] = temp.get();
+	dungeonMap[x][y]->getTransform()->SetPos(glm::vec2((x) * (tileSize.x * scaleMultiplier),
+		(y) * (tileSize.y * scaleMultiplier)));
+
+	auto pC = temp.get()->addComponent<PhysicsComponent>();
+	pC->setWorld(levelState->getPhysicsWorld());
+	pC->initBox(b2_staticBody, glm::vec2(0.3f, 0.3f), temp->getTransform()->getPos(), 1.0f);
+	levelState->addPhysicsComponent(pC);
 }
 
 float NormalDungeon::CalculateDistance(glm::ivec2& v, glm::ivec2& w)

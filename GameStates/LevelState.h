@@ -34,7 +34,6 @@ public:
 	void BeginContact(b2Contact* contact) override;
 	void EndContact(b2Contact* contact) override;
 	std::shared_ptr<GameObject> loadPrefab(std::string prefab, glm::vec2 pos);
-	void generateNewDungeon();
 	void generateEnemy(glm::ivec2& pos);
 
 	void handleContact(b2Contact* contact, bool begin);
@@ -64,8 +63,6 @@ private:
 	Box2DDebugDraw debugDraw;
 	bool doDebugDraw = false;
 	Dungeon* dungeon;
-
-	//PrefabManager* prefabLoader;
 
 	void updatePhysics();
 	void registerPhysicsComponent(PhysicsComponent* r);

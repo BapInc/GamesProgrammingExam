@@ -29,7 +29,7 @@ public:
 	void setSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent);
 	std::shared_ptr<GameObject> Player::selectedWeapon();
 	glm::vec2 setMouseDirection();
-
+	void onCollisionStart(PhysicsComponent* comp) override;
 private:
 	//MoveCommand* moveCommand;
 	std::stack<std::shared_ptr<MoveCommand>> moveCommands;

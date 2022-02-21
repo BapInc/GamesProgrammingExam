@@ -31,10 +31,7 @@ public:
 
 protected:
 
-	//TODO: Should this be with sharedpointers instead of normal pointers?
 	std::vector<std::vector<GameObject *>> dungeonMap;
-
-	std::vector<sre::Sprite* > floorSprites;
 
 protected:
 	std::shared_ptr<Room> startRoom;

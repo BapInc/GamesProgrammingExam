@@ -146,6 +146,21 @@ glm::vec2 Player::setMouseDirection() {
 	return glm::normalize(glm::vec2(x - originX, -y + originY));
 }
 
+void Player::onCollisionStart(PhysicsComponent* comp)
+{
+	if (comp->getGameObject()->getTag() == "Enemy")
+	{
+		//Take Damage
+		//Take Knockback
+	}
+	if (comp->getGameObject()->getTag() == "Grenade")
+	{
+		//Take Damage
+		//Take Knockback
+	}
+
+}
+
 void Player::setSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent)
 {
 	this->spriteComponent = spriteComponent;

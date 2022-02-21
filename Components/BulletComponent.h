@@ -20,6 +20,8 @@ public:
 	void setAudio(AudioComponent& audio);
 
 	virtual void shoot(float deltaTime);
+
+	void onCollisionStart(PhysicsComponent* comp) override;
 	
 	LevelState* levelState;
 	AudioComponent* audio;

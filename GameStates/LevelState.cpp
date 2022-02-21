@@ -118,6 +118,8 @@ void LevelState::render()
 	//ImGui::Text("Player pos: x: %02d, y: %02d", enemyPos.x, enemyPos.y);
 	auto goCount = "Scene objects: " + std::to_string(sceneObjects.size());
 	ImGui::Text(goCount.c_str());
+	auto playerHealth = "Player Health: " + std::to_string(player->getComponent<Player>()->getHealth());
+	ImGui::Text(playerHealth.c_str());
 	ImGui::End();
 }
 

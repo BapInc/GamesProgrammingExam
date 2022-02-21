@@ -98,6 +98,29 @@ void NavigationComponent::updateAnimations(float deltaTime) {
 	}
 }
 
+void NavigationComponent::onCollisionStart(PhysicsComponent* comp)
+{
+
+	if (comp->getGameObject()->getName() == "Bullet2")
+	{
+		takeDamage(25);
+		if (health <= 0) {
+ 			gameObject->setShouldDestroy(true);
+		}
+	}
+	if (comp->getGameObject()->getName() == "Explosive")
+	{
+		takeDamage(50);
+		if (health <= 0) {
+			gameObject->setShouldDestroy(true);
+		}
+	}
+}
+
+void NavigationComponent::takeDamage(int damage) {
+	health -= damage;
+}
+
 void NavigationComponent::setValuesFromJSON(GenericValue<UTF8<char>, MemoryPoolAllocator<CrtAllocator>>* value)
 {
 	float speed = value->operator[]("movementSpeed").GetFloat();

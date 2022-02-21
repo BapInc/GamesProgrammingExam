@@ -264,7 +264,7 @@
       "PhysicsComponent": {
         "shape": "circle",
         "b2BodyType": "b2_dynamicBody",
-        "radius": 30.0,
+        "radius": 60.0,
         "center": {
           "x": 0.5,
           "y": 0.5

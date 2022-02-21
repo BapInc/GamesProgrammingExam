@@ -10,6 +10,7 @@ public:
 	void shoot(float deltaTime) override;
 	void explosion(float deltaTime);
 	void updateAnimation(float deltaTime);
+	void onCollisionStart(PhysicsComponent* comp) override;
 
 private:
 	std::shared_ptr<GameObject> explosive;

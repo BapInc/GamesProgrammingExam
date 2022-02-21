@@ -8,7 +8,8 @@
 BulletComponent::BulletComponent(GameObject* gameObject) : Component(gameObject)
 {
 	this->gameObject = gameObject;
-	lifetime = 30;
+	gameObject->setTag("Bullet");
+	lifetime = 60;
 	speed = 500.0f;
 	physicsComponent = gameObject->getComponent<PhysicsComponent>();
 }
@@ -32,6 +33,15 @@ void BulletComponent::shoot(float deltaTime)
 	gameObject->getComponent<PhysicsComponent>()->moveTo(gameObject->getTransform()->getPos() + bulletDirection * (speed / LevelState::physicsScale) * deltaTime);
 	lifetime -= deltaTime;
 	if (lifetime <= 0) {
+		gameObject->setShouldDestroy(true);
+	}
+}
+
+void BulletComponent::onCollisionStart(PhysicsComponent* comp)
+{
+
+	if (comp->getGameObject()->getName() != "Player")
+	{
 		gameObject->setShouldDestroy(true);
 	}
 }

@@ -24,7 +24,6 @@ void AudioComponent::playSound(std::string name)
 	auto found = sounds.find(name);
 	if (found != sounds.end())
 	{
-		Debug::Log("Sound found! " + name);
 		sounds[name]->start();
 	}
 	else
@@ -39,7 +38,6 @@ void AudioComponent::stopSound(std::string name, FMOD_STUDIO_STOP_MODE stopMode)
 	auto found = sounds.find(name);
 	if (found != sounds.end())
 	{
-		Debug::Log("Sound found!");
 		sounds[name]->stop(stopMode);
 	}
 	else

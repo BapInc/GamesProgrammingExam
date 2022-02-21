@@ -30,6 +30,8 @@ public:
 	std::shared_ptr<GameObject> Player::selectedWeapon();
 	glm::vec2 setMouseDirection();
 	void onCollisionStart(PhysicsComponent* comp) override;
+	void takeDamage(int damage);
+	int getHealth();
 private:
 	//MoveCommand* moveCommand;
 	std::stack<std::shared_ptr<MoveCommand>> moveCommands;
@@ -37,6 +39,7 @@ private:
 	std::shared_ptr<PhysicsComponent> physicsComponent;
 	LevelState* levelState;
 	AudioComponent* audio;
+	int health = 100;
 
 	//Weapons
 	std::vector<std::shared_ptr<GameObject>> weaponInventory;
@@ -49,6 +52,7 @@ private:
 	glm::vec2 velocity;
 	bool facingRight = true;
 	bool pressed = false;
+	glm::vec2 force;
 
 	//Animations
 	std::vector<char*> idleAnimations;

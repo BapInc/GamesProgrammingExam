@@ -12,8 +12,8 @@ typedef  std::pair<int, int> iPair;
 
 NormalDungeon::NormalDungeon(LevelState& levelState)
 {
-	minAmountOfRooms = 5;
-	maxAmountOfRooms = 10;
+	minAmountOfRooms = 8;
+	maxAmountOfRooms = 12;
 
 	minRoomWidth = 10;
 	minRoomHeight = 10;
@@ -31,8 +31,8 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 	amountOfFloorPrefabs = 8;
 	amountOfWallPrefabs = 3;
 
-	minAmountOfEnemies = 1;
-	maxAmountOfEnemies = 3;
+	minAmountOfEnemies = 5;
+	maxAmountOfEnemies = 8;
 
 	if (minRoomHeight > maxRoomHeight)
 		Debug::Log("Min Room Height is bigger than Max Room height", WARNING);

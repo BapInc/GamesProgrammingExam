@@ -66,7 +66,11 @@ std::shared_ptr<GameObject> LevelState::loadPrefab(std::string prefab, glm::vec2
 
 void LevelState::update(float deltaTime)
 {
+	
 	updatePhysics();
+
+	if (player->getActive() == false)
+		return;
 
 	for (auto& obj : sceneObjects)
 	{
@@ -125,7 +129,9 @@ void LevelState::render()
 
 void LevelState::onKey(SDL_Event& event)
 {
-	player->getComponent<Player>()->onKey(event);
+	if(player->getActive())
+		player->getComponent<Player>()->onKey(event);
+
 	if (event.type == SDL_KEYDOWN)
 	{
 		switch (event.key.keysym.sym)
@@ -141,6 +147,13 @@ void LevelState::onKey(SDL_Event& event)
 			else
 			{
 				world->SetDebugDraw(nullptr);
+			}
+			break;
+		case SDLK_r:
+
+			if (player->getActive() == false)
+			{
+				restart();
 			}
 			break;
 		}
@@ -160,6 +173,16 @@ void LevelState::initPhysics()
 	}
 }
 
+void LevelState::restart()
+{
+	player->setActive(true);
+	player->getComponent<PhysicsComponent>()->setPos(dungeon->getStartRoomPos());
+	player->transform->SetPos(dungeon->getStartRoomPos());
+	player->getComponent<Player>()->activateWeapon(true);
+	//player->getComponent<Player>()->activate(true);
+	//player->getComponent<Player>()->restart(dungeon->getStartRoomPos());
+}
+
 void LevelState::updatePhysics()
 {
 	const float32 timeStep = 1.0f / 60.0f;
@@ -173,8 +196,12 @@ void LevelState::updatePhysics()
 		auto position = phys.second->body->GetPosition();
 		float angle = phys.second->body->GetAngle();
 		auto gameObject = phys.second->getGameObject();
-		gameObject->getTransform()->SetPos(glm::vec2(position.x * physicsScale, position.y * physicsScale));
-		gameObject->getTransform()->Rotate(angle);
+
+		if (gameObject->isActive == true)
+		{
+			gameObject->getTransform()->SetPos(glm::vec2(position.x * physicsScale, position.y * physicsScale));
+			gameObject->getTransform()->Rotate(angle);
+		}
 	}
 }
 

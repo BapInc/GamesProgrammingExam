@@ -31,6 +31,8 @@ public:
 
 	void initPhysics();
 
+	void restart();
+
 	void BeginContact(b2Contact* contact) override;
 	void EndContact(b2Contact* contact) override;
 	std::shared_ptr<GameObject> loadPrefab(std::string prefab, glm::vec2 pos);

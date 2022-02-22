@@ -31,7 +31,9 @@ public:
 	glm::vec2 setMouseDirection();
 	void onCollisionStart(PhysicsComponent* comp) override;
 	void takeDamage(int damage);
+	void activateWeapon(bool value);
 	int getHealth();
+	void restart(glm::vec2 pos);
 private:
 	//MoveCommand* moveCommand;
 	std::stack<std::shared_ptr<MoveCommand>> moveCommands;

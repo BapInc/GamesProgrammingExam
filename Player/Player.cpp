@@ -153,8 +153,11 @@ void Player::onCollisionStart(PhysicsComponent* comp)
 
 	if (comp->getGameObject()->getName() == "Enemy")
 	{
-		takeDamage(5);
-		gameObject->getComponent<PhysicsComponent>()->addImpulse(-velocity * force);
+		if (gameObject->getActive() == true)
+		{
+			takeDamage(5);
+			gameObject->getComponent<PhysicsComponent>()->addImpulse(-velocity * force);
+		}
 	}
 	if (comp->getGameObject()->getName() == "Explosive")
 	{
@@ -164,11 +167,28 @@ void Player::onCollisionStart(PhysicsComponent* comp)
 }
 
 void Player::takeDamage(int damage) {
-	health -= damage;
+	health -= 60;
+	if (health <= 0)
+	{
+		gameObject->setActive(false);
+		selectedWeapon()->setActive(false);
+		health = 100;
+	}
+}
+
+void Player::activateWeapon(bool value)
+{
+	weapon1->setActive(value);
 }
 
 int Player::getHealth() {
 	return health;
+}
+
+void Player::restart(glm::vec2 pos)
+{
+	physicsComponent->setPos(pos);
+	gameObject->getTransform()->SetPos(pos);
 }
 
 void Player::setSpriteComponent(std::shared_ptr<SpriteComponent> spriteComponent)

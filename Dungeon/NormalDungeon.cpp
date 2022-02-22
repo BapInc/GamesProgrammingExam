@@ -23,6 +23,9 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 	startRoomWidth = 5;
 	startRoomHeight = 5;
 
+	mapWidth = 100;
+	mapHeight = 100;
+
 	scaleMultiplier = 4.0f;
 
 	amountOfFloorPrefabs = 8;
@@ -38,9 +41,6 @@ NormalDungeon::NormalDungeon(LevelState& levelState)
 		Debug::Log("Min Room Width is bigger than Max Room Width", WARNING);
 
 	roomVisibilityDistance = 100;
-
-	mapWidth = 100;
-	mapHeight = 100;
 
 	maxIterations = 100;
 
@@ -66,7 +66,7 @@ void NormalDungeon::generateRooms()
 
 	//50 being the percentage of how much the rooms can fill (Not counting walls nor corridors) 
 	maxRoomFill = 50.0f;
-	int maxTiles = (mapHeight * maxRoomHeight) / 50; 
+	int maxTiles = (mapHeight * maxRoomHeight) / maxRoomFill; 
 
 	int isWithoutRoom = 0;
 

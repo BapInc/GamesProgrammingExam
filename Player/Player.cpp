@@ -155,19 +155,19 @@ void Player::onCollisionStart(PhysicsComponent* comp)
 	{
 		if (gameObject->getActive() == true)
 		{
-			takeDamage(5);
+			takeDamage(60);
 			gameObject->getComponent<PhysicsComponent>()->addImpulse(-velocity * force);
 		}
 	}
 	if (comp->getGameObject()->getName() == "Explosive")
 	{
-		takeDamage(8);
+		takeDamage(60);
 		gameObject->getComponent<PhysicsComponent>()->addImpulse(-velocity * force);
 	}
 }
 
 void Player::takeDamage(int damage) {
-	health -= 60;
+	health -= damage;
 	if (health <= 0)
 	{
 		gameObject->setActive(false);
